@@ -1,0 +1,85 @@
+%% Sets
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\cnums}{\mathbb{C}}
+\newcommand{\integers}{\mathbb{Z}} % integers
+\newcommand{\set}[1]{\left\{#1\right\}} % set
+\newcommand{\st}[1]{\left|~#1\right.} % such that
+\newcommand{\real}[1]{\operatorname{Re}\left(#1\right)}
+\newcommand{\img}[1]{\operatorname{Im}\left(#1\right)}
+
+%% Braces
+\newcommand{\rb}[1]{\left(#1\right)}
+
+
+%% Linear algebra
+\newcommand{\mymatrix}[1]{\begin{bmatrix}#1\end{bmatrix}} % matrix
+\newcommand{\identity}[1]{\mathcal{I}_{#1}} % identity matrix
+\newcommand{\rows}[1]{\operatorname{rows}\left(#1\right)}
+\newcommand{\cols}[1]{\operatorname{cols}\left(#1\right)}
+
+%% Operators
+\newcommand{\abs}[1]{\left|#1\right|} % absolute value
+\newcommand{\minsum}{\oplus}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\meet}[2]{#1\bigwedge #2} % Meet
+\newcommand{\join}[2]{#1\bigvee #2} % Join
+\newcommand{\conv}[1]{\operatorname{{Conv}}\rb{#1}}
+\newcommand{\ep}[1]{\exp\rb{#1}}
+
+
+% System notation
+%%%%%%%%%%
+\newcommand{\state}[1]{x_{#1}} % state
+\newcommand{\out}[1]{y_{#1}} % output
+\newcommand{\inp}[1]{u_{#1}} % feedback input
+\newcommand{\openinp}[1]{v_{#1}} % open input
+\newcommand{\dist}[1]{w_{#1}}  % disturbance input
+%\newcommand{\reach}[2]{R_{#1}\left(#2\right)} % reachable set 
+%\newcommand{\samptimes}{\Gamma} % sampling times
+\newcommand{\cs}[1]{z_{#1}} % combined state
+\newcommand{\inpset}{V} % set containing open inputs
+\newcommand{\edges}{\Theta} % set of edges
+\newcommand{\edge}{\theta} % edge
+\newcommand{\inv}{\Psi} % invariant
+\newcommand{\loc}[1]{l_{#1}} % location at a time
+\newcommand{\A}[1]{{A}_{#1}}
+\newcommand{\V}[1]{{V}_{#1}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\safe}{\mathcal{S}}
+\newcommand{\temp}{H}
+\newcommand{\stay}{\Gamma}
+\newcommand{\init}{\Upsilon}
+\newcommand{\ones}[1]{\left[1\right]_{{#1}\times 1}}
+\newcommand{\lb}{\delta}
+\newcommand{\ub}{\tau_{\max}}
+\newcommand{\der}[1]{\frac{\partial {#1}}{\partial t}}
+\newcommand{\R}[1]{R_{#1}}
+\newcommand{\reach}{\Gamma}
+\newcommand{\samptimes}[1]{\mathcal{T}_{#1}}
+
+% Zonotope notation
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\rz}[2]{\mathcal{Z}\left(#1,~#2\right)} % real zonotope
+\newcommand{\cz}[3]{\mathcal{Z}\left(#1,~#2,~#3\right)}  % complex zonotope
+\newcommand{\ev}{E} % matrix of eigenvectors
+\newcommand{\order}{\sqsubseteq} % relation for checking inclusion
+\newcommand{\diag}[1]{\mathcal{D}\left(#1\right)}
+\newcommand{\halforder}{\stackrel{half}{\sqsubseteq}}
+\newcommand{\polyorder}{\stackrel{poly}{\sqsubseteq}}
+
+% Comments
+%%%%%%%%%%%%%%%
+\newcommand{\tocite}{{\color{red}\textbf{[cite]}}}
+\newcommand{\todo}[1]{{\color{red}\textbf{TODO}: #1}}
+
+%% Miscellaneous
+\newcommand{\dpr}{{\prime\prime}}
+\newcommand{\pr}{\prime}
+\newcommand{\lt}{\left}
+\newcommand{\rt}{\right}
+\newcommand{\trj}[2]{{\bf #1}\lt(#2\rt)}
+\newcommand{\realset}{\reals}
+\newcommand{\absolute}{\abs}
+\newcommand{\repmat}[3]{\lt[#1\rt]_{#2\times #3}}
+\newcommand{\tbf}{\paragraph}
+\newcommand{\mb}{\mathbb}
