@@ -1,15 +1,20 @@
 %% Sets
 \newcommand{\reals}{\mathbb{R}}
-\newcommand{\cnums}{\mathbb{C}}
+\newcommand{\rationals}{\mathbb{Q}}
 \newcommand{\integers}{\mathbb{Z}} % integers
+\newcommand{\double}{\operatorname{FP64}} % double precision floating point numbers
+\newcommand{\intervals}{\mathbb{I}} % set of intervals with bounds in double and ${-\infty,\infty}$
 \newcommand{\set}[1]{\left\{#1\right\}} % set
 \newcommand{\st}[1]{\left|~#1\right.} % such that
-\newcommand{\real}[1]{\operatorname{Re}\left(#1\right)}
-\newcommand{\img}[1]{\operatorname{Im}\left(#1\right)}
+\newcommand{\fe}[1]{ \mathbb{F}_{#1} } % mathematical expressions
+\newcommand{\vars}{V}
+\newcommand{\ball}[2]{\mathbb{B}\rb{#1,#2}}
+\newcommand{\interval}[2]{\sqb{#1,#2}}
+\newcommand{\dom}[1]{\operatorname{Dom}\rb{#1}}
 
 %% Braces
 \newcommand{\rb}[1]{\left(#1\right)}
-
+\newcommand{\sqb}[1]{\left[#1\right]}
 
 %% Linear algebra
 \newcommand{\mymatrix}[1]{\begin{bmatrix}#1\end{bmatrix}} % matrix
@@ -26,60 +31,18 @@
 \newcommand{\conv}[1]{\operatorname{{Conv}}\rb{#1}}
 \newcommand{\ep}[1]{\exp\rb{#1}}
 
+%% notes
+\newcommand{\todo}[1]{todo: {\color{red}#1}}
 
-% System notation
-%%%%%%%%%%
-\newcommand{\state}[1]{x_{#1}} % state
-\newcommand{\out}[1]{y_{#1}} % output
-\newcommand{\inp}[1]{u_{#1}} % feedback input
-\newcommand{\openinp}[1]{v_{#1}} % open input
-\newcommand{\dist}[1]{w_{#1}}  % disturbance input
-%\newcommand{\reach}[2]{R_{#1}\left(#2\right)} % reachable set 
-%\newcommand{\samptimes}{\Gamma} % sampling times
-\newcommand{\cs}[1]{z_{#1}} % combined state
-\newcommand{\inpset}{V} % set containing open inputs
-\newcommand{\edges}{\Theta} % set of edges
-\newcommand{\edge}{\theta} % edge
-\newcommand{\inv}{\Psi} % invariant
-\newcommand{\loc}[1]{l_{#1}} % location at a time
-\newcommand{\A}[1]{{A}_{#1}}
-\newcommand{\V}[1]{{V}_{#1}}
-\newcommand{\C}{\mathcal{C}}
-\newcommand{\safe}{\mathcal{S}}
-\newcommand{\temp}{H}
-\newcommand{\stay}{\Gamma}
-\newcommand{\init}{\Upsilon}
-\newcommand{\ones}[1]{\left[1\right]_{{#1}\times 1}}
-\newcommand{\lb}{\delta}
-\newcommand{\ub}{\tau_{\max}}
-\newcommand{\der}[1]{\frac{\partial {#1}}{\partial t}}
-\newcommand{\R}[1]{R_{#1}}
-\newcommand{\reach}{\Gamma}
-\newcommand{\samptimes}[1]{\mathcal{T}_{#1}}
+%----------------------------------------------------------------------
+%% paper specific
+%----------------------------------------------------------------------
+%% symbols
+\newcommand{\proj}[1]{\lambda_{#1}} % function symbol for projection on a dimension
 
-% Zonotope notation
-%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\rz}[2]{\mathcal{Z}\left(#1,~#2\right)} % real zonotope
-\newcommand{\cz}[3]{\mathcal{Z}\left(#1,~#2,~#3\right)}  % complex zonotope
-\newcommand{\ev}{E} % matrix of eigenvectors
-\newcommand{\order}{\sqsubseteq} % relation for checking inclusion
-\newcommand{\diag}[1]{\mathcal{D}\left(#1\right)}
-\newcommand{\halforder}{\stackrel{half}{\sqsubseteq}}
-\newcommand{\polyorder}{\stackrel{poly}{\sqsubseteq}}
+%% functions
+\newcommand{\grad}[1]{\nabla{#1}} % gradient
+\newcommand{\hess}[1]{\operatorname{H}{#1}} % hessian
+\newcommand{\iv}[2]{\widehat{#1}\rb{#2}} % interval bounds on a function expression
 
-% Comments
-%%%%%%%%%%%%%%%
-\newcommand{\tocite}{{\color{red}\textbf{[cite]}}}
-\newcommand{\todo}[1]{{\color{red}\textbf{TODO}: #1}}
 
-%% Miscellaneous
-\newcommand{\dpr}{{\prime\prime}}
-\newcommand{\pr}{\prime}
-\newcommand{\lt}{\left}
-\newcommand{\rt}{\right}
-\newcommand{\trj}[2]{{\bf #1}\lt(#2\rt)}
-\newcommand{\realset}{\reals}
-\newcommand{\absolute}{\abs}
-\newcommand{\repmat}[3]{\lt[#1\rt]_{#2\times #3}}
-\newcommand{\tbf}{\paragraph}
-\newcommand{\mb}{\mathbb}
