@@ -24,16 +24,27 @@ where $X^T_{ij} = X_{ji}$.  The euclidean norm of a real vector
 $x\in\reals^n$ is $\norm{x} = \rb{\sum_{i=1}^n\abs{x_i}^2}^{1/2}$.
 The infinity norm is $\norm{x}_\infty
 = \sup\set{\abs{x_1},...,\abs{x_n}}$.  For $r\in\reals_{> 0}$ and
-$x\in\reals^n$, we define the open box of width $r$ around $x$ as
-$\ball{x}{r} = \set{ x\in\reals^n: \norm{x}_\infty < r }$.
-
+$x\in\reals^n$, we define the box of width $r$ around $x$ as
+$\ball{x}{r} = \set{ x\in\reals^n: \norm{x}_\infty \leq r }$.
+%
+\paragraph{Continuity of functions:} If $\Psi\subseteq\reals^n$, a
+function $f:\Psi\rightarrow\reals^m$ is called \emph{continuous} on
+$\Psi$ if $\forall x\in\Psi,\forall\epsilon\in\reals_{>0}$, there
+exists $\delta\in\reals^n$ such that if
+$x\in\ball{x}{\delta}\bigcap\Psi$, then
+$f(x)\in\ball{f(x)}{\epsilon}$.  A function
+$g:\Psi\rightarrow\reals^m$ is called piecewise continuous on $\Psi$
+if there exists a finite number of sets $\Psi_1,\ldots,\Psi_k$ such
+that $\bigcup_{i=1}^k\Psi_i=\Psi$ and $g$ is continuous on each
+$\Psi_i\forall i\in\set{1,\ldots,k}$.
+%
 \paragraph{Function expressions}:  For every $n\in\integers_{>0}$, we
 define a set $\fe{n}$, called \emph{function expressions}, recursively
 as follows.
 %
 \begin{enumerate}
+\item $\rationals\subseteq \fe{n}$.
 \item $\forall i\in\set{1,\ldots,n}, \proj{i}\in\fe{n}$.
-\item $\forall a\in\rationals, \forall x\in\fe{n}, af\in \fe{n}$.
 \item $\forall f_1,f_2\in\fe{n}, \set{ \frac{1}{f}, f_1+f_2, f_1-f_2, f_1f_2}\subseteq\fe{n}$.
 \item $\forall f\in\fe{n}, \set{ \sin\rb{f}, \cos\rb{f}, \exp\rb{f}, \log\rb{f} } \subseteq f$.
 \end{enumerate}
@@ -43,10 +54,9 @@ function}
 $f:\reals^n\rightarrow\reals$ (i.e. domain is a subset of $\reals^n$)
 defined recursively as follows.
 \begin{enumerate}
+\item If $f = c$ for $c\in\rationals$, then $f(x) = c$.
 \item If $f = \proj{i}$ for $i\in\set{1,\ldots,n}$, then $\forall
 x\in\reals^n, f(x) = x_i$.
-\item If $f = ag$ for $a\in\rationals, g\in\fe{n}$, then $\forall
-x\in\reals^n, f\rb{x} = ag\rb{x}$.
 \item If $f = hg$ for $h,g\in\fe{n}$, then $\forall x\in \reals^n, f\rb{x} =
 h\rb{x}g\rb{x}$.
 \item If $f = \frac{1}{g}$ for $g\in\fe{n}$, then $\forall

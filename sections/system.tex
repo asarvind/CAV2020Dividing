@@ -1,0 +1,67 @@
+An $n$-dimensional nonlinear system with $m$ inputs is specified by a
+$n$-tuple of function expressions over $n+m$ symbols, $f =
+\rb{f_1,\ldots,f_n}\in \fe{n+m}$, an \emph{initial set}
+$\init\subseteq\reals^n$ and an \emph{input set} $\inpset\subseteq\reals^m$.  A function of time
+$\trfn{x}:[0,\infty)\rightarrow \reals^n$ is called a \emph{state
+trajectory} if there exists another \emph{piecewise continuous} function
+$\trfn{u}:[0,\infty)\rightarrow \inpset$, called \emph{input
+trajectory}, such that all the following is true.
+%
+\begin{align*}
+& \forall t\in[0,\infty)\forall\epsilon\in\reals_{>0}, \exists\delta\in\reals_{>0}~\text{such
+that}~\norm{ \frac{ \tr{x}{t+\delta} - \tr{x}{t} }{\delta} -
+f_i\rb{ \mymatrix{ \tr{x}{t}\\ \tr{u}{t} } }}< \epsilon\\
+& \tr{x}{0}\in\init~\numberthis\label{eqn:dynamics}
+\end{align*}
+%
+There can be \emph{uncountably many} state trajectories of the system
+depending on the starting points in the initial set and different
+input trajectories.
+%
+\begin{example}\label{eg:system}
+Let us denote the function expressions $\proj{1} = x$, $\proj{2} = y$,
+$\proj{3} = \theta$ and $\proj{4} = u$.  A $3$-dimensional
+nonlinear system with one input can be specified by a $3$-tuple of
+function expressions $f = \rb{f_1,f_2,f_3}$ where
+%
+\begin{align*}
+& f_1 = \rb{ u\rb{ x + \theta + 0.1y } - 1}x\\
+& f_2 = \rb{ u\rb{ y + \theta + 0.1x } - 1}y\\
+& f_3 = -\theta
+\end{align*}
+%
+an initial set $\init = [0,0.25]^3$.
+%
+Let us consider the zero input trajectory $\tr{u}{t} = 0\forall
+t\in[0,\infty)$.  In this case, two possible solutions are
+%
+\begin{align*}
+\tr{x}{t} = \mymatrix{ -0.1\exp\rb{-t}\\ 0.1\exp\rb{-t}\\ 0.1\exp\rb{-t} },~
+& \tr{x}{t} = \mymatrix{ -0.2\exp\rb{-t}\\ -0.1\exp\rb{-t}\\ -0.1\exp\rb{-t} }
+\end{align*}
+%
+which begin at $\tr{x}{0} = \mymatrix{-0.1,0.1,0.1}^T$ and $\tr{x}{0}
+= \mymatrix{-0.2,-0.3,-0.1}^T$, respectively.
+%
+There are other state trajectories without an analytic form.  For
+example, figure~(\todo{figure}) has an approximate plot of state
+trajectories which can not be expressed analytically.
+\end{example}
+%
+The problem of verifying reachability properties of nonlinear systems
+is undecidable.  Alternatively, we can develop algorithms to
+overapproximate the reachable set at each time point by a data
+structure which can be manipulated efficiently to check reachability
+properties for many, if not all, initial conditions and input sets.
+Such data structures are called \emph{set representations} and the
+mapping from each time point to a set representation is
+called \emph{flowpipes}.  Examples of such set representations
+are \emph{boxes}, \emph{polytopes}, \emph{zonotopes}, \emph{Taylor
+models}, \emph{barrier certificates} and \emph{polynomial zonotopes}.
+In this paper, we improve a method of flowpipe computation using
+on-the-fly linearization and union of zonotopes described in Althoff
+et. al.~(\todo{cite}).  Instead of zonotopic union, we use
+intersection of union (IOU) of zonotopes to tackle multidirectional
+linearization more efficiently, which will be explained in subsequent
+sections.
+%

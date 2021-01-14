@@ -7,9 +7,9 @@
 \newcommand{\set}[1]{\left\{#1\right\}} % set
 \newcommand{\st}[1]{\left|~#1\right.} % such that
 \newcommand{\fe}[1]{ \mathbb{F}_{#1} } % mathematical expressions
-\newcommand{\vars}{V}
-\newcommand{\ball}[2]{\mathbb{B}\rb{#1,#2}}
-\newcommand{\interval}[2]{\sqb{#1,#2}}
+\newcommand{\vars}{V} % variables
+\newcommand{\ball}[2]{\mathbb{B}\rb{#1,#2}} % open box with a radius
+\newcommand{\interval}[2]{\sqb{#1,#2}} % 
 \newcommand{\dom}[1]{\operatorname{Dom}\rb{#1}}
 
 %% Braces
@@ -37,12 +37,19 @@
 %----------------------------------------------------------------------
 %% paper specific
 %----------------------------------------------------------------------
+%% sets
+\newcommand{\init}{\mathcal{I}}  % initial set
+\newcommand{\inpset}{\mathcal{U}} % input set
+
 %% symbols
 \newcommand{\proj}[1]{\lambda_{#1}} % function symbol for projection on a dimension
+\newcommand{\trfn}[1]{\mathbf{#1}} % trajectory function
 
 %% functions
 \newcommand{\grad}[1]{\nabla{#1}} % gradient
 \newcommand{\hess}[1]{\operatorname{H}{#1}} % hessian
 \newcommand{\iv}[2]{\widehat{#1}\rb{#2}} % interval bounds on a function expression
+\newcommand{\tr}[2]{\mathbf{#1}\rb{#2}} % trajectory value
+
 
 
