@@ -1,5 +1,7 @@
-\paragraph{Basic notation}:  The set of real numbers is $\reals$, rationals numbers is $\rationals$, 3
-and integers is $\integers$.  For $\Psi\subseteq\reals$, $a\in\reals$
+\paragraph{Basic notation}:  The set of real numbers is $\reals$
+and integers is $\integers$.  The subset of real
+numbers that can be represented in double precision floating point
+format is $\double$.  For $\Psi\subseteq\reals$, $a\in\reals$
 and $\bowtie\in\set{\geq,\leq,>,<}$, we denote $\Psi_{\bowtie a}
 = \set{ x\in\Psi \st x \bowtie a }$.  The supremum of a subset of real
 numbers $\Psi\subseteq\reals$ is
@@ -43,10 +45,10 @@ define a set $\fe{n}$, called \emph{function expressions}, recursively
 as follows.
 %
 \begin{enumerate}
-\item $\rationals\subseteq \fe{n}$.
+\item $\double\subseteq \fe{n}$.
 \item $\forall i\in\set{1,\ldots,n}, \proj{i}\in\fe{n}$.
 \item $\forall f_1,f_2\in\fe{n}, \set{ \frac{1}{f}, f_1+f_2, f_1-f_2, f_1f_2}\subseteq\fe{n}$.
-\item $\forall f\in\fe{n}, \set{ \sin\rb{f}, \cos\rb{f}, \exp\rb{f}, \log\rb{f} } \subseteq f$.
+\item $\forall f\in\fe{n}, \set{ \sin\rb{f}, \cos\rb{f}, \exp\rb{f}, \log\rb{f} } \subseteq \fe{n}$.
 \end{enumerate}
 %
 Every function expression $f\in\fe{n}$ is associated with a \emph{partial
@@ -54,7 +56,7 @@ function}
 $f:\reals^n\rightarrow\reals$ (i.e. domain is a subset of $\reals^n$)
 defined recursively as follows.
 \begin{enumerate}
-\item If $f = c$ for $c\in\rationals$, then $f(x) = c$.
+\item If $f = c$ for $c\in\double$, then $f(x) = c$.
 \item If $f = \proj{i}$ for $i\in\set{1,\ldots,n}$, then $\forall
 x\in\reals^n, f(x) = x_i$.
 \item If $f = hg$ for $h,g\in\fe{n}$, then $\forall x\in \reals^n, f\rb{x} =
@@ -62,9 +64,8 @@ h\rb{x}g\rb{x}$.
 \item If $f = \frac{1}{g}$ for $g\in\fe{n}$, then $\forall
 x \in\set{y\in\reals^n\st g\rb{y}\neq 0}$, $f\rb{x}
 = \frac{1}{g\rb{x}}$.
-\item If $f = f_1\bowtie f_2$ for $\bowtie\in\set{+,-}$ and
-$f_1,f_2\in\fe{n}$, then $\forall x\in \reals^n, f\rb{x} = f_1\rb{x}\bowtie f_2\rb{x}$.
-\is{Should we use a different symbol than $\bowtie$ here? It has been used before.}
+\item If $f = f_1\sim f_2$ for $\sim\in\set{+,-}$ and
+$f_1,f_2\in\fe{n}$,\\ then $\forall x\in \reals^n, f\rb{x} = f_1\rb{x}\sim f_2\rb{x}$.
 \item If $f = \sin\rb{g}$ for $g\in\fe{n}$, then $\forall x\in \reals^n, f\rb{x} = \sum_{N=0}^\infty(-1)^n\frac{\rb{g\rb{x}}^{2n+1}}{\rb{2n+1}!}$.
 \item If $f = \cos\rb{g}$ for $g\in\fe{n}$, then $\forall x\in \reals^n, f\rb{x}
 = \sum_{N=0}^\infty (-1)^n\frac{\rb{g\rb{x}}^{2n}}{\rb{2n}!}$.
@@ -90,23 +91,21 @@ and $\dom{f} = \set{(x,y)\in\reals^2\st x\neq 0, y>0}$.
 %
 \paragraph{Symbolic Derivative}:  We say that the symbolic derivative of a function
 expression $f\in\fe{n}$ is a tuple of function
-expressions $\rb{g_1,\ldots,g_n}\in\fe{n}^n$ if all of the
+expressions $g = \rb{g_1,\ldots,g_n}\in\fe{n}^n$ if all of the
 following is true.
 %
 \begin{itemize}
-\item $\forall i\in\set{1,\ldots,n}$, $\dom{f}\subseteq \dom{g}$. \is{What is $g$ here?}
+\item $\forall i\in\set{1,\ldots,n}$, $\dom{f}\subseteq \dom{g}$.
 \item For all $x\in\dom{f}$ and $\forall\epsilon\in\reals_{>0}$, there exists $r\in\reals_{>0}$ 
 such that $\forall h\in\ball{0}{r}$, we have $(x+h)\in\dom{f}$ and
 %
 \begin{align*}
-& \frac{\norm{f\rb{x+h}-\sum_{i=1}^ng_i\rb{x}h_i}}{\norm{h}}
+& \frac{\norm{f\rb{x+h}-\sum_{i=1}^n g_i\rb{x}h_i}}{\norm{h}}
 < \epsilon.~\numberthis\label{eqn:symder}
 \end{align*}
 %
 \end{itemize}
 %
-In the above case, we say the tuple $\rb{g_1,\ldots,g_n}$ is a
-symbolic derivative of $f$.
 \begin{example}
 Let us consider a function expression
 $f:\proj{1}\rb{sin\rb{\proj{2}}}$ which is associated with the
@@ -120,21 +119,20 @@ derivative of $f$.
 \end{example}
 %
 There are a number of softwares to compute symbolic derivatives for
-the function expressions we defined above.  For example, in the
-experiments in this paper,
-we use the \emph{SymPy} software~\cite{10.7717/peerj-cs.103} to
-compute symbolic derivatives.  
-\is{This can be written in the Implementation subsection under the Evaluation section.}
+the function expressions we defined above. 
+% For example, in the
+% experiments in this paper,
+% we use the \emph{SymPy} software~\cite{10.7717/peerj-cs.103} to
+% compute symbolic derivatives.  
+% \is{This can be written in the Implementation subsection under the Evaluation section.}
 We denote the symbolic derivative of
-$f$ computed using a any such method as $\nabla f$ whose $i^{th}$
+$f$ computed using any method as $\nabla f$ whose $i^{th}$
 component is denoted $\nabla_i f$.
 %
 \paragraph{Interval arithmetic}:  We use interval arithmetic to
 correctly bound floating point computations like addition,
 multiplication, inverse and also bound values of sine, cosine and
-logarithmic functions.  Let $\double$ represent the subset of real
-numbers that can be represented in double precision floating point
-format.  For $a,b\in\double$ such that $a<b$, we denote
+logarithmic functions. For $a,b\in\double$ such that $a<b$, we denote\\
 $\interval{a}{b} = \set{x\in\reals\st a\leq x\leq b}$,
 $\interval{-\infty}{a} = \set{x\in\reals\st x\leq a}$,
 $\interval{a}{\infty} = \set{x\in\reals\st a\leq x}$ and
@@ -145,7 +143,7 @@ the following property, called \emph{inclusion property}, is true.
 For all $u,v\in\intervals$, all of the following is true.
 %
 \begin{enumerate}
-\item For $a\in\rationals$, $au\in\rationals$ such that $au\subseteq \set{ax\st x\in\reals}$.
+\item For $a\in\double$, $au\in\intervals$ such that $au\subseteq \set{ax\st x\in u}$.
 \item $uv,(u+v),(u-v)\in\intervals$ such that
 $uv\subseteq\set{xy\st x\in u, y\in v}$,\\ $\rb{u+v}\subseteq\set{x+y\st x\in
 u, y\in v}$ and $\rb{u-v}\subseteq\set{x-y\st x\in u, y\in v}$.
@@ -156,11 +154,11 @@ u, y\in v}$ and $\rb{u-v}\subseteq\set{x-y\st x\in u, y\in v}$.
 \item If $u\subseteq\reals\setminus\set{0}$, then $\log\rb{u}\in\intervals$ such that\\ $\log\rb{u}\subseteq\set{\sum_{N=1}^\infty(-1)^{n+1}\frac{\rb{x-1}^{n}}{n}\st x\in u}$.
 \end{enumerate}
 %
-Given intervals $u,v\in\intervals$, we use the \emph{Boost interval
-arithmetic library}~\cite{bronnimann2006design} to compute the intervals
-$uv, \rb{u+v}, \rb{u-v}, \rb{u}^{-1}, \sin\rb{u}, \cos\rb{u}, \exp\rb{u}$
-and $\log\rb{u}$ such that the above inclusion property is true.
-\is{This can be written in the Implementation subsection under the Evaluation section.}
+% Given intervals $u,v\in\intervals$, we use the \emph{Boost interval
+% arithmetic library}~\cite{bronnimann2006design} to compute the intervals
+% $uv, \rb{u+v}, \rb{u-v}, \rb{u}^{-1}, \sin\rb{u}, \cos\rb{u}, \exp\rb{u}$
+% and $\log\rb{u}$ such that the above inclusion property is true.
+% \is{This can be written in the Implementation subsection under the Evaluation section.}
 
 We denote the set of $n\times m$ interval matrices by $\intervals^{n\times m}$.
 The set of interval vectors is $\intervals^{n\times 1}$, conveniently
@@ -179,15 +177,14 @@ bounds $\iv{f}{x}$ on its image $f\rb{x}$, recursively as follows.
 \item If $f = \proj{i}$ for $i\in\set{1,\ldots,n}$, then $\iv{f}{x} =
 x_i$.
 \item If $f = ag$ for $a\in\rationals, g\in\fe{n}$, then $\iv{f}{x} =
-a\iv{f}{x}$. \is{typo: $g$ instated of $f$.}
+a\iv{g}{x}$.
 \item If $f = hg$ for $h,g\in\fe{n}$, then $\iv{f}{x}
 = \iv{h}{x}\iv{g}{x}$.
 \item If $f = \frac{1}{g}$ for $g\in\fe{n}$ such that
 $\iv{g}{x}\subseteq\reals\setminus \set{0}$, then $\iv{f}{x}
 = \frac{1}{\iv{g}{x}}$.
-\item If $f = f_1\bowtie f_2$ for $\bowtie\in\set{+,-}$ and
-$f_1,f_2\in\fe{n}$, then $\iv{f}{x} = \iv{f_1}{x}\bowtie\iv{f_2}{x}$.
-\is{Should we use a different symbol than $\bowtie$ here? It has been used before.}
+\item If $f = f_1\sim f_2$ for $\sim\in\set{+,-}$ and
+$f_1,f_2\in\fe{n}$, then $\iv{f}{x} = \iv{f_1}{x}\sim\iv{f_2}{x}$.
 \item If $f = h\rb{g}$ for $h\in\set{\sin, \cos, \exp, \log}$, then
 $\iv{f}{x} = h\rb{\iv{g}{x}}$.
 \end{enumerate}
