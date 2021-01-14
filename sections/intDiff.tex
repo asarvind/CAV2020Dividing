@@ -174,10 +174,9 @@ $x\in\intervals^n$, based on interval arithmetic, we compute interval
 bounds $\iv{f}{x}$ on its image $f\rb{x}$, recursively as follows.
 %
 \begin{enumerate}
+\item If $f = c$ for $c\in\double$, then $\iv{f}{x} = [c,c]$.
 \item If $f = \proj{i}$ for $i\in\set{1,\ldots,n}$, then $\iv{f}{x} =
 x_i$.
-\item If $f = ag$ for $a\in\rationals, g\in\fe{n}$, then $\iv{f}{x} =
-a\iv{g}{x}$.
 \item If $f = hg$ for $h,g\in\fe{n}$, then $\iv{f}{x}
 = \iv{h}{x}\iv{g}{x}$.
 \item If $f = \frac{1}{g}$ for $g\in\fe{n}$ such that
