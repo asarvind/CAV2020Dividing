@@ -1,4 +1,4 @@
-\paragraph{Basic notation}:  The set of real numbers is $\reals$, rationals numbers is $\rationals$
+\paragraph{Basic notation}:  The set of real numbers is $\reals$, rationals numbers is $\rationals$, 3
 and integers is $\integers$.  For $\Psi\subseteq\reals$, $a\in\reals$
 and $\bowtie\in\set{\geq,\leq,>,<}$, we denote $\Psi_{\bowtie a}
 = \set{ x\in\Psi \st x \bowtie a }$.  The supremum of a subset of real
@@ -54,6 +54,7 @@ x \in\set{y\in\reals^n\st g\rb{y}\neq 0}$, $f\rb{x}
 = \frac{1}{g\rb{x}}$.
 \item If $f = f_1\bowtie f_2$ for $\bowtie\in\set{+,-}$ and
 $f_1,f_2\in\fe{n}$, then $\forall x\in \reals^n, f\rb{x} = f_1\rb{x}\bowtie f_2\rb{x}$.
+\is{Should we use a different symbol than $\bowtie$ here? It has been used before.}
 \item If $f = \sin\rb{g}$ for $g\in\fe{n}$, then $\forall x\in \reals^n, f\rb{x} = \sum_{N=0}^\infty(-1)^n\frac{\rb{g\rb{x}}^{2n+1}}{\rb{2n+1}!}$.
 \item If $f = \cos\rb{g}$ for $g\in\fe{n}$, then $\forall x\in \reals^n, f\rb{x}
 = \sum_{N=0}^\infty (-1)^n\frac{\rb{g\rb{x}}^{2n}}{\rb{2n}!}$.
@@ -83,7 +84,7 @@ expressions $\rb{g_1,\ldots,g_n}\in\fe{n}^n$ if all of the
 following is true.
 %
 \begin{itemize}
-\item $\forall i\in\set{1,\ldots,n}$, $\dom{f}\subseteq \dom{g}$.
+\item $\forall i\in\set{1,\ldots,n}$, $\dom{f}\subseteq \dom{g}$. \is{What is $g$ here?}
 \item For all $x\in\dom{f}$ and $\forall\epsilon\in\reals_{>0}$, there exists $r\in\reals_{>0}$ 
 such that $\forall h\in\ball{0}{r}$, we have $(x+h)\in\dom{f}$ and
 %
@@ -112,7 +113,9 @@ There are a number of softwares to compute symbolic derivatives for
 the function expressions we defined above.  For example, in the
 experiments in this paper,
 we use the \emph{SymPy} software~\cite{10.7717/peerj-cs.103} to
-compute symbolic derivatives.  We denote the symbolic derivative of
+compute symbolic derivatives.  
+\is{This can be written in the Implementation subsection under the Evaluation section.}
+We denote the symbolic derivative of
 $f$ computed using a any such method as $\nabla f$ whose $i^{th}$
 component is denoted $\nabla_i f$.
 %
@@ -147,6 +150,7 @@ Given intervals $u,v\in\intervals$, we use the \emph{Boost interval
 arithmetic library}~\cite{bronnimann2006design} to compute the intervals
 $uv, \rb{u+v}, \rb{u-v}, \rb{u}^{-1}, \sin\rb{u}, \cos\rb{u}, \exp\rb{u}$
 and $\log\rb{u}$ such that the above inclusion property is true.
+\is{This can be written in the Implementation subsection under the Evaluation section.}
 
 We denote the set of $n\times m$ interval matrices by $\intervals^{n\times m}$.
 The set of interval vectors is $\intervals^{n\times 1}$, conveniently
@@ -158,14 +162,14 @@ p}$ and $Y\in\intervals^{p\times m}$ is $XY
 = \sum_{k=1}^pX_{ik}Y_{kj}$.  It follows from the inclusion property
 of interval arithmetic that if $A\in X$ and $B\in Y$, then $AB\in XY$.
 Given a function expression $f\in\fe{n}$ and an interval vector
-$x\in\intervals^n$, based on interval arithmetic we compute interval
+$x\in\intervals^n$, based on interval arithmetic, we compute interval
 bounds $\iv{f}{x}$ on its image $f\rb{x}$, recursively as follows.
 %
 \begin{enumerate}
 \item If $f = \proj{i}$ for $i\in\set{1,\ldots,n}$, then $\iv{f}{x} =
 x_i$.
 \item If $f = ag$ for $a\in\rationals, g\in\fe{n}$, then $\iv{f}{x} =
-a\iv{f}{x}$.
+a\iv{f}{x}$. \is{typo: $g$ instated of $f$.}
 \item If $f = hg$ for $h,g\in\fe{n}$, then $\iv{f}{x}
 = \iv{h}{x}\iv{g}{x}$.
 \item If $f = \frac{1}{g}$ for $g\in\fe{n}$ such that
@@ -173,6 +177,7 @@ $\iv{g}{x}\subseteq\reals\setminus \set{0}$, then $\iv{f}{x}
 = \frac{1}{\iv{g}{x}}$.
 \item If $f = f_1\bowtie f_2$ for $\bowtie\in\set{+,-}$ and
 $f_1,f_2\in\fe{n}$, then $\iv{f}{x} = \iv{f_1}{x}\bowtie\iv{f_2}{x}$.
+\is{Should we use a different symbol than $\bowtie$ here? It has been used before.}
 \item If $f = h\rb{g}$ for $h\in\set{\sin, \cos, \exp, \log}$, then
 $\iv{f}{x} = h\rb{\iv{g}{x}}$.
 \end{enumerate}
