@@ -1,39 +1,50 @@
-An $n$-dimensional nonlinear system with $m$ inputs is specified by a
-$n$-tuple of function expressions over $n+m$ symbols, $f =
-\rb{f_1,\ldots,f_n}\in \fe{n+m}$, an \emph{initial set}
-$\init\subseteq\reals^n$ and an \emph{input set} $\inpset\subseteq\reals^m$.  A function of time
-$\trfn{x}:[0,\infty)\rightarrow \reals^n$ is called a \emph{state
-trajectory} if there exists another \emph{piecewise continuous} function
-$\trfn{u}:[0,\infty)\rightarrow \inpset$, called \emph{input
+An $n$-dimensional nonlinear dynamical system with $m$ inputs is
+specified by a pair $\rb{f,\inpset,\Omega}$ where $f =
+\rb{f_1,\ldots,f_n}\in \fe{n+m}$ is an
+$n$-tuple of function expressions over $n+m$ symbols and
+$\inpset\subseteq\reals^m$ is called the \emph{input set} and
+$\Omega\subseteq\reals^n$ is called the state space.  For any
+$T\in\reals_{>0}$, a function of time
+$\trfn{x}:[0,T)\rightarrow \reals^n$ is called a \emph{state
+trajectory} if there exists another \emph{piecewise continuous}
+function $\trfn{u}:[0,T)\rightarrow \inpset$, called \emph{input
 trajectory}, such that all the following is true.
 %
 \begin{align*}
-& \forall t\in[0,\infty)\forall\epsilon\in\reals_{>0}, \exists\delta\in\reals_{>0}~\text{such
-that}~\norm{ \frac{ \tr{x}{t+\delta} - \tr{x}{t} }{\delta} -
-f_i\rb{ \mymatrix{ \tr{x}{t}\\ \tr{u}{t} } }}< \epsilon\\
-& \tr{x}{0}\in\init~\numberthis\label{eqn:dynamics}
+& \forall t\in[0,T), \tr{x}{t}\subseteq \Omega,\\
+& \forall
+t\in[0,T)\forall\epsilon\in\reals_{>0}, \exists\delta\in\reals_{>0}~\text{such
+that}\\
+& \forall \tau\in[t-\delta,t+\delta]\bigcap[0,T]~\norm{ \frac{ \tr{x}{t+\tau}
+- \tr{x}{t} }{\tau} - f_i\rb{ \mymatrix{ \tr{x}{t}\\ \tr{u}{t} }
+}}< \epsilon~\numberthis\label{eqn:dynamics}
 \end{align*}
 %
+In the rest of the paper, $n$ denotes the dimension of a nonlinear
+system and $m$ denotes the number of inputs, unless otherwise stated.
+For a trajectory $\tr{x}:[0,T)\rightarrow \reals^n$ and $\tau<T$, we
+denote $\tr{x}|_{[0,\tau]} = \tr{y}:[0,T)\rightarrow \reals^n: \forall
+t\in[0,\tau)\tr{y}{t} = \tr{x}{t}$.
+
 There can be \emph{uncountably many} state trajectories of the system
 depending on the starting points in the initial set and different
 input trajectories.
 %
-\begin{example}\label{eg:system}
+\begin{example}\label{eg:ill}
 Let us denote the function expressions $\proj{1} = x$, $\proj{2} = y$,
-$\proj{3} = \theta$ and $\proj{4} = u$.  A $3$-dimensional
-nonlinear system with one input can be specified by a $3$-tuple of
-function expressions $f = \rb{f_1,f_2,f_3}$ where
+$\proj{3} = \theta$ and $\proj{4} = u$.  A $3$-dimensional nonlinear
+system with one input and input set $\inpset = [0,1]$ and state space
+$\reals^n$ can be specified as $H = \rb{f,[-0.2,0.2],\reals^3}$ where
 %
 \begin{align*}
 & f_1 = \rb{ u\rb{ x + \theta + 0.1y } - 1}x\\
 & f_2 = \rb{ u\rb{ y + \theta + 0.1x } - 1}y\\
-& f_3 = -\theta
+& f_3 = -\theta.
 \end{align*}
 %
-an initial set $\init = [0,0.25]^3$.
-%
 Let us consider the zero input trajectory $\tr{u}{t} = 0\forall
-t\in[0,\infty)$.  In this case, two possible solutions are
+t\in[0,5]$.  In this case, two state trajectories are $\forall
+t\in[0,5]$,
 %
 \begin{align*}
 \tr{x}{t} = \mymatrix{ -0.1\exp\rb{-t}\\ 0.1\exp\rb{-t}\\ 0.1\exp\rb{-t} },~
@@ -48,20 +59,338 @@ example, figure~(\todo{figure}) has an approximate plot of state
 trajectories which can not be expressed analytically.
 \end{example}
 %
-The problem of verifying reachability properties of nonlinear systems
-is undecidable.  Alternatively, we can develop algorithms to
-overapproximate the reachable set at each time point by a data
-structure which can be manipulated efficiently to check reachability
-properties for many, if not all, initial conditions and input sets.
-Such data structures are called \emph{set representations} and the
-mapping from each time point to a set representation is
-called \emph{flowpipes}.  Examples of such set representations
+The \emph{reachable set} of the nonlinear system $H
+=\rb{f,\inpset,\Omega}$ from an initial set $\init$ at a time point
+$t$, denoted $\reach{H}{t}{\init}$, is a set containing all points
+$\tr{x}{t}$ where $\trfn{x}$ is a state trajectory of $H$ and
+$\tr{x}{0}\in\init$.  Similarly, $\reach{H}{[t_1,t_2]}{\init}
+= \bigcup_{t\in[t_1,t_2]}\reach{H}{t}{\init}$.  Computing the exact
+reachable set of nonlinear systems is computationally infeasible in
+general~(\todo{cite}).  Instead, an overapproximation of the reachable
+set at each time point, called \emph{flowpipe}, can be computed to
+verify essential reachability properties including safety and
+stability.  The flowpipe approximation at each time point is
+represented by a data structure which can be manipulated efficiently
+to check reachability properties.  Such data structures are called set
+representations, whose examples
 are \emph{boxes}, \emph{polytopes}, \emph{zonotopes}, \emph{Taylor
-models}, \emph{barrier certificates} and \emph{polynomial zonotopes}.
-In this paper, we improve a method of flowpipe computation using
-on-the-fly linearization and union of zonotopes described in Althoff
-et. al.~(\todo{cite}).  Instead of zonotopic union, we use
-intersection of union (IOU) of zonotopes to tackle multidirectional
-linearization more efficiently, which will be explained in subsequent
-sections.
+models}, \emph{barrier certificates} and \emph{polynomial
+zonotopes}~(\todo{cite all}). 
+
+\paragraph{Linearization:}  We say that a dynamical system
+$\rb{g,U\times V,\Omega}$ where $gin\fe{2n+k}^n$ is
+linear if we have matrices $A\in\reals^{n\times n}$ and
+$B\in\reals^{m\times n}$ such that forall $i\in\set{1,\ldots,n}$,
+$x\in\reals^n$, $u\in\reals^m$ and $v\in\reals^k$, we have
+%
+\begin{align*}
+& g_i\rb{\mymatrix{x^T & u^T & v^T}^T} = \rb{Ax + Bu + v}_i.
+\end{align*}
+%
+For convenience, we denote the above linear system by the tuple $L
+= \rb{A,B,U,V,\Omega}$.  This linear system is said to overapproximate
+the nonlinear system $H = \rb{f,\inpset,\Omega}$, denoted $L\succeq H$
+if for all $x\in\Omega$ and $u\in\inpset$, we have $f\rb{\mymatrix{x^T
+& u^T}}^T - Ax - Bu \in V$.  In this case, the reachable set of $H$ is
+a subset of the reachable set of $L$ at every time point as explained
+in the following lemma.
+%
+\begin{lemma}\label{lem:inclin}
+Let us consider that a linear system $L = \rb{A,B,U,V,\Omega}$ is an
+overapproximation of a nonlinear system $H = \rb{f,U,\Omega}$.  Then
+for all $t\in[0,\infty]$ and $\init\subseteq\Omega$, we have
+$\reach{H}{t}{\init}\subseteq \reach{L}{t}{\init}$.
+\end{lemma}
+%
+\begin{proof}
+Let us consider a trajectory $\trfn{x}:[0,T)\rightarrow\Omega$ of the
+nonlinear system $H$.  Then there exists an input trajectory
+$\trfn{u}:[0,T)\rightarrow\Omega$ of $H$ such
+that~(\ref{eqn:dynamics}) is true.  Let us define
+$\trfn{v}:[0,T)\rightarrow \reals^n$ as $\tr{v}{t} =
+f\rb{\mymatrix{\tr{x}{t}^T & \tr{u}{t}^T}}^T - A\tr{x}{t} -
+B\tr{u}{t}$.  Since $L$ is an overapproximation of $H$, we have
+$\forall t\in[0,T)$, $\tr{v}{t}\in V$.  Then by using
+from~(\ref{eqn:dynamics}), for all $\epsilon\in\reals_{>0}$, there
+exists $\delta\in\reals_{>0}$ such that the following is true.
+%
+\begin{align*}
+& \norm{ \frac{ \tr{x}{t+\delta} - \tr{x}{t} }{\delta} -
+f_i\rb{ \mymatrix{ \tr{x}{t}^T & \tr{u}{t}^T }^T }}\\
+& = \norm{ \frac{ \tr{x}{t+\delta} - \tr{x}{t} }{\delta} -
+\rb{A\tr{x}{t} + B\tr{u}{t} + \tr{v}{t}} } < \delta
+\end{align*}
+%
+Therefore, $\tr{x}{t}$ is also a state trajectory of the linear system
+$L$.  So, it follows that
+$\reach{H}{t}{\init}\subseteq \reach{L}{t}{\init}$ for all
+$\init\subseteq \Omega$.
+\end{proof}
+%
+There are efficient algorithms to compute flowpipes of linear systems
+with good accuracy (\todo{cite}).  So, it would be useful to
+overapproximate a nonlinear system by a linear system while computing
+flowpipe, as follows.
+%
+\begin{lemma}[Linear overapproximation]\label{lem:linearization}
+Let us consider a bounded interval vector $\Omega\in\intervals$, a
+vector $c\in\double^n$ and a nonlinear system $H = \rb{f,U,\Omega}$
+where $f\in\fe{n+m}^n$ and $U\in\intervals^m$ is a bounded interval
+vector.  Let us define $W = \mymatrix{\Omega^T & U^T}^T$,
+%% $\stmat{f}{c}{U}\in\intervals^{n\times n}$,
+%% $\inpmat{f}{c}{U}\in\intervals^{n\times m}$,
+%% $\taylor{f}{\Omega}{U}\in\intervals^n$,
+%% $\sigma\rb{f,\Omega,U}\in\intervals^n$ and
+%% $\err{f}{\Omega}{U}\in\intervals^n$ where
+\begin{align*}
+\begin{split}
+\stmat{f}{c}{U} = { \iv{\rb{\nabla{f}}_{1:n,1:n}}{ \mymatrix{ \ivmat{c}\\ \mi{U} } } },
+%
+~\inpmat{f}{c}{U}
+= { \iv{\rb{\nabla{f}}_{1:n,n+1:n+m}}{ \mymatrix{ \ivmat{c}\\ \mi{U}}} }
+\end{split}\\
+%
+\begin{split}
+& \rb{\taylor{f}{\Omega}{U}}_i
+= \frac{1}{2}\sum_{k=1}^{n+m}\sum_{j=1}^{n+m}\rb{\nabla_k\nabla_j{f_i}\rb{W}}\rad{W_k}\rad{W_j}\\
+%
+& \sigma\rb{f,\Omega,U} = 2\rad{ \stmat{f}{c}{U}\Omega +
+\inpmat{f}{c}{U}U
+}
+\end{split}\\
+%
+\begin{split}
+\err{f}{\Omega}{U} = \iv{f}{ \mymatrix{ \ivmat{c}\\ \mi{U} } }
++ \taylor{f}{\Omega}{U} + \sigma\rb{f,\Omega,U}
+- \stmat{f}{c}{U}\ivmat{c} - \inpmat{f}{c}{U}\mi{U}.
+\end{split}
+\end{align*}
+Then $
+H \preceq
+\rb{\inf\rb{\stmat{f}{c}{U}},
+\inf\rb{\inpmat{f}{c}{U}},
+U,
+\err{f}{\Omega}{U}
+} $
+%
+\end{lemma}
+%
+\begin{proof}
+Based on Taylor theorem~(\todo{cite}), for all $i\in\set{1,\ldots,n}$
+and $z\in W$, there exists $r\in W$ such that
+%
+\begin{align*}
+f_i\rb{z} = & f_i\rb{\mymatrix{\ivmat{c} \\ \mi{U}}} + \nabla
+f_i\rb{z-\mymatrix{\ivmat{c} \\ \mi{U}}} +\\
+& \frac{1}{2}\sum_{k=1}^{n+m}\sum_{j=1}^{n+m}\rb{\nabla_k\nabla_j{f_i}\rb{r}}\rb{z-\mymatrix{\ivmat{c} \\ \mi{U}}}_j\rb{z-\mymatrix{\ivmat{c} \\ \mi{U}}}_k
+\end{align*}
+%
+The result follows by substituting both $r$ and $z$ by interval
+vector $W$ in the above equation and applying interval arithmetic.
+\end{proof}
+%
+\begin{example}
+Let us consider the nonlinear system in $H
+= \rb{f,[-0.2,0.2],[-1,1]^3}$ where $f$ is the tuple specified in
+Example~\ref{eg:ill}.  By applying Lemma~\ref{lem:linearization}, we
+get a linear overapproximation $L
+= \rb{A,B,[-0.2,0.2],V,[-1,1]^3}\succeq H$
+where we illustrate how $A_{11}$, $B_{11}$, and $V_{1}$ are computed.
+%
+\begin{align*}
+& A_{11} = \inf\rb{\rb{\frac{df_1}{dx}}\mid_{\rb{x,y,z,u} =
+\ivmat{(0,0,0,0)}}} \\ & = \inf\rb{\rb{u\rb{ x + \theta + 0.1y } - 1 +
+xu}\mid_{\rb{x,y,z,u} = \ivmat{(0,0,0,0)}}} = -1 \\
+%
+& B_{11} = \inf\rb{\rb{\frac{df_1}{du}}\mid_{\rb{x,y,z,u} =
+\ivmat{(0,0,0,0)}}} \\ &= \inf\rb{\rb{x\rb{ x + \theta + 0.1y
+}}\mid_{\rb{x,y,z,u} = \ivmat{(0,0,0,0)}}} = 0 \\
+%
+& \nabla_1\nabla_2f_1\rb{W_1-0}\rb{W_2-0} =
+0.1*[-0.2,0.2]*[-1,1]*[-1,1],~\text{likewise},\\
+& \taylor{f}{[-1,1]^3}{[-0.2,0.2]}
+= \sum_{k=1}^4\sum_{j=1}^4\nabla_k\nabla_jf_1\rb{W_j-0}\rb{W_k-0}
+%% & = 1/2*(2*[-0.2,0.2]*[-1,1]*[-1,1] + 0.1*[-0.2,0.2]*[-1,1]*[-1,1] +\\
+%% & [-0.2,0.2]*[-1,1]*[-1,1] + \\
+%% &  \rb{[-1,1]+[-1,1]+[0.1,0.1]*[-1,1]}*[-0.2,0.2]*[-1,1] + \\ 
+%% & 0.1*[-0.2,0.2]*[-1,1]*[-1,1] + 0 + 0 + 0 + \\ 
+%% & [-0.2,0.2]*[-1,1]*[-1,1] + 0 + 0 + 0 + \\
+%% & \rb{[-1,1]+[-1,1]+[0.1,0.1]*[-1,1]}*[-0.2,0.2]*[-1,1] + 0 + 0 + 0) =\\
+= [-0.84, 0.84]\\
+%
+& V_1 = \rb{\iv{f}{ 0 }
++ \taylor{f}{[-1,1]^3}{[-0.2,0.2]}
+- A*0 - B*0}_1 \\
+& = 0 + [-0.84,0.84] + 0 + 0 = [-0.84, 0.84]
+\end{align*}
+%
+\end{example}
+%
+\paragraph{Reach set approximation of linear system:}  The reachable
+set of a linear system $L = \rb{A,B,U,V,\Omega}$ in a time interval
+$[t_1,t_2]$ can be overapproximated as follows.
+%
+\begin{lemma}\label{lem:linreach}
+Let us consider
+\begin{align*}
+& \dismat{A}{L}{[t_1,t_2]} = \ivmat{\identity{n}}
++ \ivmat{A}\ivmat{[t_1,t_2]} + \ivmat{A}\ivmat{[t_1,t_2]} + \ivmat{A}[0,t_2][0,t_2][0,t_2]\\
+& \dismat{B}{L}{[t_1,t_2]} = \ivmat{B}\ivmat{[t_1,t_2]}
++ \ivmat{B}\ivmat{A}\ivmat{\delta}[0,t_2]\\
+& \dismat{C}{L}{[t_1,t_2]}
+= \ivmat{\identity{n}}\ivmat{[t_1,t_2]}
++ \ivmat{\identity{n}}\ivmat{A}\ivmat{\delta}[0,t_2].\\
+%
+& \text{Then},~\reach{L}{[t_1,t_2]}{\init} \subseteq \set{\dismat{A}{L}{[t_1,t_2]}x
++ \dismat{B}{L}{[t_1,t_2]}u + \dismat{C}{L}{[t_1,t_2]}v\st x\in \init, u\in U, v\in
+V}.~\numberthis\label{eqn:linreach}
+\end{align*}
+\end{lemma}
+%
+\begin{proof}
+It is known~(see \todo{cite}) that the reachable set of the linear
+system at time $t$ is given by
+%
+\begin{equation*}
+\begin{split}
+& \left\{\exp\rb{At}x + \int_{\tau=0}^t\exp\rb{A\rb{t-\tau}}B\tr{u}{\tau}
+d\tau\right.\\ &\left.
++ \int_{\tau=0}^t\exp\rb{A\rb{t-\tau}}\tr{v}{\tau}
+d\tau\st{\forall \tau\in[0,t], \tr{u}{\tau}\in U,\tr{v}{\tau}\in
+v}\right\}.
+\end{split}
+\end{equation*}
+%
+By using Taylor theorem and interval arithmetic, we get for all
+$t\in[t_1,t_2]$, $\exp\rb{At}\in
+\dismat{A}{L}{[t_1,t_2]}$ and $\forall \tau\in[0,t],\exp\rb{A\rb{t-\tau}}B\in\ivmat{B}+\ivmat{B}\ivmat{A}[0,t],$
+$\exp\rb{A\rb{t-\tau}}\in\ivmat{\identity{n}}+\ivmat{A}[0,t]$.  By
+substituting these bounds in the above integrals, we get the result.
+\end{proof}
+%
+There are efficient algorithms to compute an overapproximation of the
+set in Equation~\ref{eqn:linreach} with good accuracy.  In our paper,
+we represent sets as a variant of zonotope, called \emph{interval
+zonotope}, and use them to compute the resulting set
+in~(\ref{eqn:linreach}).  We introduce interval zonotope as a
+generalization of zonotope to soundly overapproximate floating point
+errors in matrix computations and also intersection between sets.  It
+is defined as follows.
+%
+\begin{definition}[Interval Zonotope]
+Let us consider $\gen\in\intervals^{n\times ln},\cen\in\intervals^{n}$
+and $\bounds\in\intervals^n$.  The following is an interval zonotope
+where $l>1$ is its order.
+%
+\begin{align*}
+\iz{\gen}{\cen}{\bounds}
+= \set{x\in\reals^n \st{\zeta\in[-1,1]^l,~x\in\bounds,~x \subseteq \gen\ivmat{\zeta}+\cen} }
+\end{align*}
+%
+\end{definition}
+%
+Approximating the reachable set of a linear system requires
+approximating linear transformation of sets.  The matrix
+multiplication of an interval zonotope and its Minkowski sum with an
+interval vector can be overapproximated as follows.
+%
+\begin{lemma}[Linear transformation]\label{lem:lintrans}
+Let us consider $A\in\intervals^{n\times n}$, $w\in\intervals^n$ and an
+interval zonotope $\iz{\gen}{\cen}{\bounds}$ of order $l>1$.  Let us
+consider $\gen^\prime\in\reals^{n\times nl}$ where 
+%
+\begin{align*}
+& \gen^\prime_{\rb{:,n+1:ln}} = A\gen_{\rb{:,1:(l-1)n}}\\
+& \gen^\prime_{\rb{:,1:n}} = \diag{\sup\rb{\rb{A\gen_{\rb{:,(l-1)n+1:ln}}}[-1,1]^n
++ \rad{w}}}\\
+& z = \rb{A\gen}[-1,1]^n + w.\\
+& \text{Then},~\set{A^\prime x + y\st{x\in\iz{\gen}{\cen}{\bounds}, y\in\bounds,
+A^\prime\in A}} \\
+& \subseteq \iz{\gen^\prime}{c+\mi{w}}{\meet{\rb{A\bounds + w
++ c}}{z}}~\numberthis\label{eqn:linMin}
+\end{align*}
+%
+\end{lemma}
+%
+\begin{proof}
+\todo{proof}
+\end{proof}
+%
+For convenience, if $\init = \iz{\gen}{\cen}{\bounds}$, we denote the
+R.H.S of~(\ref{eqn:linMin}) as $\lin{\init}{A}{w}$.  So, the reachable
+set of a linear system $L = \rb{A,B,U,V,\Omega}$ at time $t$ can be
+approximated by
+%
+\begin{equation}
+\lin{\init}{\dismat{A}{L}{t}}{\dismat{B}{L}{t}U + \dismat{C}{L}{t}V}~\numberthis\label{eqn:reachlin}
+\end{equation}
+%
+which follows from Lemmas~\ref{lem:lintrans} and ~\ref{lem:linreach}.
+
+To linearize a nonlinear system $H = \rb{f,U,\reals^n}$ in an interval
+$[0,t]$, we need to find an overapproximation $\Omega$ of the
+reachable set $\reach{H}{[0,t]}$ in the interval $[0,t]$.  Then we can
+linearize $\rb{f,U,\Omega}$ using Lemma~\ref{lem:linearization}.  This
+overapproximation can be computed based the following lemma.
+%
+\begin{lemma}
+Let us consider a nonlinear system $H = \rb{f,U,\reals^n}$, $\epsilon
+= 10^{-12}$, an interval zonotope $\init = \iz{\gen}{\cen}{\bounds_0}$
+and a sequence of interval vectors $\rb{\bounds_i}_{i=0}^\infty$
+%
+\begin{align*}
+& L_i = \rb{ \inf\rb{\stmat{f}{c}{U}},
+\inf\rb{\inpmat{f}{c}{U}},U,\err{f}{\bounds_i+[-\epsilon,\epsilon]}{U} }\\
+& \bounds_{i+1}
+= \join{\bounds_i}{\rb{\dismat{A}{L_i}{[0,t]}\bounds_0
++ \dismat{B}{L}{[0,t]}U + \dismat{C}{L}{[0,t]}V}}.~\numberthis\label{eqn:iter}
+\end{align*}
+%
+For a chosen $K\in\integers_{>0}$, let $\Omega_K = \begin{cases}h_{K}
+& h_{K+1}\subseteq h_{K}\\ \reals^n & otherwise \end{cases}$.  Then,
+$\Omega_K\supseteq\reach{H}{[0,t]}{\init}$.
+\end{lemma}
+%
+\begin{proof}
+We prove this by contradiction.  Let us assume that
+$\Omega_K\nsupseteq \reach{H}{[0,t]}{\init}$.  So,
+$\Omega_k\neq\reals^n$ and $\Omega_k = h_k$.  Then there exists a
+state trajectory $\trfn{x}:[0,T)\rightarrow\reals^n:T>t$ and time
+$\tau\in[0,t]$ such that $\tr{x}{\tau}\notin h_k$.  So, there exists
+$\tau_{min}$ in $[0,T)$ such that $\tau_{min}
+= \inf\set{t\in[0,T)\st{\tr{x}{\tau}\notin h_k}}$.  By
+using~(\ref{eqn:dynamics}), we can show there exists
+$\delta\in[0,\infty)$ such that $\forall s\in[-\delta,\delta]$
+$\tr{x}{\tau_{\min}+s}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$.
+Similarly we can show there exists $r\in[0,\tau_{min})$ such that
+$\tr{x}{r}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$.  Combining both
+inequalities above, we get
+$\tr{x}{\tau_{\min}+s}\in \ball{\tr{x}{r}}{\epsilon}$.  As
+$r\in[0,\tau_{min})$, we get $\tr{x}{r}\in\bounds_k$.  So, for all
+$s\in[-\delta,\delta)$, we have $\tr{x}{\tau_{\min}+s}\in \bounds_k +
+[-\epsilon,\epsilon]^n$.  Also, by the definition of $\tau_{min}$, for
+all $\tau\in[0,\tau_{min}-\delta/2)$, $\tr{x}{\tau}\in \bounds_k +
+[-\epsilon,\epsilon]^n$. Combining last two inequalities, we get for
+all $\tau\in[0,\tau_{min}+\delta)$ $\tr{x}{\tau}\in\bounds +
+[-\epsilon,\epsilon]^n$.  Therefore,
+$\trfn{x}|_{[0,\tau_{min}+\delta)}$ is a trajectory of
+$\rb{f,U,\bounds_k+[-epsilon,\epsilon]^n}$
+
+Furtheremore, $L_k$ is an overapproximation of
+$\rb{f,U,\bounds_k+[-\epsilon,\epsilon]^n}$ by
+Lemma~\ref{lem:linearization}.  As we got
+$\trfn{x}|_{[0,\tau_{min}+\delta)}$ is a trajectory of
+$\rb{f,U,\bounds_k+[-epsilon,\epsilon]^n}$, using
+Lemmas~\ref{lem:inclin} and~\ref{lem:linreach} and~(\ref{eqn:iter}),
+we get that $\forall s\in [0,\delta)$,
+$\tr{x}{\tau_{min}+s}\in \dismat{A}{L_i}{[0,t]}\bounds_0
++ \dismat{B}{L}{[0,t]}U
++ \dismat{C}{L}{[0,t]}V \subseteq \bounds_{k+1}$.  But
+$\Omega_k=h_k\supseteq h_{k+1}$.  So, $\forall s\in
+[0,\delta)\tr{x}{\tau_{min}+s}\in h_k$.  But by the definition of
+$\tau_{min}$, there exists $s\in[0,\delta)$ such that
+$\tr{x}{\tau_{min}+s}\notin h_k$.  So, the assumption that
+$\Omega_K\nsupseteq \reach{H}{[0,t]}{\init}$ is wrong.  Hence,
+$\Omega_K\supseteq \reach{H}{[0,t]}{\init}$.
+\end{proof}
 %

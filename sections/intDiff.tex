@@ -1,7 +1,7 @@
 \paragraph{Basic notation}:  The set of real numbers is $\reals$
 and integers is $\integers$.  The subset of real
 numbers that can be represented in double precision floating point
-format is $\double$.  For $\Psi\subseteq\reals$, $a\in\reals$
+format~(\todo{cite}) is $\double$.  For $\Psi\subseteq\reals$, $a\in\reals$
 and $\bowtie\in\set{\geq,\leq,>,<}$, we denote $\Psi_{\bowtie a}
 = \set{ x\in\Psi \st x \bowtie a }$.  The supremum of a subset of real
 numbers $\Psi\subseteq\reals$ is
@@ -125,9 +125,11 @@ the function expressions we defined above.
 % we use the \emph{SymPy} software~\cite{10.7717/peerj-cs.103} to
 % compute symbolic derivatives.  
 % \is{This can be written in the Implementation subsection under the Evaluation section.}
-We denote the symbolic derivative of
-$f$ computed using any method as $\nabla f$ whose $i^{th}$
-component is denoted $\nabla_i f$.
+We denote the symbolic derivative of $f$ computed using any method as
+$\nabla f$ whose $i^{th}$ component is denoted $\nabla_i f$.  If
+$f\in\fe{n}^m$ is a tuple of function expressions, then we denote the
+matrix of function expressions $\nabla f\in\fe{n}^{m\times n}$ where
+$\rb{\nabla f}_{ij} = \nabla_j f_i$.
 %
 \paragraph{Interval arithmetic}:  We use interval arithmetic to
 correctly bound floating point computations like addition,
@@ -160,18 +162,24 @@ u, y\in v}$ and $\rb{u-v}\subseteq\set{x-y\st x\in u, y\in v}$.
 % and $\log\rb{u}$ such that the above inclusion property is true.
 % \is{This can be written in the Implementation subsection under the Evaluation section.}
 
-We denote the set of $n\times m$ interval matrices by $\intervals^{n\times m}$.
-The set of interval vectors is $\intervals^{n\times 1}$, conveniently
-denoted $\intervals^{n}$.  For $A\in\reals^{n\times m}$ and
-$X\in\intervals^{n\times m}$, we say $A\in X$ if
+The set of $n\times m$ interval matrices is $\intervals^{n\times m}$.
+The set of $n$-dimensional interval vectors is $\intervals^{n\times
+1}$, conveniently denoted $\intervals^{n}$.  For $A\in\reals^{n\times
+m}$ and $X\in\intervals^{n\times m}$, we say $A\in X$ if
 $\forall \rb{i,j}\in\set{1,\ldots,n}^2, A_{ij}\subseteq X_{ij}$.  The
-matrix product $XY$ of two interval matrices $X\in\intervals^{n\times
-p}$ and $Y\in\intervals^{p\times m}$ is $XY
-= \sum_{k=1}^pX_{ik}Y_{kj}$.  It follows from the inclusion property
-of interval arithmetic that if $A\in X$ and $B\in Y$, then $AB\in XY$.
-Given a function expression $f\in\fe{n}$ and an interval vector
-$x\in\intervals^n$, based on interval arithmetic, we compute interval
-bounds $\iv{f}{x}$ on its image $f\rb{x}$, recursively as follows.
+interval matrix $X$ is said to be bounded if $\forall
+i\in\set{1,\ldots,n}\forall j\in\set{1,\ldots,m} \exists
+a,b\in\double: X_{ij} = [a,b]$.  The matrix product $XY$ of two
+interval matrices $X\in\intervals^{n\times p}$ and
+$Y\in\intervals^{p\times m}$ is $XY = \sum_{k=1}^pX_{ik}Y_{kj}$.  It
+follows from the inclusion property of interval arithmetic that if
+$A\in X$ and $B\in Y$, then $AB\in XY$.  If $X\in\double^{n\times m}$,
+then $\ivmat{X}\in\intervals$ is an interval vector such that $\forall
+(i,j)\in\set{1,\ldots,n}\times\set{1,\ldots,m},\ivmat{X}_{ij} =
+[X_{ij},X_{ij}]$.  Given a function expression $f\in\fe{n}$ and an
+interval vector $x\in\intervals^n$, based on interval arithmetic, we
+compute interval bounds $\iv{f}{x}$ on its image $f\rb{x}$,
+recursively as follows.
 %
 \begin{enumerate}
 \item If $f = c$ for $c\in\double$, then $\iv{f}{x} = [c,c]$.
@@ -188,5 +196,10 @@ $f_1,f_2\in\fe{n}$, then $\iv{f}{x} = \iv{f_1}{x}\sim\iv{f_2}{x}$.
 $\iv{f}{x} = h\rb{\iv{g}{x}}$.
 \end{enumerate}
 %
-
+If $f\in\fe{n}^{m\times p}$ is a matrix of function expressions, then
+$\iv{f}{x}\in \intervals^{m\times p}$ is an interval matrix where
+$\rb{\iv{f}{x}}_{ij} = \iv{f_{ij}}{x}$.  For an interval matrix $X$,
+we denote $\mi{X} = \frac{\ivmat{\sup\rb{X}} + \ivmat{\inf\rb{X}}}{[2,2]}$ and
+$\rad{X} = X - \mi{X}$.  
+%
 

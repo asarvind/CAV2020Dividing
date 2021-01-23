@@ -2,15 +2,15 @@
 \newcommand{\reals}{\mathbb{R}}
 \newcommand{\rationals}{\mathbb{Q}}
 \newcommand{\integers}{\mathbb{Z}} % integers
-\newcommand{\double}{\operatorname{FP64}} % double precision floating point numbers
+\newcommand{\double}{\mathbb{D}} % double precision floating point numbers
 \newcommand{\intervals}{\mathbb{I}} % set of intervals with bounds in double and ${-\infty,\infty}$
 \newcommand{\set}[1]{\left\{#1\right\}} % set
 \newcommand{\st}[1]{\left|~#1\right.} % such that
 \newcommand{\fe}[1]{ \mathbb{F}_{#1} } % mathematical expressions
 \newcommand{\vars}{V} % variables
 \newcommand{\ball}[2]{\mathbb{B}\rb{#1,#2}} % open box with a radius
-\newcommand{\interval}[2]{\sqb{#1,#2}} % 
-\newcommand{\dom}[1]{\operatorname{Dom}\rb{#1}}
+\newcommand{\interval}[2]{\sqb{#1,#2}} % interval
+\newcommand{\dom}[1]{\operatorname{Dom}\rb{#1}} % domain of a function expression
 
 %% Braces
 \newcommand{\rb}[1]{\left(#1\right)}
@@ -19,8 +19,9 @@
 %% Linear algebra
 \newcommand{\mymatrix}[1]{\begin{bmatrix}#1\end{bmatrix}} % matrix
 \newcommand{\identity}[1]{\mathcal{I}_{#1}} % identity matrix
-\newcommand{\rows}[1]{\operatorname{rows}\left(#1\right)}
-\newcommand{\cols}[1]{\operatorname{cols}\left(#1\right)}
+\newcommand{\rows}[1]{\operatorname{rows}\left(#1\right)} % number of rows in a matrix
+\newcommand{\cols}[1]{\operatorname{cols}\left(#1\right)} % number of columns in a matrix
+\newcommand{\diag}[1]{\mathcal{D}\rb{#1}} % diagonal matrix
 
 %% Operators
 \newcommand{\abs}[1]{\left|#1\right|} % absolute value
@@ -38,18 +39,32 @@
 %% paper specific
 %----------------------------------------------------------------------
 %% sets
-\newcommand{\init}{\mathcal{I}}  % initial set
+\newcommand{\init}{\Psi}  % initial set
 \newcommand{\inpset}{\mathcal{U}} % input set
+\newcommand{\zon}[2]{\mathcal{Z}\rb{#1,#2}} % zonotope
 
 %% symbols
 \newcommand{\proj}[1]{\lambda_{#1}} % function symbol for projection on a dimension
 \newcommand{\trfn}[1]{\mathbf{#1}} % trajectory function
+\newcommand{\gen}{G} % generator
+\newcommand{\cen}{c} % center
+\newcommand{\bounds}{h} % bounds
 
 %% functions
 \newcommand{\grad}[1]{\nabla{#1}} % gradient
 \newcommand{\hess}[1]{\operatorname{H}{#1}} % hessian
-\newcommand{\iv}[2]{\widehat{#1}\rb{#2}} % interval bounds on a function expression
+\newcommand{\iv}[2]{\mu\rb{#1}\rb{#2}} % interval bounds on a function expression
+\newcommand{\ivmat}[1]{\mu\rb{#1}} % interval matrix converted from double
 \newcommand{\tr}[2]{\mathbf{#1}\rb{#2}} % trajectory value
-
+\newcommand{\reach}[3]{\mathbf{#1}_{#2}\rb{#3}} % reachable set
+\newcommand{\taylor}[3]{\gamma\rb{#1,#2,#3}} % taylor error
+\newcommand{\mi}[1]{\alpha\rb{#1}} % center of an interval matrix
+\newcommand{\rad}[1]{\beta\rb{#1}} % error of an interval matrix
+\newcommand{\stmat}[3]{\mathcal{A}_{#1}^{#2,#3}} % state action matrix
+\newcommand{\inpmat}[3]{\mathcal{B}_{#1}^{#2,#3}} % input action matrix
+\newcommand{\err}[3]{E_{#1,#2,#3}} % additive remainder term in linearization
+\newcommand{\dismat}[3]{{#1}^{#2}_{#3}} % discrete time action matrix
+\newcommand{\iz}[3]{\mathcal{Z}\rb{#1,#2,#3}} % interval zonotope
+\newcommand{\lin}[3]{\mathcal{T}\rb{#1,#2,#3}} % interval zonotope
 
 
