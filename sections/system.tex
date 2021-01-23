@@ -329,7 +329,7 @@ which follows from Lemmas~\ref{lem:lintrans} and ~\ref{lem:linreach}.
 
 To linearize a nonlinear system $H = \rb{f,U,\reals^n}$ in an interval
 $[0,t]$, we need to find an overapproximation $\Omega$ of the
-reachable set $\reach{H}{[0,t]}$ in the interval $[0,t]$.  Then we can
+reachable set $\reach{H}{[0,t]}{\init}$ in the interval $[0,t]$.  Then we can
 linearize $\rb{f,U,\Omega}$ using Lemma~\ref{lem:linearization}.  This
 overapproximation can be computed based the following lemma.
 %
@@ -394,3 +394,4 @@ $\Omega_K\nsupseteq \reach{H}{[0,t]}{\init}$ is wrong.  Hence,
 $\Omega_K\supseteq \reach{H}{[0,t]}{\init}$.
 \end{proof}
 %
+
