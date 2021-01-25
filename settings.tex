@@ -17,7 +17,13 @@
 \usepackage{float}
 \usepackage{multirow}
 \usepackage{caption}
-\usepackage{algorithm2e}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+
+\usepackage{stmaryrd} % for semantics brackets and others
+
+\usepackage{etoolbox}
+\AtEndEnvironment{proof}{\phantom{}\qed} %Automatically add qed symbol to the end of proof environment
+
 
 
 \RestyleAlgo{boxruled}

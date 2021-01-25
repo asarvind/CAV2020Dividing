@@ -1,4 +1,5 @@
 %% Sets
+\newcommand{\cnums}{\mathbb{C}} % complex numbers
 \newcommand{\reals}{\mathbb{R}}
 \newcommand{\rationals}{\mathbb{Q}}
 \newcommand{\integers}{\mathbb{Z}} % integers
@@ -30,7 +31,10 @@
 \newcommand{\meet}[2]{#1\bigwedge #2} % Meet
 \newcommand{\join}[2]{#1\bigvee #2} % Join
 \newcommand{\conv}[1]{\operatorname{{Conv}}\rb{#1}}
-\newcommand{\ep}[1]{\exp\rb{#1}}
+\newcommand{\real}[1]{\operatorname{Re}\rb{#1}}  % real part
+\newcommand{\imag}[1]{\operatorname{Im}\rb{#1}}  % imaginary part
+\DeclareMathOperator*{\argmin}{arg\,min} % arg min
+\newcommand{\card}[1]{\#{#1}}
 
 %% notes
 \newcommand{\todo}[1]{todo: {\color{red}#1}}
@@ -41,7 +45,6 @@
 %% sets
 \newcommand{\init}{\Psi}  % initial set
 \newcommand{\inpset}{\mathcal{U}} % input set
-\newcommand{\zon}[2]{\mathcal{Z}\rb{#1,#2}} % zonotope
 
 %% symbols
 \newcommand{\proj}[1]{\lambda_{#1}} % function symbol for projection on a dimension
@@ -49,6 +52,8 @@
 \newcommand{\gen}{G} % generator
 \newcommand{\cen}{c} % center
 \newcommand{\bounds}{h} % bounds
+\newcommand{\eig}{\Lambda}  % eigenvectors at origin
+\newcommand{\zt}{Z} % zonotope tuple
 
 %% functions
 \newcommand{\grad}[1]{\nabla{#1}} % gradient
@@ -57,14 +62,19 @@
 \newcommand{\ivmat}[1]{\mu\rb{#1}} % interval matrix converted from double
 \newcommand{\tr}[2]{\mathbf{#1}\rb{#2}} % trajectory value
 \newcommand{\reach}[3]{\mathbf{#1}_{#2}\rb{#3}} % reachable set
-\newcommand{\taylor}[3]{\gamma\rb{#1,#2,#3}} % taylor error
+\newcommand{\taylor}[3]{\sigma\rb{#1,#2,#3}} % taylor error
 \newcommand{\mi}[1]{\alpha\rb{#1}} % center of an interval matrix
 \newcommand{\rad}[1]{\beta\rb{#1}} % error of an interval matrix
 \newcommand{\stmat}[3]{\mathcal{A}_{#1}^{#2,#3}} % state action matrix
 \newcommand{\inpmat}[3]{\mathcal{B}_{#1}^{#2,#3}} % input action matrix
 \newcommand{\err}[3]{E_{#1,#2,#3}} % additive remainder term in linearization
 \newcommand{\dismat}[3]{{#1}^{#2}_{#3}} % discrete time action matrix
-\newcommand{\iz}[3]{\mathcal{Z}\rb{#1,#2,#3}} % interval zonotope
+\newcommand{\iz}[3]{\left\llbracket\rb{#1,#2,#3}\right\rrbracket} % interval zonotope
 \newcommand{\lin}[3]{\mathcal{T}\rb{#1,#2,#3}} % interval zonotope
-
-
+\newcommand{\ivflow}[5]{\mathcal{S}_{#1,#2}^{#3,#4}\rb{#5}} % flow approximation inside an interval
+\newcommand{\flow}[5]{\mathcal{R}_{#1,#2}^{#3,#4}\rb{#5}} % flow approximation at a time point
+\newcommand{\utaylor}[4]{\widehat{\sigma}\rb{#1,#2,#3,#4}} % upper bound on taylor error
+\newcommand{\dopt}[1]{O\rb{#1}} % optimum division vector
+\newcommand{\iouopt}[2]{P^{#1}\rb{#2}} % optimum iou of interval zonotopes
+\DeclareMathOperator*{\refine}{\pi} % refine
+\newcommand{\ztset}[1]{\left\llbracket{#1}\right\rrbracket}
