@@ -1,23 +1,28 @@
-\paragraph{Basic notation}:  The set of real numbers is $\reals$
-and integers is $\integers$.  The subset of real
-numbers that can be represented in double precision floating point
-format~(\todo{cite}) is $\double$.  For $\Psi\subseteq\reals$, $a\in\reals$
+\paragraph{Basic notation}:  The set of real numbers is $\reals$,
+integers is $\integers$ and complex numbers is $\cnums$.  The subset
+of real numbers that can be represented in double precision floating
+point format is $\double$.  For $\Psi\subseteq\reals$, $a\in\reals$
 and $\bowtie\in\set{\geq,\leq,>,<}$, we denote $\Psi_{\bowtie a}
 = \set{ x\in\Psi \st x \bowtie a }$.  The supremum of a subset of real
 numbers $\Psi\subseteq\reals$ is
 $\sup\rb{\Psi}\in\reals\bigcup\set{\infty}$ and the infimum is
 $\inf\rb{\Psi}\in\reals\bigcup\set{-\infty}$.  The absolute value of a
-real number $x$ is $\abs{x} = \sup\set{x,-x}$.  For two reals $r$ and
-$s$, the result of multiplying $r$ and $s$ is $rs$, the result of
-adding of $r$ and $s$ is $r+s$, the result of subtracting $s$ from $r$
-is $r-s$ and the result of dividing $r$ by $s$ if $s\neq 0$ is
-$\frac{r}{s}$.  For non-negative integer $i$ and real number $x$, the
-result of raising $x$ to the power $i$ is $x^i$.  The set of $n\times
-m$ matrices containing elements from a set $\Psi$ is $\Psi^{n\times
-m}$.  For simplicity, we denote $\Psi^{n\times 1}$ as $\Psi^n$.  So,
-the set of real vectors is $\reals^n$. The $i^{th}$ row $j^{th}$
-column element of a matrix $X$ is denoted $X_{ij}$.  Similarly, for
-real vector $x$, $x_i$ denotes the $i^{th}$ component of $x$.  For
+real number $x$ is $\abs{x} = \sup\set{x,-x}$.  The real part of a
+complex number $z$ is $\real{z}$ and imaginary part is $\imag{z}$.  The
+absolute value of a complex number $z$ is $\rb{\real{z}^2
++ \imag{z}^2}^{1/2}$.  %% For two reals $r$ and $s$, the result of
+%% multiplying $r$ and $s$ is $rs$, the result of adding of $r$ and $s$
+%% is $r+s$, the result of subtracting $s$ from $r$ is $r-s$ and the
+%% result of dividing $r$ by $s$ if $s\neq 0$ is $\frac{r}{s}$.  For
+%% non-negative integer $i$ and real number $x$, the result of raising
+%% $x$ to the power $i$ is $x^i$. s
+The set of $n\times m$ matrices containing elements from a set $\Psi$
+is $\Psi^{n\times m}$.  For simplicity, we denote $\Psi^{n\times 1}$
+as $\Psi^n$.  The set of real vectors is $\reals^n$.  The $i^{th}$ row
+$j^{th}$ column element of a matrix $X$ is denoted $X_{ij}$.
+Similarly, for real vector $x$, $x_i$ denotes the $i^{th}$ component
+of $x$.  The submatrix of $X$ cotaining rows $l_1$ to $l_2$ and
+columns $k_1$ to $k_2$ is denoted $X_{l_1:l_2,k_1:k_2}$.  For
 $X\in\reals^{n\times m}$ and $Y\in\reals^{m\times p}$, the matrix
 product is $XY\in\reals^{n\times p}$ where $\forall
 i\in\set{1,\ldots,n},\forall j\in\set{1,\ldots,p},\rb{XY}_{ij}
@@ -30,15 +35,15 @@ $x\in\reals^n$, we define the box of width $r$ around $x$ as
 $\ball{x}{r} = \set{ x\in\reals^n: \norm{x}_\infty \leq r }$.
 %
 \paragraph{Continuity of functions:} If $\Psi\subseteq\reals^n$, a
-function $f:\Psi\rightarrow\reals^m$ is called \emph{continuous} on
-$\Psi$ if $\forall x\in\Psi,\forall\epsilon\in\reals_{>0}$, there
-exists $\delta\in\reals^n$ such that if
-$x\in\ball{x}{\delta}\bigcap\Psi$, then
-$f(x)\in\ball{f(x)}{\epsilon}$.  A function
-$g:\Psi\rightarrow\reals^m$ is called piecewise continuous on $\Psi$
-if there exists a finite number of sets $\Psi_1,\ldots,\Psi_k$ such
-that $\bigcup_{i=1}^k\Psi_i=\Psi$ and $g$ is continuous on each
-$\Psi_i\forall i\in\set{1,\ldots,k}$.
+function $f:\Psi\rightarrow\reals^m$ is called \emph{continuous} if
+$\forall x\in\Psi,\forall\epsilon\in\reals_{>0}$, there exists
+$\delta\in\reals^n$ such that if $y\in\ball{x}{\delta}\bigcap\Psi$,
+then $f(y)\in\ball{f(x)}{\epsilon}$.  A function
+$g:\Psi\rightarrow\reals^m$ is called \emph{piecewise continuous} if
+there exists a finite number of sets $\Psi_1,\ldots,\Psi_k$ such that
+$\bigcup_{i=1}^k\Psi_i=\Psi$ and
+$g:\Psi_i\bigcap\Psi\rightarrow \reals^m$ is continuous for all
+$i\in\set{1,\ldots,k}$.
 %
 \paragraph{Function expressions}:  For every $n\in\integers_{>0}$, we
 define a set $\fe{n}$, called \emph{function expressions}, recursively
@@ -134,15 +139,14 @@ $\rb{\nabla f}_{ij} = \nabla_j f_i$.
 \paragraph{Interval arithmetic}:  We use interval arithmetic to
 correctly bound floating point computations like addition,
 multiplication, inverse and also bound values of sine, cosine and
-logarithmic functions. For $a,b\in\double$ such that $a<b$, we denote\\
-$\interval{a}{b} = \set{x\in\reals\st a\leq x\leq b}$,
-$\interval{-\infty}{a} = \set{x\in\reals\st x\leq a}$,
-$\interval{a}{\infty} = \set{x\in\reals\st a\leq x}$ and
-$\interval{-\infty}{\infty} = \reals$.  We then denote $\intervals
-= \set{\interval{a}{b}\st a,b\in\double\bigcup\set{-\infty,\infty}}$.
-An interval arithmetic describes computations over $\intervals$ where
-the following property, called \emph{inclusion property}, is true.
-For all $u,v\in\intervals$, all of the following is true.
+logarithmic functions. For $a,b\in\double$ such that $a<b$, we
+denote\\ $\interval{a}{b} = \set{x\in\reals\st a\leq x\leq b}$,
+$[-\infty,a] = \set{x\in\reals\st x\leq a}$, $[a,\infty)
+= \set{x\in\reals\st a\leq x}$ and $[-\infty,\infty] = \reals$.  We
+denote the set of all intervals as $\intervals$.  An interval
+arithmetic describes computations over $\intervals$ where the
+following property, called \emph{inclusion property}, is true.  For
+all $u,v\in\intervals$, all of the following is true.
 %
 \begin{enumerate}
 \item For $a\in\double$, $au\in\intervals$ such that $au\subseteq \set{ax\st x\in u}$.
@@ -163,23 +167,29 @@ u, y\in v}$ and $\rb{u-v}\subseteq\set{x-y\st x\in u, y\in v}$.
 % \is{This can be written in the Implementation subsection under the Evaluation section.}
 
 The set of $n\times m$ interval matrices is $\intervals^{n\times m}$.
-The set of $n$-dimensional interval vectors is $\intervals^{n\times
-1}$, conveniently denoted $\intervals^{n}$.  For $A\in\reals^{n\times
-m}$ and $X\in\intervals^{n\times m}$, we say $A\in X$ if
+and $n$-dimensional interval vectors is $\intervals^{n\times 1}$,
+conveniently denoted $\intervals^{n}$.  For $A\in\reals^{n\times m}$
+and $X\in\intervals^{n\times m}$, we say $A\in X$ if
 $\forall \rb{i,j}\in\set{1,\ldots,n}^2, A_{ij}\subseteq X_{ij}$.  The
 interval matrix $X$ is said to be bounded if $\forall
 i\in\set{1,\ldots,n}\forall j\in\set{1,\ldots,m} \exists
 a,b\in\double: X_{ij} = [a,b]$.  The matrix product $XY$ of two
 interval matrices $X\in\intervals^{n\times p}$ and
-$Y\in\intervals^{p\times m}$ is $XY = \sum_{k=1}^pX_{ik}Y_{kj}$.  It
-follows from the inclusion property of interval arithmetic that if
-$A\in X$ and $B\in Y$, then $AB\in XY$.  If $X\in\double^{n\times m}$,
-then $\ivmat{X}\in\intervals$ is an interval vector such that $\forall
+$Y\in\intervals^{p\times m}$ is $XY = \sum_{k=1}^pX_{ik}Y_{kj}$ The
+sum of interval matrices is $X + Y$ where $\rb{X+Y}_{ij} = X_{ij} +
+Y_{ij}$.  It follows from the inclusion property of interval
+arithmetic that if $A\in X$ and $B\in Y$, then $AB\in XY$ and $A+B\in
+X+Y$.  If $X\in\double^{n\times m}$, then $\ivmat{X}\in\intervals$ is
+an interval matrix such that $\forall
 (i,j)\in\set{1,\ldots,n}\times\set{1,\ldots,m},\ivmat{X}_{ij} =
-[X_{ij},X_{ij}]$.  Given a function expression $f\in\fe{n}$ and an
-interval vector $x\in\intervals^n$, based on interval arithmetic, we
-compute interval bounds $\iv{f}{x}$ on its image $f\rb{x}$,
-recursively as follows.
+[X_{ij},X_{ij}]$.  For an interval matrix $X$, we denote $\mi{X}
+= \frac{\ivmat{\sup\rb{X}} + \ivmat{\inf\rb{X}}}{[2,2]}$ and $\rad{X}
+= X - \mi{X}$.  The diagonal interval matrix containing elemenst of an
+interval vector $x$ along its diagonal is denoted $\diag{x}$.
+
+Given a function expression $f\in\fe{n}$ and an
+interval vector $x\in\intervals^n$, we compute interval bounds
+$\iv{f}{x}$ on its image $f\rb{x}$, recursively as follows.
 %
 \begin{enumerate}
 \item If $f = c$ for $c\in\double$, then $\iv{f}{x} = [c,c]$.
@@ -193,13 +203,18 @@ $\iv{g}{x}\subseteq\reals\setminus \set{0}$, then $\iv{f}{x}
 \item If $f = f_1\sim f_2$ for $\sim\in\set{+,-}$ and
 $f_1,f_2\in\fe{n}$, then $\iv{f}{x} = \iv{f_1}{x}\sim\iv{f_2}{x}$.
 \item If $f = h\rb{g}$ for $h\in\set{\sin, \cos, \exp, \log}$, then
-$\iv{f}{x} = h\rb{\iv{g}{x}}$.
+$\iv{f}{x} = \mu{h}\rb{\iv{g}{x}}$.
 \end{enumerate}
 %
 If $f\in\fe{n}^{m\times p}$ is a matrix of function expressions, then
 $\iv{f}{x}\in \intervals^{m\times p}$ is an interval matrix where
-$\rb{\iv{f}{x}}_{ij} = \iv{f_{ij}}{x}$.  For an interval matrix $X$,
-we denote $\mi{X} = \frac{\ivmat{\sup\rb{X}} + \ivmat{\inf\rb{X}}}{[2,2]}$ and
-$\rad{X} = X - \mi{X}$.  
+$\rb{\iv{f}{x}}_{ij} = \iv{f_{ij}}{x}$.  For $x,y\in\intervals$, we
+denote $\meet{x}{y} =
+[\sup\rb{\inf\rb{x},\inf\rb{y}},\inf\rb{\sup\rb{x},\sup\rb{y}}]$ and
+$\join{x}{y} = [\inf\rb{x\bigcup y}, \sup\rb{x\bigcup y}]$.  If
+$X,Y\in\intervals^{n\times m}$, then
+$\meet{X}{Y},\join{X}{Y}\in\intervals^{n\times m}$ such that
+$\rb{\meet{X}{Y}}_{ij} = \meet{X_{ij}}{Y_{ij}}$ and
+$\rb{\join{X}{Y}}_{ij} = \join{X_{ij}}{Y_{ij}}$.
 %
 
