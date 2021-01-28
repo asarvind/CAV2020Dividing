@@ -1,15 +1,13 @@
 An $n$-dimensional nonlinear dynamical system with $m$ inputs is
-specified by a pair $\rb{f,\inpset,\Omega}$ where $f =
+specified by a tuple $\rb{f,\inpset,\Omega}$ where $f =
 \rb{f_1,\ldots,f_n}\in \fe{n+m}^n$ is an
 $n$-tuple of function expressions over $n+m$ symbols, an interval
 vector $\inpset\in\intervals^m$ is called the \emph{input set} and
-$\Omega\in\intervals^n$ is called the state space.  For any
-$T\in\reals_{>0}$, a function
-$\trfn{x}:[0,T)\rightarrow \reals^n$ is called a \emph{state
-trajectory} if there exists a \emph{piecewise continuous}
-function $\trfn{u}:[0,T)\rightarrow \inpset$,
-called \emph{input trajectory}, such that all of the following are
-true.
+$\Omega\in\intervals^n$ is called the \emph{state space}.  For any
+$T\in\reals_{>0}$, a function $\trfn{x}:[0,T)\rightarrow \reals^n$ is
+called a \emph{state trajectory} if there exists a \emph{piecewise
+continuous} function $\trfn{u}:[0,T)\rightarrow \inpset$,
+called \emph{input trajectory}, such that all of the following is true.
 %
 \begin{align*}
 & \forall t\in[0,T), \tr{x}{t}\subseteq \Omega,\\
@@ -28,11 +26,14 @@ denote $\trfn{x}|_{[0,\tau]}
 = \trfn{y}:[0,T)\rightarrow \reals^n: \forall t\in[0,\tau)\tr{y}{t}
 = \tr{x}{t}$.
 %
+Our objective is to compute an overapproximation of the set of all
+state trajectories of a nonlinear system.
+%
 \begin{example}\label{eg:ill}
 Let us denote the function expressions $\proj{1} = x$, $\proj{2} = y$,
 $\proj{3} = \theta$ and $\proj{4} = u$.  A $3$-dimensional nonlinear
 system with one input, state space $\reals^n$ and input set $U =
-[-0.2,0.2]$ can be specified as $H = \rb{f,[-0.2,0.2],\reals^3}$ where
+[-0.3,0.3]$ can be specified as $H = \rb{f,[-0.3,0.3],\reals^3}$ where
 %
 \begin{align*}
 & f_1 = \rb{ u\rb{ x + \theta + 0.1y } - 1}x,
@@ -210,12 +211,12 @@ xu}\mid_{\rb{x,y,z,u} = \ivmat{(0,0,0,0)}}} = -1 \\
 %% & 0.1*[-0.2,0.2]*[-1,1]*[-1,1] + 0 + 0 + 0 + \\ 
 %% & [-0.2,0.2]*[-1,1]*[-1,1] + 0 + 0 + 0 + \\
 %% & \rb{[-1,1]+[-1,1]+[0.1,0.1]*[-1,1]}*[-0.2,0.2]*[-1,1] + 0 + 0 + 0) =\\
-= [-0.84, 0.84]\\
+= [-1.26, 1.26]\\
 %
 & V_1 = \rb{\iv{f}{ 0 }
 + \taylor{f}{[-1,1]^3}{[-0.2,0.2]}
 - A*0 - B*0}_1 \\
-& = 0 + [-0.84,0.84] + 0 + 0 = [-0.84, 0.84]
+& = 0 + [-1.26,1.26] + 0 + 0 = [-1.26, 1.26]
 \end{align*}
 %
 \end{example}
