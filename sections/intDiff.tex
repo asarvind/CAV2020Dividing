@@ -3,14 +3,14 @@ integers is $\integers$, and complex numbers is $\cnums$.  The subset
 of real numbers that can be represented in double precision floating
 point format is $\double$.  For $\Psi\subseteq\reals$, $a\in\reals$
 and $\bowtie\in\set{\geq,\leq,>,<}$, we denote $\Psi_{\bowtie a}
-= \set{ x\in\Psi \st x \bowtie a }$.  The supremum of a subset of real
-numbers $\Psi\subseteq\reals$ is
-$\sup\rb{\Psi}\in\reals\bigcup\set{\infty}$ and the infimum is
-$\inf\rb{\Psi}\in\reals\bigcup\set{-\infty}$.  The absolute value of a
-real number $x$ is $\abs{x} = \sup\set{x,-x}$.  The real part of a
-complex number $z$ is $\real{z}$ and the imaginary part is $\imag{z}$.  The
-absolute value of a complex number $z$ is $\rb{(\real{z})^2
-+ (\imag{z})^2}^{1/2}$.  
+= \set{ x\in\Psi \st x \bowtie a }$.  For example, $\double_{>3.2} =
+{x\in\double\st{x>3.2}}$.  The supremum of a subset of real numbers
+$\Psi\subseteq\reals$ is $\sup\rb{\Psi}\in\reals\bigcup\set{\infty}$
+and the infimum is $\inf\rb{\Psi}\in\reals\bigcup\set{-\infty}$.  The
+absolute value of a real number $x$ is $\abs{x} = \sup\set{x,-x}$.
+The real part of a complex number $z$ is $\real{z}$ and the imaginary
+part is $\imag{z}$.  The absolute value of a complex number $z$ is
+$\abs{z} = \rb{(\real{z})^2 + (\imag{z})^2}^{1/2}$.
 %% For two reals $r$ and $s$, the result of
 %% multiplying $r$ and $s$ is $rs$, the result of adding of $r$ and $s$
 %% is $r+s$, the result of subtracting $s$ from $r$ is $r-s$ and the
@@ -31,10 +31,9 @@ i\in\set{1,\ldots,n},\forall j\in\set{1,\ldots,p},\rb{XY}_{ij}
 where $X^T_{ij} = X_{ji}$.  The euclidean norm of a real vector
 $x\in\reals^n$ is $\norm{x} = \rb{\sum_{i=1}^n\abs{x_i}^2}^{1/2}$.
 The infinity norm is $\norm{x}_\infty
-= \sup\set{\abs{x_1},...,\abs{x_n}}$.  For $r\in\reals_{> 0}$ \is{This symbol has not been introduced before.} and
+= \sup\set{\abs{x_1},...,\abs{x_n}}$.  For $r\in\reals_{> 0}$ and
 $x\in\reals^n$, we define the box of width $r$ around $x$ as
-$\ball{x}{r} = \set{ x\in\reals^n: \norm{x}_\infty \leq r }$.
-\is{This definition is incorrect.}
+$\ball{x}{r} = \set{ y\in\reals^n: \norm{y - x}_\infty \leq r }$.
 %
 \paragraph{Continuity of functions:} If $\Psi\subseteq\reals^n$, a
 function $f:\Psi\rightarrow\reals^m$ is called \emph{continuous} if
