@@ -164,16 +164,16 @@ represented as an IoU of interval zonotopes.
 %
 \subsection{Casting initial set as intersection of unions}
 For a division vector $q\in\dopt{\eta}$, we can closely
-overapproximate $X_0$ as a union of interval zonotopes $\bigcup_{b\in
-D_q}\iz{\diag{\sup{\rad{b}}}}{\mi{b}}{b}$ with only floating point
-overapproximation error.  To reduce the Taylor error along each
-eigenvector, we store the union corresponding to each optimized
-division vector in $\dopt{\eta}$ and take their intersection.  The
-resulting intersection of unions is
+overapproximate $X_0$ as a union of interval zonotopes of order $l>0$
+as $\bigcup_{b\in D_q}\lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$
+with only floating point overapproximation error.  To reduce the
+Taylor error along each eigenvector, we store the union corresponding
+to each optimized division vector in $\dopt{\eta}$ and take their
+intersection.  The resulting intersection of unions is
 %
 \begin{align*}
 \bigcap_{q\in\dopt{\eta}}\bigcup_{b\in
-D_q}{\iz{\diag{\sup\rb{\rad{b}}}}{\mi{b}}{b}}~\numberthis\label{eqn:iouopt}
+D_q}\lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}~\numberthis\label{eqn:iouopt}
 \end{align*}
 %
 In a computer, we represent an intersection of unions of interval
@@ -198,7 +198,7 @@ $\iouopt{\eta}{X_0}$ which is assigned as follows.
 $i\gets 1$,~$j\gets 1$\;
 \For{$q\in\dopt{q}$}{
 \For{$b\in D_q$}{
-$\rb{\iouopt{\eta}{X_0}}_{ij} \gets \rb{\diag{\sup\rb{\rad{b}}},{\mi{b}},{b}}$\;
+$\rb{\iouopt{\eta}{X_0}}_{ij} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
 $j\gets j+1$\; } $i\gets i+1$\; }
 \end{algorithm}
 %
@@ -325,7 +325,6 @@ Then it follows by induction that the theorem is true if
 $X_0\subseteq \tr{X}{0}$.  We have $\tr{X}{0} = \iouopt{\eta}{X_0}$,
 which is constructed by dividing $X_0$ by different optimized division
 vectors and intersecting the unions and results in a sound
-overapproximation, as explained previously.  Therefore, the theorem is
-true.
+overapproximation of $X_0$.  Therefore, the theorem is true.
 \end{proof}
 %
