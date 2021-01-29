@@ -1,0 +1,153 @@
+The set of real numbers is $\reals$, integers is $\integers$, and
+complex numbers is $\cnums$.  The subset of real numbers that can be
+represented in double precision floating point format is $\double$.
+For $\Psi\subseteq\reals$, $a\in\reals$ and
+$\bowtie\in\set{\geq,\leq,>,<}$, we denote $\Psi_{\bowtie a} = \set{
+  x\in\Psi \st x \bowtie a }$.  For example, $\double_{>3.2} =
+{x\in\double\st{x>3.2}}$.  The supremum of a subset of real numbers
+$\Psi\subseteq\reals$ is $\sup\rb{\Psi}\in\reals\bigcup\set{\infty}$
+and the infimum is $\inf\rb{\Psi}\in\reals\bigcup\set{-\infty}$.  The
+absolute value of a real number $x$ is $\abs{x} = \sup\set{x,-x}$.
+The real part of a complex number $z$ is $\real{z}$ and the imaginary
+part is $\imag{z}$.  The absolute value of a complex number $z$ is
+$\abs{z} = \rb{(\real{z})^2 + (\imag{z})^2}^{1/2}$.  For two reals $r$
+and $s$, the result of multiplying $r$ and $s$ is $rs$, the result of
+adding of $r$ and $s$ is $r+s$, the result of subtracting $s$ from $r$
+is $r-s$ and the result of dividing $r$ by $s$ if $s\neq 0$ is
+$\frac{r}{s}$.  For non-negative integer $i$ and real number $x$, the
+result of raising $x$ to the power $i$ is $x^i$.  The set of $n\times
+m$ matrices containing elements from a set $\Psi$ is $\Psi^{n\times
+  m}$.  For simplicity, we denote $\Psi^{n\times 1}$ as $\Psi^n$.  The
+set of real vectors is $\reals^n$.  The $i^{th}$ row $j^{th}$ column
+element of a matrix $X$ is denoted $X_{ij}$.  Similarly, for real
+vector $x$, $x_i$ denotes the $i^{th}$ component of $x$.  The
+submatrix of $X$ containing rows $l_1$ to $l_2$ and columns $k_1$ to
+$k_2$ is denoted $X_{l_1:l_2,k_1:k_2}$.  An $n\times m$ matrix
+containing a repeated element $z$ is denoted $\sqb{z}_{n\times m}$.
+The identity $n\times n$ square matrix containing all ones along its
+diagonal and rest zeros is denoted $\identity{n}$.  The transpose of a
+matrix $X$ is $X^T$ where $X^T_{ij} = X_{ji}$.  For
+$X\in\reals^{n\times m}$ and $Y\in\reals^{m\times p}$, the matrix
+product is $XY\in\reals^{n\times p}$ where $\forall
+i\in\set{1,\ldots,n},\forall j\in\set{1,\ldots,p},\rb{XY}_{ij} =
+\sum_{k=1}^{m}X_{ik}Y_{kj}$.  The euclidean norm of a real vector
+$x\in\reals^n$ is $\norm{x} = \rb{\sum_{i=1}^n\abs{x_i}^2}^{1/2}$.
+The infinity norm is $\norm{x}_\infty =
+\sup\set{\abs{x_1},...,\abs{x_n}}$.  For $r\in\reals_{> 0}$ and
+$x\in\reals^n$, we define the box of width $r$ around $x$ as
+$\ball{x}{r} = \set{ y\in\reals^n: \norm{y - x}_\infty \leq r }$.
+
+If $\Psi\subseteq\reals^n$, a function $f:\Psi\rightarrow\reals^m$ is
+called \emph{continuous} if $\forall
+x\in\Psi,\forall\epsilon\in\reals_{>0}$, there exists
+$\delta\in\reals^n$ such that if $y\in\ball{x}{\delta}\bigcap\Psi$,
+then $f(y)\in\ball{f(x)}{\epsilon}$.  A function
+$g:\Psi\rightarrow\reals^m$ is called \emph{piecewise continuous} if
+there exists a finite number of sets $\Psi_1,\ldots,\Psi_k$ such that
+$\bigcup_{i=1}^k\Psi_i=\Psi$ and $f_i:\Psi_i\bigcap\Psi\rightarrow
+\reals^m$ where $\forall x\in\Psi_i~f_i\rb{x}=g\rb{x}$ is continuous
+for all $i\in\set{1,\ldots,k}$.
+
+A partial function $f:\reals^n\rightarrow \reals$ is a relation
+$(x,f(x))\in\reals^n\times\reals$ such that $f(x)$ is exists for a
+subset of $\reals^n$, but not necessarily all of $\reals^n$.  For
+every $n\in\integers_{>0}$, we consider
+$\fe{n}\subset\set{f:\reals^n\reals\st{\text{f is a partial
+      function}}}$, defined recursively as follows.
+%
+\begin{enumerate}
+\item $f\in\fe{n}$ if $\exists a\in\double^n~\forall x\in\reals^n~
+  f\left(x\right) = a^Tx$. 
+\item $\forall f_1,f_2\in\fe{n}, \set{ \frac{1}{f}, f_1+f_2, f_1-f_2, f_1f_2}\subseteq\fe{n}$.
+\item $\forall f\in\fe{n}, \set{ \sin\circ{f}, \cos\circ{f}, \exp\circ{f}, \log\circ{f} } \subseteq \fe{n}$.
+\end{enumerate}
+%
+The domain of a partial function $f\in\fe{n}$, denoted $\dom{f}$, is
+the collection of all possible $x\in\reals^n$ such that $f\rb{x}$
+exists by the above definition.  For example, $f\in\fe{2}$ where
+$f\rb{x,y} = \sin(x)\log(y) + \frac{\exp{y}}{x}$ which exists only
+when $x\neq 0$ and $y\geq 0$.  Therefore, the domain of this partial
+function is and $\dom{f} = \set{(x,y)\in\reals^2\st x\neq 0, y>0}$.
+
+We say that the \emph{symbolic derivative} of a partial function
+$f\in\fe{n}$ is a tuple of partial functions $\nabla f = \rb{\nabla_1
+  f,\ldots,\nabla_n f}\in\fe{n}^n$ if all of the following is true.
+%
+\begin{itemize}
+\item $\forall i\in\set{1,\ldots,n}$, $\dom{f}\subseteq \dom{\nabla f}$.
+\item For all $x\in\dom{f}$ and $\forall\epsilon\in\reals_{>0}$, there exists $r\in\reals_{>0}$ 
+such that $\forall h\in\ball{0}{r}$, we have $(x+h)\in\dom{f}$ and
+%
+\begin{align*}
+& \frac{\norm{f\rb{x+h}-\sum_{i=1}^n \nabla_if\rb{x}h_i}}{\norm{h}}
+< \epsilon.~\numberthis\label{eqn:symder}
+\end{align*}
+%
+\end{itemize}
+%
+\begin{example}
+Let us consider a partial function $f\in\fe{2}: f(x,y) =
+\frac{sin\rb{y}}{x}$.  By applying the basic rules of calculus, we get
+$\frac{\partial{f}}{\partial{x}}\left|_{x,y}\right. =
+\frac{-sin(y)}{x^2}$ and
+$\frac{\partial{f}}{\partial{y}}\left|_{x,y}\right. =
+\frac{\rb{cos(y)}}{x}$. So, the pair of partial functions $\rb{
+  (x,y)\rightarrow\frac{-sin(y)}{x^2}, ~(x,y)\rightarrow
+  \frac{\rb{cos(y)}}{x} }$ is a symbolic derivative of $f$.
+\end{example}
+%
+\emph{Remark:}  For any function $f\in\fe{n}$, the symbolic
+derivative $\nabla{f}$ and the symbolic double derivative
+$\nabla^2f\in\fe{n}^{n\times n}: \rb{\nabla^2 f}_{ij} =
+\nabla_j\nabla_i f$ exist.
+%
+\paragraph{Interval arithmetic}:  For $a,b\in\double$ such that $a<b$, we
+denote\\ $\interval{a}{b} = \set{x\in\reals\st a\leq x\leq b}$,
+$[-\infty,a] = \set{x\in\reals\st x\leq a}$, $[a,\infty) =
+  \set{x\in\reals\st a\leq x}$ and $[-\infty,\infty] = \reals$.  We
+  denote the set of all intervals as $\intervals$.  For any partial
+  function $f\in \fe{n}$ and interval $x\in\dom{f}$, we use interval
+  arithmetic described in the Boost library~\cite{todo} to correctly
+  bound the image of $f$ over $a$, denoted $\iv{f}{x} \supseteq
+  \set{f\rb{y}\st{y\in x} }$.  Similarly, for $u,v\in\intervals$, the
+  interval arithmetic in~\cite{todo} is used to compute interval
+  bounds $uv,(u+v),(u-v)\in\intervals$ such that
+  $uv\supseteq\set{xy\st x\in u, y\in v}$,
+  $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
+  $\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.
+%
+The set of $n\times m$ interval matrices is $\intervals^{n\times m}$.
+and $n$-dimensional interval vectors is $\intervals^{n\times 1}$,
+conveniently denoted $\intervals^{n}$.  For $A\in\reals^{n\times m}$
+and $X\in\intervals^{n\times m}$, we say $A\in X$ if $\forall
+\rb{i,j}\in\set{1,\ldots,n}^2, A_{ij}\subseteq X_{ij}$.  The interval
+matrix $X$ is said to be bounded if $\forall
+i\in\set{1,\ldots,n}\forall j\in\set{1,\ldots,m} \exists
+a,b\in\double: X_{ij} = [a,b]$.  The matrix product $XY$ of two
+interval matrices $X\in\intervals^{n\times p}$ and
+$Y\in\intervals^{p\times m}$ is $XY = \sum_{k=1}^pX_{ik}Y_{kj}$ The
+sum of interval matrices is $X + Y$ where $\rb{X+Y}_{ij} = X_{ij} +
+Y_{ij}$.  It follows from the inclusion property of interval
+arithmetic that if $A\in X$ and $B\in Y$, then $AB\in XY$ and $A+B\in
+X+Y$.  If $X\in\double^{n\times m}$, then $\ivmat{X}\in\intervals$ is
+an interval matrix such that $\forall
+(i,j)\in\set{1,\ldots,n}\times\set{1,\ldots,m},\ivmat{X}_{ij} =
+[X_{ij},X_{ij}]$.  For an interval matrix $X$, we denote $\mi{X} =
+\frac{\ivmat{\sup\rb{X}} + \ivmat{\inf\rb{X}}}{[2,2]}$ and $\rad{X} =
+X - \mi{X}$.  The diagonal interval matrix containing elemenst of an
+interval vector $x$ along its diagonal is denoted $\diag{x}$.  If
+$f\in\fe{n}^{m\times p}$ is a matrix of function expressions, then
+$\iv{f}{x}\in \intervals^{m\times p}$ is an interval matrix where
+$\rb{\iv{f}{x}}_{ij} = \iv{f_{ij}}{x}$.  For $x,y\in\intervals$, we
+denote $\meet{x}{y} =
+[\sup\rb{\inf\rb{x},\inf\rb{y}},\inf\rb{\sup\rb{x},\sup\rb{y}}]$ and
+$\join{x}{y} = [\inf\rb{x\bigcup y}, \sup\rb{x\bigcup y}]$.  If
+$X,Y\in\intervals^{n\times m}$, then
+$\meet{X}{Y},\join{X}{Y}\in\intervals^{n\times m}$ such that
+$\rb{\meet{X}{Y}}_{ij} = \meet{X_{ij}}{Y_{ij}}$ and
+$\rb{\join{X}{Y}}_{ij} = \join{X_{ij}}{Y_{ij}}$.
+%
+In addition to the above intervals, we denote
+%
+$[a,b) = \set{x\in\reals\st{a\leq x<b}}$, $(a,b] = \set{x\in\reals\st{a< x\leq b}}$, $(a,b) = \set{x\in\reals\st{a< x < b}}$.
+
