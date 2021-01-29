@@ -9,6 +9,39 @@
 \begin{document}    
 \maketitle
 %
+\begin{abstract}
+We propose a new efficient method for computing over approximation of
+set of trajectories, called flowpipe, for a system described by
+nonlinear differential equations.  Since reachable sets of linear
+systems can be computed efficiently, piecewise linearization of
+nonlinear ODEs is a commonly used while computing flowpipes.  But the
+number of pieces required in piecewise linearization becomes
+exponential in the dimension for minimizing linearization error below
+any threshold value, which can be computationally intractable in high
+dimensions.  Alternatively, we can fix the number of divisions, in
+which case we need to optimize the way reach set is divided to
+minimize the linearization error.  Since the linearization error is
+multi-dimensional, this minimization is a multi-objective optimization
+problem which does not have a single best solution.  However, an
+previous method in literature proposed to minimize a single
+dimensional measure while dividing the reachable sets, which does not
+necessarily reduce the linearization error along all coordinates.  In
+this paper, we propose a better method where we use multiple best
+optimal ways of division, instead of a single way of division, for
+minimizing linearization error along multiple directions.
+Subsequently, we represent the resulting reachable sets as
+intersection of unions (IoU), where each intersecting union
+corresponds to the optimized division for each direction among
+multiple directions.  We propose an algorithm to propogate the
+resulting IoU of sets for flowpipe computation.  This way, we ensure
+that the linearization error along is reduced significantly along
+every direction is a set of multiple directions.  We evaluate our
+algorithm on an illustrative example and two high dimensional real
+world examples.  We demonstrate high increase in accuracy compared to
+the earlier method of division and also other state-of-the-art methods
+for flowpipe computation of nonlinear systems.
+\end{abstract}
+
 \section{Mathematical preliminaries}
 \input{sections/intDiff}
 %
@@ -17,6 +50,10 @@
 %
 \section{Intersection of unions flowpipe computation}
 \input{sections/newmethod}
+
+\section{Evaluation}
+\input{sections/evaluation}
+
 
 
 
