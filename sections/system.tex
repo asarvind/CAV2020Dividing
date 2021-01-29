@@ -1,13 +1,14 @@
 An $n$-dimensional nonlinear dynamical system with $m$ inputs is
 specified by a tuple $\rb{f,\inpset,\Omega}$ where $f =
 \rb{f_1,\ldots,f_n}\in \fe{n+m}^n$ is an
-$n$-tuple of function expressions over $n+m$ symbols, an interval
-vector $\inpset\in\intervals^m$ is called the \emph{input set} and
+$n$-tuple of partial functions in $\fe{n+m}^n$, an interval vector
+$\inpset\in\intervals^m$ is called the \emph{input set} and
 $\Omega\in\intervals^n$ is called the \emph{state space}.  For any
 $T\in\reals_{>0}$, a function $\trfn{x}:[0,T)\rightarrow \reals^n$ is
 called a \emph{state trajectory} if there exists a \emph{piecewise
 continuous} function $\trfn{u}:[0,T)\rightarrow \inpset$,
-called \emph{input trajectory}, such that all of the following is true.
+called \emph{input trajectory}, such that all of the following is
+true.
 %
 \begin{align*}
 & \forall t\in[0,T), \tr{x}{t}\subseteq \Omega,\\
