@@ -103,18 +103,18 @@ $\nabla^2f\in\fe{n}^{n\times n}: \rb{\nabla^2 f}_{ij} =
 %
 \paragraph{Interval arithmetic}:  For $a,b\in\double$ such that $a<b$, we
 denote\\ $\interval{a}{b} = \set{x\in\reals\st a\leq x\leq b}$,
-$[-\infty,a] = \set{x\in\reals\st x\leq a}$, $[a,\infty) =
-  \set{x\in\reals\st a\leq x}$ and $[-\infty,\infty] = \reals$.  We
-  denote the set of all intervals as $\intervals$.  For any partial
-  function $f\in \fe{n}$ and interval $x\in\dom{f}$, we use interval
-  arithmetic described in the Boost library~\cite{todo} to correctly
-  bound the image of $f$ over $a$, denoted $\iv{f}{x} \supseteq
-  \set{f\rb{y}\st{y\in x} }$.  Similarly, for $u,v\in\intervals$, the
-  interval arithmetic in~\cite{todo} is used to compute interval
-  bounds $uv,(u+v),(u-v)\in\intervals$ such that
-  $uv\supseteq\set{xy\st x\in u, y\in v}$,
-  $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
-  $\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.
+$[-\infty,a] = \set{x\in\reals\st x\leq a}$, $[a,\infty)
+= \set{x\in\reals\st a\leq x}$ and $[-\infty,\infty] = \reals$.  We
+denote the set of all intervals as $\intervals$.  For any partial
+function $f\in \fe{n}$ and interval $x\in\dom{f}$, we use interval
+arithmetic described in the Boost library~\cite{bronnimann2006design}
+to correctly bound the image of $f$ over $a$, denoted
+$\iv{f}{x} \supseteq \set{f\rb{y}\st{y\in x} }$.  Similarly, for
+$u,v\in\intervals$, the interval arithmetic
+in~\cite{bronnimann2006design} is used to compute interval bounds
+$uv,(u+v),(u-v)\in\intervals$ such that $uv\supseteq\set{xy\st x\in u,
+y\in v}$, $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
+$\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.
 %
 The set of $n\times m$ interval matrices is $\intervals^{n\times m}$.
 and $n$-dimensional interval vectors is $\intervals^{n\times 1}$,
