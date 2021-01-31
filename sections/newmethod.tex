@@ -40,7 +40,7 @@ that minimizes the Taylor error.  In this context, a performance index
 was proposed by bAlthoff et.al.~\cite{althoff2008reachability} to
 divide reachable sets as follows.  A reachable set $\Omega$ is divided
 into two sets $\Omega_1$ and $\Omega_2$ which minimizes the following
-quantity for a user chosen threshold $\rho\in\reals^n_{>0}$:
+quantity for a user chosen normalization error $\rho\in\reals^n_{>0}$.
 %
 \begin{align*}
 \sup_{i=1}^n\frac{{\sup{\taylor{f}{\Omega_1}{U}}}_i}{\rho_i}\sup_{i=1}^n\frac{\sup{\taylor{f}{\Omega_2}{U}}_i}{\rho_i}.~\numberthis\label{eqn:pi}
@@ -56,7 +56,7 @@ along all coordinates.  For illustration, let us consider the
 nonlinear system in Example~\ref{eg:ill}.  Let $\Omega =
 [-1,1]\times[-0.5,0.5]\times[-0.1,0.1]$ be the reachable set at a time
 point and we take the linearization error before splitting $\rho
-= \taylor{f}{\Omega}{U}$ as the threshold for splitting.  Using the
+= \taylor{f}{\Omega}{U}$ as the normalization error for splitting.  Using the
 above performance index, we get that $\Omega$ should be split along
 $x$-axis into $\Omega_1 = [-1,0]\times[-0.5,0.5]\times[-0.1,0.1]$ and
 $\Omega_2 = [0,1]\times[-0.5,0.5]\times[-0.1,0.1]$.  However, there
@@ -69,7 +69,7 @@ divide along $y$-coordinate as $\Omega =
 [-1,1]\times[0,0.5]\times[-0.1,0.1]$.  This means reducing the
 linearization error using the above performance index need not
 significantly reduce the linearization error along all coordinates.
-Besides, it is not known how to choose a threshold $\rho$ for good
+Besides, it is not known how to choose a normalization error $\rho$ for good
 flowpipe accuracy.
 
 \paragraph{New method:}  In this paper, we propose an better approach

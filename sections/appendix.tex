@@ -1,0 +1,21 @@
+\begin{appendix}
+\paragraph{Dynamics of quadrotor}
+%
+\begin{align*}
+  \dot{p_n} & = u cos(\phi) cos(\theta) - v (cos(\phi)
+  sin(\psi)-cos(\psi) sin(\phi) sin(\theta)) + \\ & w (sin(\phi) sin(\psi)+cos(\phi) cos(\psi) sin(\theta))\\
+   \dot{p_e} & = v (cos(\phi) cos(\psi)+sin(\phi) sin(\psi)
+  sin(\theta)) + u cos(\theta) sin(\psi) - \\ &w (cos(\psi) sin(\phi)-cos(\phi) sin(\psi) sin(\theta))  \\                          
+   \dot{h} & = u sin(\theta) - w cos(\phi) cos(\theta)  - v cos(\theta) sin(\phi)\\
+   \dot{u} & = r v - q w - g sin(\theta)\\
+   \dot{v} & = p w - r u + g cos(\theta) sin(\phi)\\
+   \dot{w} & = q u - p v + g cos(\phi) cos(\theta) - (m g - 10 (h - u_1) + 3 w)/m\\
+   \dot{\phi} & = p + r cos(\phi) sin(\theta)/cos(\theta) + q sin(\phi) sin(\theta)/cos(\theta)\\
+   \dot{\theta} & = q cos(\phi) - r sin(\phi)\\
+   \dot{\psi} & = r cos(\phi)/cos(\theta) + q sin(\phi)/cos(\theta)\\
+   \dot{p} & = (-(\phi - u_2) - p)/Jx + q r (Jy-Jz)/Jx\\
+   \dot{q} & = (-(\theta - u_3) - q)/Jy + p r (Jx-Jz)/Jy\\
+   \dot{r} & = 0/Jz + p q (Jx - Jy)/Jz\\
+\end{align*}
+%
+\end{appendix}
