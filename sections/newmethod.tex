@@ -2,7 +2,9 @@ We consider an $n$-dimensional nonlinear system with $m$-inputs
 $H=\rb{f,U,\reals^n}$.  A flowpipe of $H$ in a time interval $[0,T)$
 from an initial set $\init\in\intervals^n$ is a mapping
 $\trfn{X}:[0,T]\rightarrow \set{\Omega\st{\Omega\subseteq \reals^n}}$
-such that $\forall t\in[0,T]~\reach{H}{t}{Q}\subseteq \tr{X}{t}$.  We
+such that $\forall t\in[0,T]~\reach{H}{t}{Q}\subseteq \tr{X}{t}$. 
+\is{What is $Q$ here?}
+We
 will first discuss the motivation for using an intersection of union sets
 for representing flowpipes.
 %
@@ -41,7 +43,7 @@ into two sets $\Omega_1$ and $\Omega_2$ which minimizes the following
 quantity for a user chosen normalization error $\rho\in\reals^n_{>0}$.
 %
 \begin{align*}
-\sup_{i=1}^n\frac{{\sup{\taylor{f}{\Omega_1}{U}}}_i}{\rho_i}\sup_{i=1}^n\frac{\sup{\taylor{f}{\Omega_2}{U}}_i}{\rho_i}~\numberthis\label{eqn:pi}
+\sup_{i=1}^n\frac{{\sup{\taylor{f}{\Omega_1}{U}}}_i}{\rho_i}\sup_{i=1}^n\frac{\sup{\taylor{f}{\Omega_2}{U}}_i}{\rho_i}.~\numberthis\label{eqn:pi}
 \end{align*}
 %
 \paragraph{Drawback:}  Since the linearization error is
@@ -72,7 +74,9 @@ flowpipe accuracy.
 
 \paragraph{New method:}  In this paper, we propose an better approach
 that ensures reduction in the linearization error that along each
-individual direction in a finite set of directions.  To do so, we
+individual direction in a finite set of directions. 
+\is{An extra ``that'' in the previous sentence.}
+To do so, we
 use \emph{intersection of unions} (IoU).  For each direction, we find
 an optimized division of the reach set for reducing the linearization
 error.  Then we intersect the union sets corresponding to the
@@ -97,19 +101,20 @@ Henceforth, we only divide the initial set, which is an interval, to
 compute an intersection of unions representation.
 %
 \subsection{Computing set of optimized division vectors:}
-Let us denote $\bounds=X_0$.  Given a vector of positive integer
-values $q\in\integers_{>0}$, called \emph{division vector}, we define
+Let us denote $\bounds=X_0$ \is {What is $X_0$?}.  Given a vector of positive integer
+values $q\in\integers_{>0}$, called \emph{division vector} \is{$q$ is a scalar here}, we define
 a union of interval vectors which is a close overapproximation of $h$
 with only floating point approximation error, as follows.  The set of
 the set of divided interval vectors corresponding to division vector
 $q$ is
 %
 \begin{align*}
-& D_q
-= \left\{r_1\times...\times r_n\right.\\
+D_q
+= & \left\{r_1\times...\times r_n\right.\\
 & \left.\st{\forall i\in\set{1,\ldots,n}~r_i
 = \ivmat{\inf\rb{\bounds_i}}+k_i\frac{\rad{\bounds}_i}{q_i}, k_i\in\set{1,\ldots,q_i}}\right\}.
 \end{align*}
+\is{The value of $k_i$ is  not clear in the  above equation.}
 %
 For all intervals in $D_q$, an upper bound on the Taylor error is
 given below.
@@ -176,9 +181,7 @@ intersection.  The resulting intersection of unions is
 D_q}\lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}~\numberthis\label{eqn:iouopt}
 \end{align*}
 %
-In a computer, we represent an intersection of unions of interval
-zonotope sets as above with an matrix of interval zonotope tuples,
-called IoU interval zonotope.
+In a computer, we represent an intersection of unions of interval zonotope sets as above with a matrix of interval zonotope tuples, called \emph{IoU interval zonotope}.
 %
 \begin{definition}[IoU interval zonotope]
 An IoU zonotope $\zt$ is a matrix of interval zonotopes which
@@ -191,7 +194,7 @@ represents the set
 \end{definition}
 %
 We represent the optimized intersection of unions in
-Equation~\ref{eqn:iouopt} by an IoU interval zonotope, which we denote
+Equation~\ref{eqn:iouopt} by an IoU interval zonotope, which we denote by
 $\iouopt{\eta}{X_0}$ which is assigned as follows.
 %
 \begin{algorithm}\caption{Initial IoU zonotope assignment}
@@ -286,7 +289,7 @@ $i \gets i+1$.
 \end{algorithm}
 %
 \begin{theorem}~\label{thm:main}
-Let us consider the candidate folowpipe $\trfn{X}$ computed in
+Let us consider the candidate flowpipe $\trfn{X}$ computed in
 Algorithm~\ref{alg:main}.  For all $t\in[0,T]$,
 $\reach{H}{t}{X_0}\subseteq \ztset{\tr{X}{t}}$.
 \end{theorem}

@@ -1,10 +1,10 @@
 An $n$-dimensional nonlinear dynamical system with $m$ inputs is
-specified by a tuple $\rb{f,\inpset,\Omega}$ where $f =
+specified by a tuple $\rb{f,\inpset,\Omega}$, where $f =
 \rb{f_1,\ldots,f_n}\in \fe{n+m}^n$ is an
 $n$-tuple of partial functions in $\fe{n+m}^n$, an interval vector
-$\inpset\in\intervals^m$ is called the \emph{input set} and
+$\inpset\in\intervals^m$ is called the \emph{input set}, and
 $\Omega\in\intervals^n$ is called the \emph{state space}.  For any
-$T\in\reals_{>0}$, a function $\trfn{x}:[0,T)\rightarrow \reals^n$ is
+$T\in\reals_{>0}$, a function \mbox{$\trfn{x}:[0,T)\rightarrow \reals^n$} is
 called a \emph{state trajectory} if there exists a \emph{piecewise
 continuous} function $\trfn{u}:[0,T)\rightarrow \inpset$,
 called \emph{input trajectory}, such that all of the following is
@@ -13,22 +13,21 @@ true.
 \begin{align*}
 & \forall t\in[0,T), \tr{x}{t}\subseteq \Omega,\\
 & \forall
-t\in[0,T)\forall\epsilon\in\reals_{>0}, \exists\delta\in\reals_{>0}~\text{such
+t\in[0,T)\ \forall\epsilon\in\reals_{>0}, \exists\delta\in\reals_{>0}~\text{such
 that}\\
-& \forall h\in[-\delta,\delta]\bigcap[0,T]~\norm{ \frac{ \tr{x}{t+h}
+& \ \ \ \  \forall h\in[-\delta,\delta]\bigcap[0,T]~\norm{ \frac{ \tr{x}{t+h}
 - \tr{x}{t} }{h} - f_i\rb{ \mymatrix{ \tr{x}{t}\\ \tr{u}{t} }
 }}< \epsilon~\numberthis\label{eqn:dynamics}
 \end{align*}
 %
-In rest of the paper, $n$ denotes the dimension of a nonlinear system
+In the rest of the paper, $n$ denotes the dimension of a nonlinear system
 and $m$ denotes the number of inputs, unless otherwise stated.  For a
 trajectory $\trfn{x}:[0,T)\rightarrow \reals^n$ and $\tau<T$, we
 denote $\trfn{x}|_{[0,\tau]}
-= \trfn{y}:[0,T)\rightarrow \reals^n: \forall t\in[0,\tau)\tr{y}{t}
+= \trfn{y}:[0,T)\rightarrow \reals^n: \forall t\in[0,\tau), \tr{y}{t}
 = \tr{x}{t}$.
 %
-Our objective is to compute an overapproximation of the set of all
-state trajectories of a nonlinear system.
+Our objective is to compute an over-approximation of the set of all state trajectories of a nonlinear system.
 %
 \begin{example}\label{eg:ill}
 Let us denote the function expressions $\proj{1} = x$, $\proj{2} = y$,
@@ -55,6 +54,8 @@ which begin at $\tr{x}{0} = \mymatrix{-0.1,0.1,0.1}^T$ and $\tr{x}{0}
 = \mymatrix{-0.2,-0.3,-0.1}^T$, respectively.
 %
 There are also state trajectories without an analytic form.
+
+\is{Is it possible to provide some more insight of what exactly we would like to get as output?}
 \end{example}
 %
 %% The \emph{reachable set} of the nonlinear system $H
@@ -77,10 +78,10 @@ There are also state trajectories without an analytic form.
 %% zonotopes}~(\todo{cite all}).
 %
 \paragraph{Linearization:}  We say that a dynamical system
-$L = \rb{g,U\times V,\Omega}$ where $g\in\fe{2n+m}^n$ is
+$L = \rb{g,U\times V,\Omega}$ where $g\in\fe{2n+m}^n$ \is{why  $2n$?} is
 linear if we have matrices $A\in\reals^{n\times n}$ and
 $B\in\reals^{m\times n}$ such that forall $i\in\set{1,\ldots,n}$,
-$x\in\reals^n$, $u\in U$ and $v\in V$, we have
+$x\in\reals^n$, $u\in U$ and $v\in V$ \is{What are $U$ and $V$?}, we have
 %
 \begin{align*}
 & g_i\rb{\mymatrix{x^T & u^T & v^T}^T} = \rb{Ax + Bu + v}_i.
@@ -104,21 +105,21 @@ $\reach{H}{t}{\init}\subseteq \reach{L}{t}{\init}$.
 \begin{proof}
 Let us consider a trajectory $\trfn{x}:[0,T)\rightarrow\Omega$ of the
 nonlinear system $H$.  Then there exists an input trajectory
-$\trfn{u}:[0,T)\rightarrow\Omega$ of $H$ such
+$\trfn{u}:[0,T)\rightarrow\Omega$ \is{$U$ instead of $\Omega$?} of $H$ such
 that~(\ref{eqn:dynamics}) is true.  Let us define
-$\trfn{v}:[0,T)\rightarrow \reals^n$ as $\tr{v}{t} =
+$\trfn{v}:[0,T)\rightarrow \reals^n$ \is{Is the range correct? Should it be  $V$?} as $\tr{v}{t} =
 f\rb{\mymatrix{\tr{x}{t}^T & \tr{u}{t}^T}}^T - A\tr{x}{t} -
 B\tr{u}{t}$.  Since $L$ is an overapproximation of $H$, we have
 $\forall t\in[0,T)$, $\tr{v}{t}\in V$.  Then by using
-from~(\ref{eqn:dynamics}), for all $\forall t\in[0,T)\epsilon\in\reals_{>0}$, there
+from~(\ref{eqn:dynamics}) \is{Omit from}, for all $\forall t\in[0,T), \epsilon\in\reals_{>0}$, there
 exists $\delta\in\reals_{>0}$ such that $\forall
-h\in[-\delta,\delta]\bigcap [0,T)$,
+h\in[-\delta,\delta]\bigcap\, [0,T)$,
 %
 \begin{align*}
 & \norm{ \frac{ \tr{x}{t+h} - \tr{x}{t} }{h} -
 f_i\rb{ \mymatrix{ \tr{x}{t}^T & \tr{u}{t}^T }^T }}\\
 & = \norm{ \frac{ \tr{x}{t+h} - \tr{x}{t} }{h} -
-\rb{A\tr{x}{t} + B\tr{u}{t} + \tr{v}{t}} } < \delta.
+\rb{A\tr{x}{t} + B\tr{u}{t} + \tr{v}{t}} } < \delta \is{\epsilon ?}.
 \end{align*}
 %
 Therefore, $\tr{x}{t}$ is also a state trajectory of the linear system
@@ -133,7 +134,7 @@ So, it would be useful to overapproximate a nonlinear system by a
 linear system while computing flowpipe, as follows.
 %
 \begin{lemma}[Linear overapproximation]\label{lem:linearization}
-Let us consider a bounded interval vector $\Omega\in\intervals$, a
+Let us consider a bounded interval vector $\Omega\in\intervals$ \is{$\intervals^n$?}, a
 vector $c\in\double^n$ and a nonlinear system $H = \rb{f,U,\Omega}$
 where $f\in\fe{n+m}^n$ and $U\in\intervals^m$ is a bounded interval
 vector.  Let us define $W = \mymatrix{\Omega^T & U^T}^T$,
@@ -287,10 +288,11 @@ represents the following set.
 \end{align*}
 %
 \end{definition}
+\is{This mathematical definition looks a bit problematic. Is $x$ a set or an element?}
 %
 Approximating the reachable set of a linear system requires
 approximating linear transformation of sets.  The matrix
-multiplication of an interval zonotope and its Minkowski sum with an
+multiplication of an interval zonotope and its Minkowski sum \is{Needs a reference? We may also define  it in the preliminaries section.} with an
 interval vector is overapproximated as follows.
 %
 \begin{lemma}[Linear transformation]\label{lem:lintrans}
@@ -353,12 +355,12 @@ interval zonotope of order $l$ which is equivalent to zero is denoted
 $\zerozon{n}{l}$.
 
 We can compute an interval overapproximation of the reachable set
-$\reach{H}{[0,t]}{\init}$ in the interval $[0,t]$ as follows
+$\reach{H}{[0,t]}{\init}$ in the interval $[0,t]$ as follows.
 %
 \begin{lemma}~\label{lem:bloat}
 Let us consider a nonlinear system $H = \rb{f,U,\reals^n}$,
 $\epsilon\in[0,\infty)$, an interval zonotope $\zt
-= \rb{{\gen},{\cen},{\bounds^0}}$ and a sequence of interval vectors
+= \rb{{\gen},{\cen},{\bounds^0}}$, and a sequence of interval vectors
 $\rb{\bounds^i}_{i=0}^\infty$ where
 %
 \begin{align*}
@@ -381,19 +383,19 @@ $\ivflow{H}{t}{K}{\epsilon}{\zt}\supseteq\reach{H}{[0,t]}{\zt}$.
 We prove this by contradiction.  Let us denote $\Omega
 = \ivflow{H}{t}{K}{\epsilon}{\zt}$.  Let us assume that
 $\Omega\nsupseteq \reach{H}{[0,t]}{\init}$.  So, $\Omega\neq\reals^n$
-and $\Omega = \bounds^k$.  Then there exists a state trajectory
+and $\Omega = \bounds^k$ \is{We are using lower case $k$ from here, which looks wrong.}.  Then there exists a state trajectory
 $\trfn{x}:[0,T)\rightarrow\reals^n$ and $\tau\in[0,t]$ such that $T>t$
 and $\tr{x}{\tau}\notin \bounds^k$.  So, there exists $\tau_{min}$ in
 $[0,T)$ such that $\tau_{min}
-= \inf\set{t\in[0,T)\st{\tr{x}{\tau}\notin \bounds_k}}$.  By
-using~(\ref{eqn:dynamics}), we can show there exists
+= \inf\set{t\in[0,T)\st{\tr{x}{\tau}\notin \bounds_k}}$.  
+By using~(\ref{eqn:dynamics}), we can show there exists
 $\delta\in[0,\infty)$ such that $\forall h\in[-\delta,\delta]$
 $\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$.
 Similarly, we can show there exists $r\in[0,\tau_{min})$ such that
-$\tr{x}{r}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$.  Combining both
+$\tr{x}{r}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$ \is{Do we need to mention what  $\epsilon$ is here?}.  Combining both
 inequalities above, we get $\forall
-h\in[-\delta,\delta]~\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{r}}{\epsilon}$.
-As $r\in[0,\tau_{min})$, we get $\tr{x}{r}\in\bounds_k$.  So, for all
+h\in[-\delta,\delta],~\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{r}}{\epsilon}$.
+As $r\in[0,\tau_{min})$, we get $\tr{x}{r}\in\bounds_k$ \is{$K$ should be superscript. Also, please check below this.}.  So, for all
 $h\in[-\delta,\delta)$, we have $\tr{x}{\tau_{\min}+h}\in \bounds_k +
 [-\epsilon,\epsilon]^n$.  Also, by the definition of $\tau_{min}$, for
 all $\tau\in[0,\tau_{min}-\delta/2)$, $\tr{x}{\tau}\in \bounds_k +
@@ -413,7 +415,7 @@ $\tr{x}{\tau_{min}+h}\in \dismat{A}{L_K}{[0,t]}\bounds^0
 + \dismat{B}{L_K}{[0,t]}U
 + \dismat{C}{L_K}{[0,t]}V \subseteq \bounds^{k}$.  But by the
 definition of $\tau_{min}$, $\exists h\in
-[0,\delta)~\tr{x}{\tau_{min}+h}\notin \bounds_k$.  So, the assumption
+[0,\delta),~\tr{x}{\tau_{min}+h}\notin \bounds_k$.  So, the assumption
 that $\Omega\nsupseteq \reach{H}{[0,t]}{\init}$ is wrong.  Hence,
 $\Omega\supseteq \reach{H}{[0,t]}{\init}$.
 \end{proof}
