@@ -78,10 +78,11 @@ There are also state trajectories without an analytic form.
 %% zonotopes}~(\todo{cite all}).
 %
 \paragraph{Linearization:}  We say that a dynamical system
-$L = \rb{g,U\times V,\Omega}$ where $g\in\fe{2n+m}^n$ \is{why  $2n$?} is
+$L = \rb{g,U\times V,\Omega}$, where $U\in\intervals^m$ and
+$V\in\intervals^n$ are both input sets and $g\in\fe{2n+m}^n$, is
 linear if we have matrices $A\in\reals^{n\times n}$ and
-$B\in\reals^{m\times n}$ such that forall $i\in\set{1,\ldots,n}$,
-$x\in\reals^n$, $u\in U$ and $v\in V$ \is{What are $U$ and $V$?}, we have
+$B\in\reals^{m\times n}$ such that for all $i\in\set{1,\ldots,n}$,
+$x\in\reals^n$, $u\in U$ and $v\in V$, we have
 %
 \begin{align*}
 & g_i\rb{\mymatrix{x^T & u^T & v^T}^T} = \rb{Ax + Bu + v}_i.
@@ -105,14 +106,15 @@ $\reach{H}{t}{\init}\subseteq \reach{L}{t}{\init}$.
 \begin{proof}
 Let us consider a trajectory $\trfn{x}:[0,T)\rightarrow\Omega$ of the
 nonlinear system $H$.  Then there exists an input trajectory
-$\trfn{u}:[0,T)\rightarrow\Omega$ \is{$U$ instead of $\Omega$?} of $H$ such
-that~(\ref{eqn:dynamics}) is true.  Let us define
-$\trfn{v}:[0,T)\rightarrow \reals^n$ \is{Is the range correct? Should it be  $V$?} as $\tr{v}{t} =
+$\trfn{u}:[0,T)\rightarrow U$ of $H$ such that~(\ref{eqn:dynamics}) is
+true.  Let us define $\forall t\in[0,T)~\tr{v}{t} =
 f\rb{\mymatrix{\tr{x}{t}^T & \tr{u}{t}^T}}^T - A\tr{x}{t} -
 B\tr{u}{t}$.  Since $L$ is an overapproximation of $H$, we have
 $\forall t\in[0,T)$, $\tr{v}{t}\in V$.  Then by using
-from~(\ref{eqn:dynamics}) \is{Omit from}, for all $\forall t\in[0,T), \epsilon\in\reals_{>0}$, there
-exists $\delta\in\reals_{>0}$ such that $\forall
+~(\ref{eqn:dynamics}, we have the input trajectory
+$\mymatrix{\trfn{u} \\ \trfn{v}}:[0,T)\rightarrow U\times V$ where
+$\forall t\in[0,T), \epsilon\in\reals_{>0}$, there exists
+$\delta\in\reals_{>0}$ such that $\forall
 h\in[-\delta,\delta]\bigcap\, [0,T)$,
 %
 \begin{align*}
@@ -122,8 +124,8 @@ f_i\rb{ \mymatrix{ \tr{x}{t}^T & \tr{u}{t}^T }^T }}\\
 \rb{A\tr{x}{t} + B\tr{u}{t} + \tr{v}{t}} } < \epsilon.
 \end{align*}
 %
-Therefore, $\tr{x}{t}$ is also a state trajectory of the linear system
-$L$.  So, it follows that
+Therefore, $\tr{x}:[0,T)\rightarrow \reals^n$ is also a state
+trajectory of the linear system $L$.  So, it follows that
 $\reach{H}{t}{\init}\subseteq \reach{L}{t}{\init}$ for all
 $\init\subseteq \Omega$.
 \end{proof}
@@ -134,38 +136,39 @@ So, it would be useful to overapproximate a nonlinear system by a
 linear system while computing flowpipe, as follows.
 %
 \begin{lemma}[Linear overapproximation]\label{lem:linearization}
-Let us consider a bounded interval vector $\Omega\in\intervals$ \is{$\intervals^n$?}, a
-vector $c\in\double^n$ and a nonlinear system $H = \rb{f,U,\Omega}$
-where $f\in\fe{n+m}^n$ and $U\in\intervals^m$ is a bounded interval
-vector.  Let us define $W = \mymatrix{\Omega^T & U^T}^T$,
+Let us consider a bounded interval vector $\Omega\in\intervals^n$ and
+a nonlinear system $H = \rb{f,U,\Omega}$ where $f\in\fe{n+m}^n$ and
+$U\in\intervals^m$ is a bounded interval vector.  Let us define $W
+= \mymatrix{\Omega^T & U^T}^T$,
 \begin{align*}
 \begin{split}
-\stmat{f}{c}{U} = { \iv{{\nabla{f}_{1:n,1:n}}}{ \mymatrix{ \ivmat{c}\\ \mi{U} } } },
+\stmat{f}{\Omega}{U} =  \iv{{\nabla{f}_{1:n,1:n}}}{\mi{W} },
 %
-~\inpmat{f}{c}{U}
-= { \iv{{\nabla{f}_{1:n,n+1:n+m}}}{ \mymatrix{ \ivmat{c}\\ \mi{U}}} },
+~\inpmat{f}{\Omega}{U}
+= \iv{{\nabla{f}_{1:n,n+1:n+m}}}{ \mi{W} },
 \end{split}\\
 %
 \begin{split}
 & \rb{\taylor{f}{\Omega}{U}}_i
-= \frac{1}{2}\sum_{k=1}^{n+m}\sum_{j=1}^{n+m}\iv{\nabla_k\nabla_j{f_i}}{{W}}\rad{W_k}\rad{W_j},~\%
-\text{Taylor error}\\
+= \frac{1}{2}\rad{W}\rb{{\nabla^2f_i}\rb{W}}\rad{W}~\%
+% = \frac{1}{2}\sum_{k=1}^{n+m}\sum_{j=1}^{n+m}\iv{\nabla_k\nabla_j{f_i}}{{W}}\rad{W_k}\rad{W_j},~\%
+\text{Taylor err.}\\
 %
-& \gamma\rb{f,\Omega,U} = 2\rad{ \stmat{f}{c}{U}\Omega +
-\inpmat{f}{c}{U}U
+& \gamma\rb{f,\Omega,U} = 2\rad{ \stmat{f}{\Omega}{U}\Omega +
+\inpmat{f}{\Omega}{U}U
 },~~~\%\text{Floating point error bounds}
 \end{split}\\
 %
 \begin{split}
-\err{f}{\Omega}{U} = \iv{f}{ \mymatrix{ \ivmat{c}\\ \mi{U} } }
+\err{f}{\Omega}{U} = \iv{f}{ \mi{W} }
 + \taylor{f}{\Omega}{U} + \gamma\rb{f,\Omega,U}
-- \stmat{f}{c}{U}\ivmat{c} - \inpmat{f}{c}{U}\mi{U}.
+- \stmat{f}{\Omega}{U}\mi{\Omega} - \inpmat{f}{\Omega}{U}\mi{U}.
 \end{split}~\numberthis\label{eqn:linearize}
 \end{align*}
 Then $
 H \preceq
-\rb{\inf\rb{\stmat{f}{c}{U}},
-\inf\rb{\inpmat{f}{c}{U}},
+\rb{\inf\rb{\stmat{f}{\Omega}{U}},
+\inf\rb{\inpmat{f}{\Omega}{U}},
 U,
 \err{f}{\Omega}{U}
 } $
@@ -173,13 +176,13 @@ U,
 \end{lemma}
 %
 \begin{proof}
-Based on Taylor remainder theorem, for all $i\in\set{1,\ldots,n}$
-and $z\in W$, there exists $r\in W$ such that
+Based on Taylor remainder theorem for expansion around the center
+$\mi{W}$, for all $i\in\set{1,\ldots,n}$ and $z\in W$, there exists
+$r\in W$ such that $f_i(z) = $
 %
 \begin{align*}
-f_i\rb{z} = & f_i\rb{\mymatrix{\ivmat{c} \\ \mi{U}}} + \nabla
-f_i\rb{\mymatrix{\ivmat{c} \\ \mi{U}}}\rb{z - \mymatrix{\ivmat{c} \\ \mi{U}}} +\\
-& \frac{1}{2}\sum_{k=1}^{n+m}\sum_{j=1}^{n+m}\rb{\nabla_k\nabla_j{f_i}\rb{r}}\rb{z-\mymatrix{\ivmat{c} \\ \mi{U}}}_j\rb{z-\mymatrix{\ivmat{c} \\ \mi{U}}}_k~\numberthis\label{eqn:taylor}
+& f_i\rb{\mi{W}} + \nabla f_i\rb{\mi{W}}\rb{z - \mi{W}}
++ \frac{1}{2}\rad{W}\rb{{\nabla^2f_i}\rb{W}}\rad{W}~\numberthis\label{eqn:taylor}
 \end{align*}
 %
 The lemma follows by substituting both $r$ and $z$ by
@@ -268,13 +271,14 @@ $\exp\rb{A\rb{t-\tau}}\in\ivmat{\identity{n}}+\ivmat{A}[0,t]$.  By
 substituting these bounds in the above integrals, we get the result.
 \end{proof}
 %
-In our paper, we introduce a variant of zonotope,
-called \emph{interval zonotope}, and use them to represent the
-overapproximation of the resulting set in~(\ref{eqn:linreach}) on a
-computer.  Interval zonotope is a generalization of zonotope to
-soundly overapproximate floating point errors in set manipulation as
-well as better approximate intersection between sets compared to
-zonotopes.  It is defined as follows.
+In our paper, we introduce a variant of
+zonotope~\cite{girard2005reachability}, called \emph{interval
+zonotope}, and use them to represent the overapproximation of the
+resulting set in~(\ref{eqn:linreach}) on a computer.  Interval
+zonotope is a generalization of zonotope to soundly overapproximate
+floating point errors in set manipulation as well as better
+approximate intersection between sets compared to zonotopes.  It is
+defined as follows.
 %
 \begin{definition}[Interval Zonotope]
 Let us consider $l\in\integers_{>0}$, $\gen\in\intervals^{n\times
@@ -284,16 +288,16 @@ represents the following set.
 %
 \begin{align*}
 \iz{\gen}{\cen}{\bounds}
-= \set{x\in\reals^n \st{\zeta\in[-1,1]^{nl},~x\in\bounds,~x \subseteq \gen\ivmat{\zeta}+\cen} }
+= \set{x\in\reals^n \st{\exists \zeta\in[-1,1]^{nl}:~x\in\bounds,~x \in \gen\ivmat{\zeta}+\cen} }
 \end{align*}
 %
 \end{definition}
-\is{This mathematical definition looks a bit problematic. Is $x$ a set or an element?}
 %
 Approximating the reachable set of a linear system requires
 approximating linear transformation of sets.  The matrix
-multiplication of an interval zonotope and its Minkowski sum \is{Needs a reference? We may also define  it in the preliminaries section.} with an
-interval vector is overapproximated as follows.
+multiplication of an interval zonotope and its Minkowski
+sum~\cite{girard2005reachability} with an interval vector is
+overapproximated as follows.
 %
 \begin{lemma}[Linear transformation]\label{lem:lintrans}
 Let us consider $A\in\intervals^{n\times n}$, $w\in\intervals^n$ and an
@@ -364,8 +368,8 @@ $\epsilon\in[0,\infty)$, an interval zonotope $\zt
 $\rb{\bounds^i}_{i=0}^\infty$ where
 %
 \begin{align*}
-& L_i = \rb{ \inf\rb{\stmat{f}{c}{U}},
-\inf\rb{\inpmat{f}{c}{U}},U,\err{f}{\rb{\bounds^i+[-\epsilon,\epsilon]^n}}{U} }\\
+& L_i = \rb{ \inf\rb{\stmat{f}{d^i}{U}},
+\inf\rb{\inpmat{f}{d^i}{U}},U,\err{f}{\rb{\bounds^i+[-\epsilon,\epsilon]^n}}{U} }\\
 & \bounds^{i+1}
 = \join{\rb{\bounds^i+[-\epsilon,\epsilon]^n}}{\rb{\dismat{A}{L_i}{[0,t]}\bounds^0
 + \dismat{B}{L_i}{[0,t]}U + \dismat{C}{L_i}{[0,t]}V}}.~\numberthis\label{eqn:iter}
@@ -373,7 +377,7 @@ $\rb{\bounds^i}_{i=0}^\infty$ where
 %
 For $K\in\integers_{>0}$, let $\ivflow{H}{t}{K}{\epsilon}{\zt}
 = \begin{cases}\bounds^{K}
-& \text{if}~\rb{\dismat{A}{L_i}{[0,t]}\bounds_0
+& \text{if}~\rb{\dismat{A}{L_i}{[0,t]}\bounds^0
 + \dismat{B}{L}{[0,t]}U + \dismat{C}{L}{[0,t]}V} \subseteq
 \bounds^K\\ \reals^n & otherwise \end{cases}$.  Then,
 $\ivflow{H}{t}{K}{\epsilon}{\zt}\supseteq\reach{H}{[0,t]}{\zt}$.
@@ -383,39 +387,40 @@ $\ivflow{H}{t}{K}{\epsilon}{\zt}\supseteq\reach{H}{[0,t]}{\zt}$.
 We prove this by contradiction.  Let us denote $\Omega
 = \ivflow{H}{t}{K}{\epsilon}{\zt}$.  Let us assume that
 $\Omega\nsupseteq \reach{H}{[0,t]}{\init}$.  So, $\Omega\neq\reals^n$
-and $\Omega = \bounds^k$ \is{We are using lower case $k$ from here, which looks wrong.}.  Then there exists a state trajectory
+and $\Omega = \bounds^K$.  Then there exists a state trajectory
 $\trfn{x}:[0,T)\rightarrow\reals^n$ and $\tau\in[0,t]$ such that $T>t$
-and $\tr{x}{\tau}\notin \bounds^k$.  So, there exists $\tau_{min}$ in
+and $\tr{x}{\tau}\notin \bounds^K$.  So, there exists $\tau_{min}$ in
 $[0,T)$ such that $\tau_{min}
-= \inf\set{t\in[0,T)\st{\tr{x}{\tau}\notin \bounds_k}}$.  
-By using~(\ref{eqn:dynamics}), we can show there exists
+= \inf\set{t\in[0,T)\st{\tr{x}{\tau}\notin \bounds^K}}$.  By
+using~(\ref{eqn:dynamics}), we can show there exists
 $\delta\in[0,\infty)$ such that $\forall h\in[-\delta,\delta]$
-$\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$.
+$\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$
+($\epsilon$ is the positive real considered in the lemma statement).
 Similarly, we can show there exists $r\in[0,\tau_{min})$ such that
-$\tr{x}{r}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$ \is{Do we need to mention what  $\epsilon$ is here?}.  Combining both
+$\tr{x}{r}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$.  Combining both
 inequalities above, we get $\forall
 h\in[-\delta,\delta],~\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{r}}{\epsilon}$.
-As $r\in[0,\tau_{min})$, we get $\tr{x}{r}\in\bounds_k$ \is{$K$ should be superscript. Also, please check below this.}.  So, for all
-$h\in[-\delta,\delta)$, we have $\tr{x}{\tau_{\min}+h}\in \bounds_k +
+As $r\in[0,\tau_{min})$, we get $\tr{x}{r}\in\bounds^K$.  So, for all
+$h\in[-\delta,\delta)$, we have $\tr{x}{\tau_{\min}+h}\in \bounds^K +
 [-\epsilon,\epsilon]^n$.  Also, by the definition of $\tau_{min}$, for
-all $\tau\in[0,\tau_{min}-\delta/2)$, $\tr{x}{\tau}\in \bounds_k +
+all $\tau\in[0,\tau_{min}-\delta/2)$, $\tr{x}{\tau}\in \bounds^K +
 [-\epsilon,\epsilon]^n$. Combining last two inequalities, we get for
 all $\tau\in[0,\tau_{min}+\delta)$ $\tr{x}{\tau}\in\bounds +
 [-\epsilon,\epsilon]^n$.  Therefore,
 $\trfn{x}|_{[0,\tau_{min}+\delta)}$ is a trajectory of
-$\rb{f,U,\bounds_k+[-\epsilon,\epsilon]^n}$
+$\rb{f,U,\bounds^K+[-\epsilon,\epsilon]^n}$
 
 By Lemma~\ref{lem:linearization}, $L_k$ is an overapproximation of
 $\rb{f,U,\bounds^k+[-\epsilon,\epsilon]^n}$ .  As we showed that
 $\trfn{x}|_{[0,\tau_{min}+\delta)}$ is a trajectory of
-$\rb{f,U,\bounds_k+[-\epsilon,\epsilon]^n}$, using
+$\rb{f,U,\bounds^K+[-\epsilon,\epsilon]^n}$, using
 Lemmas~\ref{lem:inclin} and~\ref{lem:linreach} and
 Equation~\ref{eqn:iter}, we get that $\forall h\in [0,\delta)$,
 $\tr{x}{\tau_{min}+h}\in \dismat{A}{L_K}{[0,t]}\bounds^0
 + \dismat{B}{L_K}{[0,t]}U
 + \dismat{C}{L_K}{[0,t]}V \subseteq \bounds^{k}$.  But by the
 definition of $\tau_{min}$, $\exists h\in
-[0,\delta),~\tr{x}{\tau_{min}+h}\notin \bounds_k$.  So, the assumption
+[0,\delta),~\tr{x}{\tau_{min}+h}\notin \bounds^K$.  So, the assumption
 that $\Omega\nsupseteq \reach{H}{[0,t]}{\init}$ is wrong.  Hence,
 $\Omega\supseteq \reach{H}{[0,t]}{\init}$.
 \end{proof}
@@ -425,8 +430,8 @@ $\zt$, we do the following.  Let $\Omega
 = \ivflow{H}{t+\epsilon}{K}{\epsilon}{\zt}$.  From above lemma, we
 have $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\ztset{\zt}}$.  Then we
 compute a linear overapproximation of $\rb{f,U,\Omega}$ as\\ $L
-= \rb{\inf\rb{\stmat{f}{c}{U}},
-\inf\rb{\inpmat{f}{c}{U}},
+= \rb{\inf\rb{\stmat{f}{\Omega}{U}},
+\inf\rb{\inpmat{f}{\Omega}{U}},
 U,
 \err{f}{\Omega}{U}
 }$ based on Lemma~\ref{lem:linearization}.  Next we compute the linear transformation
@@ -454,8 +459,8 @@ that $\tr{x}{0}\in\ztset{\zt}$.  Let $\Omega
 Lemma~\ref{lem:bloat}, we get $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\zt}$.  So,
 $\trfn{y} = \trfn{x}|_{[0,(t+\epsilon)]}$ is a trajectory of $H^\prime
 = \rb{f,U,\Omega}$.  By Lemma~\ref{lem:linearization}, we get that\\ $L
-= \rb{\inf\rb{\stmat{f}{c}{U}},
-\inf\rb{\inpmat{f}{c}{U}},
+= \rb{\inf\rb{\stmat{f}{\Omega}{U}},
+\inf\rb{\inpmat{f}{\Omega}{U}},
 U,
 \err{f}{\Omega}{U}
 }$ is an overapproximation of $H^\prime$ .  By Lemma~\ref{lem:inclin},
