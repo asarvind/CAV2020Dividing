@@ -1,10 +1,11 @@
+\subsection{Notation}
 The set of real numbers is $\reals$, integers is $\integers$, and
 complex numbers is $\cnums$.  The subset of real numbers that can be
 represented in double precision floating point format is $\double$.
 For $\Psi\subseteq\reals$, $a\in\reals$ and
 $\bowtie\in\set{\geq,\leq,>,<}$, we denote $\Psi_{\bowtie a} = \set{
   x\in\Psi \st x \bowtie a }$.  For example, $\double_{>3.2} =
-{x\in\double\st{x>3.2}}$.  The supremum of a subset of real numbers
+\set{x\in\double\st{x>3.2}}$.  The supremum of a subset of real numbers
 $\Psi\subseteq\reals$ is $\sup\rb{\Psi}\in\reals\bigcup\set{\infty}$
 and the infimum is $\inf\rb{\Psi}\in\reals\bigcup\set{-\infty}$.  The
 absolute value of a real number $x$ is $\abs{x} = \sup\set{x,-x}$.
@@ -42,41 +43,36 @@ called \emph{continuous} if $\forall
 x\in\Psi,\forall\epsilon\in\reals_{>0}$, there exists
 $\delta\in\reals^n$ such that if $y\in\ball{x}{\delta}\bigcap\Psi$,
 then $f(y)\in\ball{f(x)}{\epsilon}$.  A function
-$g:\Psi\rightarrow\reals^m$ is called \emph{piecewise continuous} if
+$f:\Psi\rightarrow\reals^m$ is called \emph{piecewise continuous} if
 there exists a finite number of sets $\Psi_1,\ldots,\Psi_k$ such that
-$\bigcup_{i=1}^k\Psi_i=\Psi$ and $f_i:\Psi_i\bigcap\Psi\rightarrow
-\reals^m$ where $\forall x\in\Psi_i~f_i\rb{x}=g\rb{x}$ is continuous
+$\bigcup_{i=1}^k\Psi_i=\Psi$ and $f_i:\Psi_i\rightarrow
+\reals^m$ where $\forall x\in\Psi_i~f_i\rb{x}=f\rb{x}$, is continuous
 for all $i\in\set{1,\ldots,k}$.
-\is{$\Psi_i\bigcap\Psi$ is $\Psi_i$, right? Also, why do we need to introduce $g(x)$ here?}
 
-A partial function $f:\reals^n\rightarrow \reals$ is a relation \is{Should we not write a relation as a set, not as an element?}
-$(x,f(x))\in\reals^n\times\reals$ such that $f(x)$ is exists for a
-subset of $\reals^n$, but not necessarily all of $\reals^n$.  For
-every $n\in\integers_{>0}$, we consider
-$\fe{n}\subset\set{f:\reals^n\reals\st{f \text{ is a partial
-      function}}}$, \is{There is an error here, $\rightarrow $ missing. Also, should it be $subset$ or $subseteq$?} defined recursively as follows.
+A partial function $f:\reals^n\rightarrow \reals^m$ is a relation $f
+\subseteq\reals^n\times\reals^m$ such that if $(x,y_1),(x,y_2)\in
+f$, then $y_1=y_2 = f(x)$.  The domain of a partial function
+$f:\reals^n\rightarrow\reals^m$ is $\dom{f}
+= \set{x\in\reals^n\st{\exists y\in\reals^m,~(x,y)\in f}}$.  Given two
+partial functions $f:\reals^n\rightarrow\reals^m$ and
+$g:\reals^m\rightarrow\reals^p$, their composition is \\$f\circ g
+= \set{(x,y)\in\reals^{n\times p}\st{\exists z\in\reals^m~(x,z)\in
+f,~(z,y)\in g}}$.  For every $n\in\integers_{>0}$, we consider the
+subset $\fe{n}$ of partial functions, defined recursively as follows.
 %
 \begin{enumerate}
-\item $f\in\fe{n}$ if $\exists a\in\double^n,~\forall x\in\reals^n,~
-  f\left(x\right) = a^Tx$. 
-\item $\forall f_1,f_2\in\fe{n}, \set{ \frac{1}{f}, f_1+f_2, f_1-f_2, f_1f_2}\subseteq\fe{n}$. \is{$f$ missing in $\forall$?}
-\item $\forall f\in\fe{n}, \set{ \sin\circ{f}, \cos\circ{f}, \exp\circ{f}, \log\circ{f} } \subseteq \fe{n}$. \is{Do we have to define $\circ$?}
+\item $f\in\fe{n}$ if $\exists a\in\double^n,f = \set{(x,a^Tx)\st{x\in\reals^n}}$. 
+\item $\forall f_1,f_2\in\fe{n}, \set{ \frac{1}{f_1}, f_1+f_2, f_1-f_2, f_1f_2}\subseteq\fe{n}$.
+\item $\forall f\in\fe{n}, \set{ \sin\circ{f}, \cos\circ{f}, \exp\circ{f}, \log\circ{f} } \subseteq \fe{n}$. 
 \end{enumerate}
 %
-The domain of a partial function $f\in\fe{n}$, denoted $\dom{f}$, is
-the collection of all possible $x\in\reals^n$ such that $f\rb{x}$
-exists by the above definition.  For example, $f\in\fe{2}$ where
-$f\rb{x,y} = \sin(x)\log(y) + \frac{\exp{y}}{x}$ which exists only
-when $x\neq 0$ and $y\geq 0$.  Therefore, the domain of this partial
-function is and $\dom{f} = \set{(x,y)\in\reals^2\st x\neq 0, y>0}$. \is{an extra ``and'' in the above line?}
-
-We say that the \emph{symbolic derivative} of a partial function
-$f\in\fe{n}$ is a tuple of partial functions $\nabla f = \rb{\nabla_1
-  f,\ldots,\nabla_n f}\in\fe{n}^n$ if all of the following are true.
+We say that the \emph{symbolic derivative} of
+$f\in\fe{n}$ exists and is equal to a tuple of partial functions $\nabla f = \rb{\nabla_1
+f,\ldots,\nabla_n f}\in\fe{n}^n$ if all of the following are true.
 %
 \begin{itemize}
-\item $\forall i\in\set{1,\ldots,n}$, $\dom{f}\subseteq \dom{\nabla f}$. \is{$\nabla_i f$?}
-\item For all \is{for all in symbol?} $x\in\dom{f}$ and $\forall\epsilon\in\reals_{>0}$, there exists $r\in\reals_{>0}$ 
+\item $\forall i\in\set{1,\ldots,n}$, $\dom{f}\subseteq \dom{\nabla_i f}$.
+\item $\forall x\in\dom{f}$ and $\forall\epsilon\in\reals_{>0}$, there exists $r\in\reals_{>0}$ 
 such that $\forall h\in\ball{0}{r}$, we have $(x+h)\in\dom{f}$ and
 %
 \begin{align*}
@@ -93,65 +89,67 @@ $\frac{\partial{f}}{\partial{x}}\left|_{x,y}\right. =
 \frac{-sin(y)}{x^2}$ and
 $\frac{\partial{f}}{\partial{y}}\left|_{x,y}\right. =
 \frac{\rb{cos(y)}}{x}$. So, the pair of partial functions $\rb{
-  (x,y)\rightarrow\frac{-sin(y)}{x^2}, ~(x,y)\rightarrow
-  \frac{\rb{cos(y)}}{x} }$ is a symbolic derivative of $f$.
-  \is{Why $\rightarrow$, why not comma? It is a relation.}
-  \is{We can remove () around $cos(y)$}
+  \rb{(x,y),\frac{-sin(y)}{x^2}}, \rb{(x,y), \frac{{cos(y)}}{x}} }$
+  is a symbolic derivative of $f$.  
 \end{example}
 %
-\emph{Remark:}  For any function $f\in\fe{n}$, the symbolic
-derivative $\nabla{f}$ and the symbolic double derivative
-$\nabla^2f\in\fe{n}^{n\times n}: \rb{\nabla^2 f}_{ij} =
-\nabla_j\nabla_i f$ exist.
+\emph{Remark:}  For the specific subset of partial functions $\fe{n}$
+  defined above,
+  if $f\in\fe{n}$, the symbolic derivative $\nabla{f}$ and the
+symbolic double derivative $\nabla^2f\in\fe{n}^{n\times
+n}: \rb{\nabla^2 f}_{ij} =
+\nabla_j\nabla_i f$ exist.  They can be computed by using
+basic rules of calculus.
 %
 
-\paragraph{Interval arithmetic}:  For $a,b\in\double$ such that $a<b$, we
+\subsection{Use of interval arithmetic}
+For $a,b\in\double$ such that $a<b$, we
 denote\\ $\interval{a}{b} = \set{x\in\reals\st a\leq x\leq b}$,
-$[-\infty,a] = \set{x\in\reals\st x\leq a}$, $[a,\infty) =
-  \set{x\in\reals\st a\leq x}$ and $[-\infty,\infty] = \reals$.  We
-  denote the set of all intervals as $\intervals$.  For any partial
-  function $f\in \fe{n}$ and interval $x\in\dom{f}$ \is{could we use a different notation for an interval, say $\bar{x}$ or something else?}, we use interval
-  arithmetic described in the Boost library~\cite{todo} to correctly
-  bound the image of $f$ over $a$, denoted $\iv{f}{x} \supseteq
-  \set{f\rb{y}\st{y\in x} }$. 
-  \is{Could we avoid mentioning about Boost library here? It can be mentioned in the Implementation subsection.}
-  Similarly, for $u,v\in\intervals$, the
-  interval arithmetic in~\cite{todo} is used to compute interval
-  bounds $uv,(u+v),(u-v)\in\intervals$ such that
-  $uv\supseteq\set{xy\st x\in u, y\in v}$,
-  $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
-  $\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.
-%
+$[-\infty,a] = \set{x\in\reals\st x\leq a}$, $[a,\infty)
+= \set{x\in\reals\st a\leq x}$ and $[-\infty,\infty] = \reals$.  We
+denote the set of all intervals as $\intervals$.  For
+$u,v\in\intervals$, interval arithmetic (see~\cite{todo}) gives us interval
+bounds $uv,(u+v),(u-v)\in\intervals$ such that $uv\supseteq\set{xy\st
+x\in u, y\in v}$, $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
+$\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.  Similarly, for a
+partial function $f\in \fe{n}$ and interval $u\in\dom{f}$, we use
+interval arithmetic to correctly bound the image of $f$ over $a$,
+denoted $\iv{f}{u} \supseteq \set{f\rb{x}\st{x\in u} }$.
+
+
 The set of $n\times m$ interval matrices is $\intervals^{n\times m}$,
 and $n$-dimensional interval vectors is $\intervals^{n\times 1}$,
-conveniently denoted by $\intervals^{n}$.  For $A\in\reals^{n\times m}$
-and $X\in\intervals^{n\times m}$, we say $A\in X$ if $\forall
-\rb{i,j}\in\set{1,\ldots,n}^2, A_{ij}\subseteq X_{ij}$.  The interval
+conveniently denoted by $\intervals^{n}$.  For $A\in\reals^{n\times
+m}$ and $\bar{X}\in\intervals^{n\times m}$, we say $A\in \bar{X}$ if
+$\forall
+\rb{i,j}\in\set{1,\ldots,n}^2, A_{ij}\subseteq \bar{X}_{ij}$.  The interval
 matrix $X$ is said to be bounded if $\forall
 i\in\set{1,\ldots,n}, \forall j\in\set{1,\ldots,m}, \exists
-a,b\in\double: X_{ij} = [a,b]$.  The matrix product $XY$ of two
-interval matrices $X\in\intervals^{n\times p}$ and
-$Y\in\intervals^{p\times m}$ is $XY = \sum_{k=1}^pX_{ik}Y_{kj}$. The
-sum of interval matrices $X$ and $Y$ is $X + Y$, where $\rb{X+Y}_{ij} = X_{ij} +
-Y_{ij}$.  It follows from the inclusion property of interval
-arithmetic that if $A\in X$ and $B\in Y$, then $AB\in XY$ and $A+B\in
-X+Y$.  If $X\in\double^{n\times m}$, then $\ivmat{X}\in\intervals$ is
-an interval matrix such that $\forall
+a,b\in\double: \bar{X}_{ij} = [a,b]$.  The matrix product
+$\bar{X}\bar{Y}$ of two interval matrices
+$\bar{X}\in\intervals^{n\times p}$ and $\bar{Y}\in\intervals^{p\times
+m}$ is $\bar{X}\bar{Y} = \sum_{k=1}^p\bar{X}_{ik}\bar{Y}_{kj}$. The
+sum of interval matrices $\bar{X}$ and $\bar{Y}$ is $\bar{X}
++ \bar{Y}$, where $\rb{\bar{X}+\bar{Y}}_{ij} = \bar{X}_{ij}
++ \bar{Y}_{ij}$.  It follows that if $A\in \bar{X}$ and
+$B\in \bar{Y}$, then $AB\in \bar{X}\bar{Y}$ and
+$A+B\in \bar{X}+\bar{Y}$.  If $X\in\double^{n\times m}$, then
+$\ivmat{X}\in\intervals$ is an interval matrix such that $\forall
 (i,j)\in\set{1,\ldots,n}\times\set{1,\ldots,m}, \ivmat{X}_{ij} =
-[X_{ij},X_{ij}]$.  For an interval matrix $X$, we denote $\mi{X} =
-\frac{\ivmat{\sup\rb{X}} + \ivmat{\inf\rb{X}}}{[2,2]}$ and $\rad{X} =
-X - \mi{X}$.  The diagonal interval matrix containing elements of an
-interval vector $x$ \is{probably requires a  different notation.} along its diagonal is denoted $\diag{x}$.  If
+[X_{ij},X_{ij}]$.  For an interval matrix $\bar{X}$, we denote $\mi{\bar{X}} =
+\frac{\ivmat{\sup\rb{\bar{X}}} + \ivmat{\inf\rb{\bar{X}}}}{[2,2]}$ and $\rad{X} =
+\bar{X} - \mi{\bar{X}}$.  The diagonal interval matrix containing elements of an
+interval vector $u$ along its diagonal is denoted $\diag{u}$.  If
 $f\in\fe{n}^{m\times p}$ is a matrix of function expressions, then
-$\iv{f}{x}\in \intervals^{m\times p}$ is an interval matrix where
-$\rb{\iv{f}{x}}_{ij} = \iv{f_{ij}}{x}$.  For $x,y\in\intervals$, we
-denote $\meet{x}{y} =
-[\sup\rb{\inf\rb{x},\inf\rb{y}},\inf\rb{\sup\rb{x},\sup\rb{y}}]$ and
-$\join{x}{y} = [\inf\rb{x\bigcup y}, \sup\rb{x\bigcup y}]$.  If
-$X,Y\in\intervals^{n\times m}$, then
-$\meet{X}{Y},\join{X}{Y}\in\intervals^{n\times m}$ such that
-$\rb{\meet{X}{Y}}_{ij} = \meet{X_{ij}}{Y_{ij}}$ and
-$\rb{\join{X}{Y}}_{ij} = \join{X_{ij}}{Y_{ij}}$.
+$\iv{f}{u}\in \intervals^{m\times p}$ is an interval matrix where
+$\rb{\iv{f}{u}}_{ij} = \iv{f_{ij}}{u}$.  For $u,v\in\intervals$, we
+denote $\meet{u}{v} =
+[\sup\rb{\inf\rb{u},\inf\rb{v}},\inf\rb{\sup\rb{u},\sup\rb{v}}]$ and
+$\join{u}{v} = [\inf\rb{u\bigcup v}, \sup\rb{u\bigcup v}]$.  If
+$\bar{X},\bar{Y}\in\intervals^{n\times m}$, then
+$\meet{\bar{X}}{\bar{Y}},\join{\bar{X}}{\bar{Y}}\in\intervals^{n\times m}$ such that
+$\rb{\meet{\bar{X}}{\bar{Y}}}_{ij} = \meet{\bar{X}_{ij}}{\bar{Y}_{ij}}$ and
+$\rb{\join{\bar{X}}{\bar{Y}}}_{ij} = \join{\bar{X}_{ij}}{\bar{Y}_{ij}}$.
 %
 In addition to the above intervals, we denote
 %
