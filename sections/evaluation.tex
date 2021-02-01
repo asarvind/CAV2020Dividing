@@ -1,19 +1,22 @@
 We evaluate our intersection of unions method on three examples, i.e.,
 the illustrative Example~\ref{eg:ill} in Section~\ref{sec:system}, a
-seven dimensional model of autonomous car with one input from Lavaei
-et. al.~\cite{lavaei2020formal}, twelve dimensional model of quadrotor
+seven dimensional model of an autonomous car with one input from Lavaei
+et. al.~\cite{lavaei2020formal}, and a twelve dimensional model of a quadrotor
 from ARCH 2020 workshop~\cite{geretti2020arch}.  For the illustrative
 example, we compare the flowpipe accuracy of our intersection of
 unions (IoU) method with that of only
 \emph{union of interval zonotopes} based on the performance index in
 Equation~\ref{eqn:pi} proposed by Althoff
-et.al.~\cite{althoff2008reachability} .  On the other two real world
+et.al.~\cite{althoff2008reachability}.  
+On the other two real world
 examples, besides the performance index~(\ref{eqn:pi}), we compare our
 method with state-of-the-art methods, i.e., polynomial
 zonotopes~\cite{althoff2013reachability} in CORA
 tool\footnote{\url{https://tumcps.github.io/CORA/}} and Taylor
 models~\cite{chen2012taylor} in
 Flowstar\footnote{https://flowstar.org}.
+
+\is{Why don't we apply all these three methods on the three examples?}
 
 For computation of symbolic derivatives, we use Sympy Python
 software~\cite{10.7717/peerj-cs.103} and for interval arithmetic, we
