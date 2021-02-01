@@ -34,17 +34,19 @@ in~\cite{althoff2008reachability}(Equation~\ref{eqn:pi} above).  The
 initial set has to be large enough to demonstrate the effect of linearization error, which is $X_0 = [-1,1]^3$.
 
 \emph{Settings:}  We ran both the IoU and unions algorithm on a 1.4 GHz
-laptop with 4 GB ram, 1600 MHz DDR3 with 4 virtual cpu cores.  We
-consider 3 different number of divisions for comparision, i.e.,
+laptop with 4 GB ram, 1600 MHz DDR3 with 4 virtual cpu cores.
+\is{If you are usimg the same machine configuration for all the experiments, then the above line should move before Section 4.1}
+We consider $3$ different number of divisions for comparision, i.e.,
 $2^\eta:\eta = 2, 3,4$, or $4, 8$ and $16$ divisions,
 respectively. The order of interval zonotope is $l = 200$ and the time
-step size is $\delta = 0.01$ s.  Furthermore, $\epsilon = 10^{-12}$
+step size is $\delta = 0.01\si{\second}$.  Furthermore, $\epsilon = 10^{-12}$
 and $K = 20$.  The normalization error $\rho$ for division in the union method is
 the Taylor error before splitting $\taylor{f}{X_0}{U}$.
 
 \emph{Results:}  The upper and lower bounds on flowpipes at uniformly spaced time
 points for the $x$ and $y$ variables is
-shown in Figure~\ref{fig:ill}.  The figure clearly demonstrates that our IoU
+shown in Figure~\ref{fig:ill}. 
+The figure clearly demonstrates that our IoU
 flowpipe is far more accurate than the union flowpipe for $x/y$
 coordinates.  The bounds for $\theta$ are almost similar for both
 methods and all types of divisions because of very less linearization
@@ -52,6 +54,7 @@ error $(\le 10^{-6})$.  The computation times for our IoU method are $6\si{\seco
 per union.  The computation times will reduce significantly by using
 more cpu cores.  We use more cpu cores for the higher dimensional
 examples that we evaluate latter.
+\is{The parallel computation aspect needs more details. May be in the Algorithm section, you may say how to parallelize your algorithm.}
 %
 \begin{figure}
   \includegraphics[scale = 0.7]{illImages/Ub.png}
@@ -122,7 +125,7 @@ $x_4$, yaw angle is $x_5$, yaw rate is $x_6$ and slip angle is $x_7$.
 The parameter values are
 %
 $ g = 9.81, m = 1093.3, \mu = 1.0489, l_f = 1.156, l_r = 1.422, h_{cg}
-  = 0.574, I_z = 1791.6, C_{Sf} = 20.89, C_{Sr} = 20.89, r = 4 $.  We
+  = 0.574, I_z = 1791.6, C_{Sf} = 20.89, C_{Sr} = 20.89, r = 4$ \is{Worth mentioning that the inputs are in SI}.  We
   consider the input set $u\in U = [-0.01,0.01]$ and the initial set
   $X_0 =
   [-1,1]\times[-0.5,0.5]\times[-0.5,0.5]\times[5,6]\times[-0.25,0.25]\times[-0.2,0.2]\times[-0.25,0.25]$.
@@ -131,12 +134,12 @@ $ g = 9.81, m = 1093.3, \mu = 1.0489, l_f = 1.156, l_r = 1.422, h_{cg}
   with high expansion order and polynomial zonotopes in CORA with
   large number of generators and dependent generators.
 
-\emph{Settings:}  The simulation time step is $\delta = 0.005$ s.  For
-  the Flowstar Taylor model, the order of Taylor expansion is $9$.  For
-  the CORA polynomial zonotope, generator order is $400$ and order of
-  dependent generators is $2000$.  The zonotope order of our IoU
-  method and the union method is $l=400$.  Also, $K = 20$ and
-  $\epsilon = 10^{-12}$.  For the only union method, the normalization error
+\emph{Settings:}  The simulation time step is $\delta = 0.005\si{\second}$.  
+For the Flowstar Taylor model, the order of Taylor expansion is $9$.  
+For the CORA polynomial zonotope, the generator order is $400$ and the order of dependent generators is $2000$.  
+The zonotope order of our IoU method and the union method is $l=400$.  
+Also, $K = 20$ and $\epsilon = 10^{-12}$.  
+For the only union method, the normalization error
   error $\rho$ for division is the Taylor error before division
   $\taylor{f}{X_0}{u}$.  We ran our IoU method and the union method on
   an AWS c5a.16xlarge cluster with 64 virtual cpus.  For Flowstar, we
@@ -145,31 +148,35 @@ $ g = 9.81, m = 1093.3, \mu = 1.0489, l_f = 1.156, l_r = 1.422, h_{cg}
 
 \emph{Results:}  The upper and lower bounds of flowpipe for different
   methods is plotted over times in $[0 s,5 s]$ in
-  Figure~\ref{fig:flowcar}.  But Flowstar could not complete the Taylor
-  model flowpipe simulation beyond 1.15 secs due to large
-  time discretization error.  The bottom 3 lines in the figure correspond
+  Figure~\ref{fig:flowcar}.  
+  Flowstar could not complete the Taylor
+  model flowpipe simulation beyond $1.15\si{\second}$ due to large time discretization error.  
+  The bottom 3 lines in the figure correspond
   to our IoU flowpipe method, which show convergence while all other
-  plots are diverging.  The figure clearly shows a high increase in
+  plots are diverging.  
+  The figure clearly shows a high increase in
   accuracy by using intersection of unions compared to other methods.
   The simulation times are given in Table~\ref{tab:comptimes}.  The
-  preprocessing time before simulation for IoU method is 18s.
+  preprocessing time before simulation for IoU method is $18\si{\second}$.
   %
+  
 \subsection{$12$-dimensional model of quadrotor}
-We consider the $12$-dimensional model of quadrotor with three inputs
+We consider the $12$-dimensional model of a quadrotor with three inputs
 presented in the ARCH 2020 friendly
 competition~\cite{geretti2020arch}, whose dynamics is given in the
 appendix.  It has a $12$-dimensional state vector $x
 = \rb{p_n,p_e,h,u,v,w,\phi,\theta,\psi,p,q,r}$, where $h$ is the
 height of the quadrotor and a $3$-dimensional input vector $u
-= \rb{u_1,u_2,u_2}$.  We take a larger initial set that that
+= \rb{u_1,u_2,u_2}$.  We take a larger initial set than the one
 given in the competition~\cite{geretti2020arch} so that there is significant
 linearization error in the flowpipe.  Our initial set is $X_0 =
 [-0.8,0.8]^6\times[-0.5,0.5]^2\times[0,0]\times [-1,1]^2\times[0,0]$.
 The input set is $\rb{u_1,u_2,u_3}\in
 [-0.99,1.01]\times[-0.01,0.01]^2$.
+\is{It would have been good to mention the control goal here.}
 
-\emph{Settings:}  The simulation time step is $\delta = 0.01$ s.  For
-  Flowstar Taylor model, the order of Taylor expansion is $7$.  For
+\emph{Settings:}  The simulation time step is $\delta = 0.01\si{\second}$.  
+For Flowstar Taylor model, the order of Taylor expansion is $7$.  For
   the CORA polynomial zonotope, generator order is $200$ and order of
   dependent generators is $2000$.  The zonotope order of our IoU
   method and the union method is $l=200$.  Also, $K = 20$ and
@@ -180,6 +187,8 @@ The input set is $\rb{u_1,u_2,u_3}\in
   used AWS t2.large instance.  We ran CORA in MATLAB 2019a on the
   computer specified in the previous illustrative example.  The
   simulation time horizon is $[0, 5 s]$.
+  
+\is{The setting is mostly the same as the previous examples. Could we create a subsection on experimental setup before the examples and put these details there?}
 
 \emph{Results:}  Our IoU method for each of the $8$, $16$ and $32$ divisions per
   eigenvector direction showed much higher accuracy than other
@@ -195,6 +204,7 @@ The input set is $\rb{u_1,u_2,u_3}\in
   in Figure~\ref{fig:flowquadrotor}.  The figure clearly shows high
   increase in accuracy by using intersection of unions compared to
   other methods.  The computation times are given in Table~\ref{tab:comptimes}.
+  \is{Computation times may be misleading, as different algorithms are running on different machines. However, it is a good information.}
 %
 \begin{figure}
 {\normalsize $\text{Note: Only union method resulted in infinite bounds (not plotted).}$}
