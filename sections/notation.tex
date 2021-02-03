@@ -101,20 +101,19 @@ n}: \rb{\nabla^2 f}_{ij} =
 \nabla_j\nabla_i f$ exist.  They can be computed by using
 basic rules of calculus.
 %
-
 \subsection{Use of interval arithmetic}
-For $a,b\in\double$ such that $a<b$, we
-denote\\ $\interval{a}{b} = \set{x\in\reals\st a\leq x\leq b}$,
-$[-\infty,a] = \set{x\in\reals\st x\leq a}$, $[a,\infty)
-= \set{x\in\reals\st a\leq x}$ and $[-\infty,\infty] = \reals$.  We
-denote the set of all intervals as $\intervals$.  For
-$u,v\in\intervals$, interval arithmetic (see~\cite{todo}) gives us interval
-bounds $uv,(u+v),(u-v)\in\intervals$ such that $uv\supseteq\set{xy\st
-x\in u, y\in v}$, $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
-$\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.  Similarly, for a
-partial function $f\in \fe{n}$ and interval $u\in\dom{f}$, we use
-interval arithmetic to correctly bound the image of $f$ over $a$,
-denoted $\iv{f}{u} \supseteq \set{f\rb{x}\st{x\in u} }$.
+For $a,b\in\double$ such that $a<b$, we denote\\ $\interval{a}{b} =
+\set{x\in\reals\st a\leq x\leq b}$, $[-\infty,a] = \set{x\in\reals\st
+  x\leq a}$, $[a,\infty) = \set{x\in\reals\st a\leq x}$ and
+  $[-\infty,\infty] = \reals$.  We denote the set of all intervals as
+  $\intervals$.  For $u,v\in\intervals$, interval arithmetic
+  (see~\cite{bronnimann2006design}) gives us interval bounds
+  $uv,(u+v),(u-v)\in\intervals$ such that $uv\supseteq\set{xy\st x\in
+    u, y\in v}$, $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
+  $\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.  Similarly, for a
+  partial function $f\in \fe{n}$ and interval $u\in\dom{f}$, we use
+  interval arithmetic to correctly bound the image of $f$ over $a$,
+  denoted $\iv{f}{u} \supseteq \set{f\rb{x}\st{x\in u} }$.
 
 
 The set of $n\times m$ interval matrices is $\intervals^{n\times m}$,

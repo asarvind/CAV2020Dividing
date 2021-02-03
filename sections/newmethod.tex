@@ -1,82 +1,74 @@
-We consider an $n$-dimensional nonlinear system with $m$-inputs
-$H=\rb{f,U,\reals^n}$.  A flowpipe of $H$ in a time interval $[0,T)$
-from an initial set $\init\in\intervals^n$ is a mapping
-$\trfn{X}:[0,T]\rightarrow \set{\Omega\st{\Omega\subseteq \reals^n}}$
-such that $\forall t\in[0,T]~\reach{H}{t}{Q}\subseteq \tr{X}{t}$. 
-\is{What is $Q$ here?}
-We
-will first discuss the motivation for using an intersection of union sets
-for representing flowpipes.
+\emph{Review:}  In the
+linearization based flowpipe computation proposed by Althoff
+et. al.~\cite{althoff2008reachability}, at any time $t$ where
+$\tr{X}{t} = \init$, first a linear system overapproximation
+$\rb{\inf\rb{\stmat{f}{\Omega}{U}},
+\inf\rb{\inpmat{f}{\Omega}{U}},U,\err{f}{\Omega}{U}}$  of the
+nonlinear system $H$ is computed in a neighborhood $\Omega$ of
+$\init$.  The set $\Omega$ is computed as a crude over-approximation
+of the reachable set between $[0,t+\delta]$ for a small $\delta$, like
+the interval over-approximation in Lemma~\ref{lem:bloat}.  Then, a
+more accurate flowpipe is computed based
+on the linearized dynamics.  Therefore, the accuracy of flowpipe
+$\tr{X}{[t,t+\delta]}$ is positively correlated with the Taylor error
+in linearization $\taylor{f}{\Omega}{U}$ in the region $\Omega$.
+Since $\Omega$ is a small neighborhood of $\init$, this Taylor error
+is close to correlated with the Taylor error
+$\taylor{f}{\overline{\init}}{U}$ inside an interval
+overapproximation $\overline{\init}$ of $\init$.  The Taylor error
+inside $\overline{\init}$ is positively correlated with the bounds of
+$\overline{\init}$ based an Equation in~\ref{eqn:linearize}.
+Therefore,~\cite{althoff2008reachability} proposed to reduce the
+linearization error by dividing the reachable set $\init$ into smaller
+sets based on a performance index and computing the next flowpipe as
+the union of flowpipes.  However, the union method
+in~\cite{althoff2008reachability} has an important drawback, explained
+below.  We address this drawback by using intersection of unions
+instead of just the union.
 %
 \subsection{Motivation for intersection of unions}
-In the previous section, we showed how to compute an overapproximation
-of the reachable set at time $t$ starting from an interval zonotope
-$\zt = \rb{\gen,\cen,\bounds}$.
-%% Using that, we can compute a flowpipe inductively as follows.  We
-%% divide $[0,T]$ into small time intervals
-%% $\rb{[0,\delta],[\delta,2\delta],\ldots,[N\delta,T]}$.  Then,
-%% %
-%% \begin{enumerate}
-%% \item $\tr{X}{0} = \ztset{\rb{\diag{\sup\rb{\rad{X_o}}},\mi{X_0},X_0}}$,
-%% i.e. convert initial set to an interval zonotope representation.
-%% \item $\forall i\in\integers_{\geq 0}\tr{X}{(i+1)\delta} = \ztset{\flow{H}{t}{K}{\epsilon}{\tr{X}{i\delta}}}$.
-%% \item $\forall t\in[i\delta,(i+1)\delta]\tr{X}{t} = {\ivflow{H}{t}{K}{\epsilon}{\tr{X}{i\delta}}}$.
-%% \end{enumerate}
-%% %
-However, the above method incurs a Taylor error
-$\taylor{f}{\ivflow{H}{t}{K}{\epsilon}{\ztset{\zt}}}{U}$.  The Taylor
-error is positively correlated to the the width
-$\sup\rb{\rad{\bounds}}$ of the interval bounds of the interval
-zonotope~(see Equations~\ref{eqn:linearize}).  So, we can reduce the
-linearization error by dividing the interval zonotope into smaller
-sets and computing the next reachable set as union of reachable sets
-of constituting pieces.  But dividing a set into sets of a given
-fixed size results in exponential number of divisions in the dimension
-of the state space, which can be computationally prohibitive.
-Instead, we can divide the reach set into a fixed number of subsets.
-For a fixed number of divisions $2^\eta\in\integers$, there are many
-ways of dividing the reachable set.  Then, we have to find a division
-that minimizes the Taylor error.  In this context, a performance index
-was proposed by bAlthoff et.al.~\cite{althoff2008reachability} to
-divide reachable sets as follows.  A reachable set $\Omega$ is divided
-into two sets $\Omega_1$ and $\Omega_2$ which minimizes the following
-quantity for a user chosen normalization error $\rho\in\reals^n_{>0}$.
+In Althoff. et. al~\cite{althoff2008reachability}, a reachable set
+$\init$ is divided into two sets $\init_1$ and $\init_2$ which
+minimizes the following quantity for a user chosen normalization error
+$\rho\in\reals^n_{>0}$.
 %
 \begin{align*}
-\sup_{i=1}^n\frac{{\sup{\taylor{f}{\Omega_1}{U}}}_i}{\rho_i}\sup_{i=1}^n\frac{\sup{\taylor{f}{\Omega_2}{U}}_i}{\rho_i}.~\numberthis\label{eqn:pi}
+\sup_{i=1}^n\frac{{\sup{\taylor{f}{\overline{\init_1}}{U}}}_i}{\rho_i}\sup_{i=1}^n\frac{\sup{\taylor{f}{\overline{\Omega_2}}{U}}_i}{\rho_i}.~~\text{~\cite{althoff2008reachability}}~\numberthis\label{eqn:pi}
 \end{align*}
 %
-\paragraph{Drawback:}  Since the linearization error is
-multi-dimensional, minimizing it is a multi-objective optimization
+For obtaining smaller divisions, the above pairwise division is used
+recursively.
+
+\emph{Drawback:}  Since the Taylor error
+$\taylor{f}{\overline{\init}}{U}$ is multi-dimensional vector, minimizing its
+bounds $\sup{\taylor{f}{\overline{\init}}{U}}$ is a multi-objective optimization
 problem which does not have a single best solution.  But the above
 performance index is a one dimensional measure of the overall
 linearization error.  Minimizing this one dimensional performance
 index does not necessarily reduce signifcantly the linearization error
 along all coordinates.  For illustration, let us consider the
-nonlinear system in Example~\ref{eg:ill}.  Let $\Omega =
+nonlinear system in Example~\ref{eg:ill}.  Let $\init =
 [-1,1]\times[-0.5,0.5]\times[-0.1,0.1]$ be the reachable set at a time
 point and we take the linearization error before splitting $\rho
-= \taylor{f}{\Omega}{U}$ as the normalization error for splitting.  Using the
-above performance index, we get that $\Omega$ should be split along
-$x$-axis into $\Omega_1 = [-1,0]\times[-0.5,0.5]\times[-0.1,0.1]$ and
-$\Omega_2 = [0,1]\times[-0.5,0.5]\times[-0.1,0.1]$.  However, there
+= \taylor{f}{\init}{U}$ as the normalization error for splitting.
+Using the above performance index, we get that $\init$ should be split
+along $x$-axis into $\init_1 = [-1,0]\times[-0.5,0.5]\times[-0.1,0.1]$
+and $\init_2 = [0,1]\times[-0.5,0.5]\times[-0.1,0.1]$.  However, there
 will be very little reduction in the linearization error along
 $y$-axis, which least depends on the width along $x$-axis due to the
 multiplication coefficient $0.1$ of $xy$ in $f_3$.  Instead, the best
 division to minimize the $y$-directional linearization error is to
-divide along $y$-coordinate as $\Omega =
-[-1,1]\times[-0.5,0]\times[-0.1,0.1]$ and $\Omega_2 =
+divide along $y$-coordinate as $\init_1 =
+[-1,1]\times[-0.5,0]\times[-0.1,0.1]$ and $\init_2 =
 [-1,1]\times[0,0.5]\times[-0.1,0.1]$.  This means reducing the
 linearization error using the above performance index need not
 significantly reduce the linearization error along all coordinates.
-Besides, it is not known how to choose a normalization error $\rho$ for good
-flowpipe accuracy.
+Besides, it is not known how to choose a normalization error $\rho$
+for good flowpipe accuracy.
 
 \paragraph{New method:}  In this paper, we propose an better approach
-that ensures reduction in the linearization error that along each
-individual direction in a finite set of directions. 
-\is{An extra ``that'' in the previous sentence.}
-To do so, we
+that ensures reduction in the linearization error along each
+individual direction in a finite set of directions.  To do so, we
 use \emph{intersection of unions} (IoU).  For each direction, we find
 an optimized division of the reach set for reducing the linearization
 error.  Then we intersect the union sets corresponding to the
@@ -85,53 +77,62 @@ way, we ensure that the linearization error is significantly reduced
 along each direction in the given set of directions.
 
 As a heuristic, we choose the directions as the eigenvectors of the
-nonlinear system at the origin.  Furthermore, we only divide the initial set
-because of two reasons.
+nonlinear system at the center of the initial set.  Furthermore, we
+only divide the initial set because of two reasons.
 %
 \begin{enumerate}
 \item Dividing a reach set increases the representation complexity due to
 increase in the number of elements in the union.  So, iterative
 division of reach set at various time stamps will blow up the
 representation complexity.
-\item  An interval zonotope which is not an interval can not
-be divided accurately and reduces the accuracy of flowpipe.
+\item  A non-interval flowpipe at some time stamp can not
+be divided accurately and reduces the accuracy of future flowpipe.
+Flowpipes at future time points are better approximated as
+non-intervals.  However, since we consider the initial set as an
+interval, the initial set can be divided accurately.
 \end{enumerate}
 %
-Henceforth, we only divide the initial set, which is an interval, to
-compute an intersection of unions representation.
+%% Henceforth, we only divide the interval initial set to
+%% compute an intersection of unions representation.
 %
-\subsection{Computing set of optimized division vectors:}
-Let us denote $\bounds=X_0$ \is {What is $X_0$?}.  Given a vector of positive integer
-values $q\in\integers_{>0}$, called \emph{division vector} \is{$q$ is a scalar here}, we define
-a union of interval vectors which is a close overapproximation of $h$
-with only floating point approximation error, as follows.  The set of
-the set of divided interval vectors corresponding to division vector
-$q$ is
+\subsection{Computing set of optimized division vectors}
+Recall that our initial set is the interval denoted $X_0$.  Let us
+denote the matrix of eigenvectors of $\inf\rb{\stmat{f}{X_0}{U}}$ as
+$\eig$.  Our objective is to minimize the projection of the Taylor
+error along each column vector of $\eig$.  For each direction, we have
+a optimized way of dividing the set $X_0$ denoted by an integer vector
+$q$ that represents the number of divisions along each dimension.  So,
+for the set of eigenvector, we get a set of optimized division
+vectors.  Subsequently, we cast the initial set as intersection of
+union of the divisions corresponding to different optimized division
+vectors.  For convenience, let us denote $\bounds=X_0$.  Given a
+vector of positive integer values $q\in\integers_{>0}^n$,
+called \emph{division vector}, we define a set of interval vectors
+whose union is a close overapproximation of $\bounds$ with only
+floating point approximation error, as follows.
 %
 \begin{align*}
 D_q
 = & \left\{r_1\times...\times r_n\right.\\
-& \left.\st{\forall i\in\set{1,\ldots,n}~r_i
-= \ivmat{\inf\rb{\bounds_i}}+k_i\frac{\rad{\bounds}_i}{q_i}, k_i\in\set{1,\ldots,q_i}}\right\}.
+& \left.\st{\forall i\in\set{1,\ldots,n}~\exists k_i\in\set{1,\ldots,q_i}}:~r_i
+= \ivmat{\inf\rb{\bounds_i}}+k_i\frac{\rad{\bounds}_i}{q_i}\right\}.
 \end{align*}
-\is{The value of $k_i$ is  not clear in the  above equation.}
 %
-For all intervals in $D_q$, an upper bound on the Taylor error is
-given below.
+For all intervals in $D_q$, an vector upper bound
+$\utaylor{f}{U}{\bounds}{q}$ on the magnitude of Taylor error is given below.
 %
 \begin{align*}
 \rb{\utaylor{f}{U}{\bounds}{q}}_i
-= \frac{1}{2}\sum_{k=1}^{n}\sum_{j=1}^{n}\rb{\nabla_k\nabla_j{f_i}\rb{\bounds}}\frac{\rad{\bounds_k}}{q_k}\frac{\rad{\bounds_j}}{q_j}
-\\
-+ \frac{1}{2}\sum_{k=n+1}^{n+m}\sum_{j=n+1}^{n+m}\rb{\nabla_k\nabla_j{f_i}\rb{\bounds}}\rad{U_k}\rad{U_j}
+= \sup\rb{\mymatrix{\rad{d}\rb{\diag{q}}^{-1}\\ \rad{U}}^T{\nabla^2
+f_i}\rb{\mymatrix{d\\ U}}\mymatrix{\rad{d}\rb{\diag{q}}^{-1}\\ \rad{U}}}
 \end{align*}
 %
-For any $k\in\set{1,\ldots,n}$, the projection of the upper bound
+For any $k\in\set{1,\ldots,n}$, the projection of the  bound
 along the $k^{th}$ eigenvector is given by
 $\utaylor{f}{U}{\bounds}{q}\eig_{:,k}
 = \utaylor{f}{U}{\bounds}{q}\real{\eig_{:,k}}
 + \iota\utaylor{f}{U}{\bounds}{q}\imag{\eig_{:,i}}$.  We select $q$ to
-reduce the maximum absolute value of this bound, by using the
+minimize the maximum absolute value of this bound, by using the
 following greedy optimization.  Let us consider for any
 $i\in\set{1,\ldots,n}$, $\omega\rb{q,i}\in\integers^n$ where $\omega\rb{q,i}_j
 = \begin{cases}2q_j & j=i\\ q_j & i\neq j \end{cases}$.
@@ -146,9 +147,9 @@ $q\gets \omega\rb{q,ind}$
 }
 \end{algorithm}
 %
-We denote the set of optimized division vectors correponding to
-minimizing the projection of Taylor error along different eigenvectors
-as $\dopt{\eta}$, where $2^\eta$ is the maximum number of divisions.
+Subsequently, we get a set of optimized division vectors corresponding
+to different eigenvectors.  We denote this set as as $\dopt{\eta}$,
+where $2^\eta$ is the maximum number of divisions.
 %
 \begin{example}
 Let us consider the nonlinear system $H$ in Example~\ref{eg:ill}, an
@@ -167,14 +168,108 @@ different kinds of divisions of $[0,1]^3$ whose intersection is
 represented as an IoU of interval zonotopes.
 \end{example}
 %
-\subsection{Casting initial set as intersection of unions}
-For a division vector $q\in\dopt{\eta}$, we can closely
-overapproximate $X_0$ as a union of interval zonotopes of order $l>0$
-as $\bigcup_{b\in D_q}\lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$
-with only floating point overapproximation error.  To reduce the
-Taylor error along each eigenvector, we store the union corresponding
-to each optimized division vector in $\dopt{\eta}$ and take their
-intersection.  The resulting intersection of unions is
+\subsection{Casting initial set as intersection of unions of interval zonotopes}
+For different division vectors, we get different types of unions which
+overapproximate the initial set.  So, we can represent the initial set
+as intersection of unions (IoU) of intervals.  However, intervals do
+not provide good approximation of reachable sets at future time
+stamps.  Alternatively, \emph{zonotopes} are known to provide good
+approximation of reachable sets when linearization is
+used~\cite{todo}.  Then, since our initial set is an intersection of
+unions, for using zonotopes we need to recast it as intersection of
+union of zonotopes. However, it is known that zonotopes do not provide
+good approximation of intersection between them~\cite{todo}, which is
+required in our IoU representation.  Therefore, we generalize
+zonotopes to interval zonotopes to compute better approximation of
+intersection between zonotopes and also soundly approximate floating
+point computations.  It is defined as follows.
+%
+\begin{definition}[Interval Zonotope]
+Let us consider $l\in\integers_{>0}$, $\gen\in\intervals^{n\times
+ln},\cen\in\intervals^{n}$ and $\bounds\in\intervals^n$.  An interval
+zonotope of order $l>1$ is the tuple $\rb{\gen,\cen,\bounds}$ which
+represents the following set.
+%
+\begin{align*}
+\iz{\gen}{\cen}{\bounds}
+= \set{x\in\reals^n \st{\exists \zeta\in[-1,1]^{nl}:~x\in\bounds,~x \in \gen\ivmat{\zeta}+\cen} }
+\end{align*}
+%
+If $\zt = \iz{\gen}{\cen}{\bounds}$, then we represent $\overline{\zt}
+= \bounds$.
+\end{definition}
+%
+Before computing the IoU interval zonotope representation of the
+initial set, we will discuss a transformation operation on the interval zonotope
+that will be used in the IoU recasting and flowpipe computation.
+%
+\begin{lemma}[Linear transformation and sum]\label{lem:lintrans}
+Let us consider $A\in\intervals^{n\times n}$, $w\in\intervals^n$ and an
+interval zonotope $\rb{{\gen},{\cen},{\bounds}}$ of order $l>1$.  Let us
+consider $\gen^\prime\in\reals^{n\times nl}$ where 
+%
+\begin{align*}
+& \gen^\prime_{{:,n+1:ln}} = A\gen_{\rb{:,1:(l-1)n}}\\
+& \gen^\prime_{{:,1:n}}
+= \diag{\sup\rb{\rb{A\gen_{\rb{:,(l-1)n+1:ln}} }[-1,1]^n
++ \rad{w} }}\\
+& z = \rb{A\gen}[-1,1]^n + A\cen + w.\\
+& \text{Then},~\set{A^\prime x + y\st{x\in\iz{\gen}{\cen}{\bounds}, y\in\bounds,
+A^\prime\in A}} \\
+& \subseteq \iz{\gen^\prime}{A\cen+\mi{w}}{\meet{\rb{A\bounds + A\cen 
++ w}}{z}}~\numberthis\label{eqn:linMin}
+\end{align*}
+%
+\end{lemma}
+%
+\begin{proof}
+Let us consider $x\in \iz{\gen}{\cen}{\bounds}$ and $y\in w$.  So,
+there exists $\zeta\in [-1,1]^n$ such that $x \in \gen\zeta + \cen$ and
+also $x\in\bounds$.  Then,
+%
+\begin{align*}
+& Ax + y \in A\gen\zeta + A\cen + y\\
+& = A\gen_{{:,1:(l-1)n}}\zeta_{{:,1:(l-1)n}} +
+A\gen_{:,{(l-1)n+1:ln}}\zeta_{{(l-1)n+1:ln}} + A\cen + y\\
+& \subseteq A\gen_{{:,1:(l-1)n}}\zeta_{{:,1:(l-1)n}} 
+ + A\gen_{:,{(l-1)n+1:ln}}[-1,1]^n + A\cen + w\\
+& = \gen^\prime_{{:,n+1:ln}}\zeta_{{:,1:(l-1)n}} +
+\rb{A\gen_{:,{(l-1)n+1:ln}}[-1,1]^n + \rad{w}} + A\cen +  \mi{w} 
+\end{align*}
+%
+We have $A\gen_{:,{(l-1)n+1:ln}}[-1,1]^n + \rad{w} = \set{\gen^\prime_{:,1:n}\zeta^\prime\st{\zeta^\prime\in[-1,1]^n}}$
+So, there exists $\zeta^\prime \in[-1,1]^n$ such that
+%
+\begin{align*}
+& Ax + y =  \gen^\prime_{{:,n+1:ln}}\zeta_{{:,1:(l-1)n}}
++ \gen^\prime_{:,1:n}\zeta^\prime + A\cen + \mi{w}\\
+& = \gen\mymatrix{\zeta_{{:,1:(l-1)n}}\\\zeta^\prime} + A\cen + \mi{w}~\numberthis~\label{eqn:pr1}
+\end{align*}
+%
+Also, we get the following two bounds.
+%
+\begin{align*}
+ & Ax + y \in A\gen[-1,1]^n + A\cen + w = z~\numberthis\label{eqn:pr2}\\
+ & Ax + y \in A\bounds + A\cen + w~\numberthis\label{eqn:pr3}
+\end{align*}
+%
+By~(\ref{eqn:pr1}),(\ref{eqn:pr2}) and (\ref{eqn:pr3}), we get that
+$Ax+y\in\iz{\gen^\prime}{A\cen+\mi{w}}{\meet{\rb{A\bounds + A\cen + w}}{z}}$
+\end{proof}
+%
+For convenience, if $\zt = \iz{\gen}{\cen}{\bounds}$, we denote the
+R.H.S of~(\ref{eqn:linMin}) as $\lin{\zt}{A}{w}$.  The $n$-dimensional
+interval zonotope of order $l$ which is equivalent to zero is denoted
+$\zerozon{n}{l}$.
+%
+Based on the above lemma, for a division vector $q\in\dopt{\eta}$, we
+can closely overapproximate $X_0$ as a union of interval zonotopes of
+order $l>0$ as $\bigcup_{b\in
+D_q}\lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$ with only floating
+point overapproximation error.  To reduce the Taylor error along each
+eigenvector, we store the union corresponding to each optimized
+division vector in $\dopt{\eta}$ and take their intersection.  The
+resulting intersection of unions is
 %
 \begin{align*}
 \bigcap_{q\in\dopt{\eta}}\bigcup_{b\in
@@ -191,35 +286,92 @@ represents the set
 \ztset{\zt} = \bigcap_{i=1}^{\rows{\zt}}\bigcup_{i=1}^{\cols{\zt}}\ztset{\zt_{ij}}.
 \]
 %
+The overall interval bounds on the IoU interval zonotope is
+$\overline{\zt}
+= \bigvee_{i=1}^{\rows{\zt}}\bigwedge_{i=1}^{\cols{\zt}}\overline{\zt_{ij}}$.
 \end{definition}
 %
-We represent the optimized intersection of unions in
-Equation~\ref{eqn:iouopt} by an IoU interval zonotope, which we denote by
-$\iouopt{\eta}{X_0}$ which is assigned as follows.
-%
-\begin{algorithm}\caption{Initial IoU zonotope assignment}
-$i\gets 1$,~$j\gets 1$\;
-\For{$q\in\dopt{q}$}{
-\For{$b\in D_q$}{
-$\rb{\iouopt{\eta}{X_0}}_{ij} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
-$j\gets j+1$\; } $i\gets i+1$\; }
-\end{algorithm}
-%
+So, we represent the optimized intersection of unions in
+Equation~\ref{eqn:iouopt} by an IoU interval zonotope
+$\iouopt{\eta}{X_0}$ that is assigned by the
+steps~\ref{algstep:assign1}-\ref{algstep:assign2} of Algorithm~\ref{alg:main}.
+%% %
+%% \begin{algorithm}\caption{Initial IoU zonotope assignment}\label{alg:assign}
+%% $i\gets 1$,~$j\gets 1$\;
+%% \For{$q\in\dopt{q}$}{
+%% \For{$b\in D_q$}{
+%% $\rb{\iouopt{\eta}{X_0}}_{ij} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
+%% $j\gets j+1$\; } $i\gets i+1$\; }
+%% \end{algorithm}
+%% %
 \subsection{Computing IoU flowpipe}
-For an IoU interval zonotope, we can compute the reachable
+To compute the reachable set at time $t$ from an interval zonotope
+$\zt$, we do the following.  Let $\Omega
+= \ivflow{H}{t+\epsilon}{K}{\epsilon}{\zt}$.  From above lemma, we
+have $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\ztset{\zt}}$.  Then we
+compute a linear overapproximation of $\rb{f,U,\Omega}$ as\\ $L
+= \rb{\inf\rb{\stmat{f}{\Omega}{U}},
+\inf\rb{\inpmat{f}{\Omega}{U}},
+U,
+\err{f}{\Omega}{U}
+}$ based on Lemma~\ref{lem:linearization}.  Next we compute the linear transformation
+%
+\[
+\flow{H}{t}{K}{\epsilon}{\zt}
+= \lin{\zt}{ \dismat{A}{L}{[t,t]}}{\dismat{B}{L}{[t,t]}U
++ \dismat{C}{L}{[t,t]}V }
+\]
+%
+The following lemma states that $\ztset{\flow{H}{t}{K}{\epsilon}{\zt}
+}$ is an overapproximation of the reachable set
+$\reach{H}{t}{\ztset{\zt}}$.
+%
+\begin{lemma}~\label{lem:reachnonlin}
+Let $H = \rb{f,U,\reals^n}$ be a nonlinear system and $\zt$ an
+interval zonotope.  Then
+$\reach{H}{t}{\ztset{\zt}} \subseteq \ztset{\flow{H}{t}{K}{\epsilon}{\zt}}$.
+\end{lemma}
+%
+\begin{proof}
+Let $\trfn{x}:[0,T)\rightarrow \reals^n$ be a trajectory of $H$ such
+that $\tr{x}{0}\in\ztset{\zt}$.  Let $\Omega
+= \ztset{\ivflow{H}{t+\epsilon}{K}{\epsilon}{\zt}}$.  By
+Lemma~\ref{lem:bloat}, we get $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\zt}$.  So,
+$\trfn{y} = \trfn{x}|_{[0,(t+\epsilon)]}$ is a trajectory of $H^\prime
+= \rb{f,U,\Omega}$.  By Lemma~\ref{lem:linearization}, we get that\\ $L
+= \rb{\inf\rb{\stmat{f}{\Omega}{U}},
+\inf\rb{\inpmat{f}{\Omega}{U}},
+U,
+\err{f}{\Omega}{U}
+}$ is an overapproximation of $H^\prime$ .  By Lemma~\ref{lem:inclin},
+we get
+$\reach{L}{t}{\ztset{\zt}}\supseteq\reach{H^\prime}{t}{\Omega}$.  By
+Lemma~\ref{lem:lintrans} and~\ref{lem:linreach}, we have
+$\ztset{\flow{H}{t}{K}{\epsilon}{\zt}} \supseteq \reach{L}{t}{\ztset{\zt}}$.
+So,
+$\flow{H}{t}{K}{\epsilon}{\zt}\supseteq\reach{H^\prime}{t}{\Omega}$.
+We showed that $\trfn{y}$ is a trajectory of $H^\prime$. Also,
+$\tr{y}{t} =\tr{x}{t}$ as $t\in[0,t+\epsilon)$.  So, by the previous
+inequality we get $\tr{y}{t}
+= \tr{x}{t}\in\ztset{\flow{H}{t}{K}{\epsilon}{\zt}}$.  As this is true
+for all trajectories $\trfn{x}$ of $H$, we have
+$\reach{H}{t}{\ztset{\zt}}\subseteq\flow{H}{t}{K}{\epsilon}{\zt}$.
+\end{proof}
+%
+Then for an IoU interval zonotope, we can compute the reachable
 set at time $t$ according to the following lemma.
 %
 \begin{lemma}~\label{lem:ioureach}
 Let us consider an IoU of interval zonotopes $\zt$,
 $K\in\integers_{\geq 0}$, $\epsilon\in\reals_{>0}$.  Let us consider
-IoU interval zonotopes $\flow{H}{t}{K}{\epsilon}{\zt}$ and
-$\ivflow{H}{t}{K}{\epsilon}{\zt}$ defined as
+an IoU interval zonotope $\flow{H}{t}{K}{\epsilon}{\zt}$ and an
+interval $\ivflow{H}{t}{K}{\epsilon}{\zt}$ defined as
 %
 \begin{align*}
 \rb{\flow{H}{t}{K}{\epsilon}{\zt}}_{ij}
 = \flow{H}{t}{K}{\epsilon}{\zt_{ij}},~~~
-\rb{\ivflow{H}{t}{K}{\epsilon}{\zt}}_{ij}
-= \ivflow{H}{t}{K}{\epsilon}{\zt_{ij}}.
+\rb{\ivflow{H}{t}{K}{\epsilon}{\zt}}
+= \bigvee_{i=1}^{\rows{\iouopt{\eta}{X_0}}}\bigwedge_{i=1}^{\cols{\iouopt{\eta}{X_0}}}\ivflow{H}{t}{K}{\epsilon}{\overline{\zt_{ij}}}.
 \end{align*}
 %
 Then
@@ -263,30 +415,9 @@ given above.
 
 Now we have the results to compute an optimized IoU zonotope flowpipe.
 The flowpipe computation is described in Algorithm~\ref{alg:main}.
-The correctness of the algorithm is proved in Theorem~\ref{thm:main}.
-%
-\begin{algorithm}\caption{IoU interval zonotope
-flowpipe computation}\label{alg:main}
-\KwData{$n$-dimensional system with $m$ inputs $H = \rb{f,U,\reals^n}$,
-$T\in\reals_{\geq 0}$, $X_0\in\intervals^n$.}
-
-\KwResult{Flowpipe $\trfn{X}:[0,T]\rightarrow \set{\text{Set of IoU interval
-zonotopes and intervals}}|~\tr{X}{0}\supseteq X_0$.}
-
-Choose $\eta,K\in\integers$, $\epsilon,\delta\in\double_{>0}$.
-
-$\tr{X}{0}\gets \iouopt{\eta}{X_0}$.
-
-$i\gets 0.$
-
-\While{$i\delta\leq N$}{
-$\tr{X}{(i+1)\delta} = \refine\rb{\flow{H}{\delta}{K}{\epsilon}{\tr{X}{i\delta}}}$.~\label{step:1}
-
-$\forall t\in(i\delta,(i+1)\delta) \tr{X}{t} = \ivflow{H}{\delta}{K}{\epsilon}{\tr{X}{i\delta}}$.~\label{step:2}
-
-$i \gets i+1$.
-}
-\end{algorithm}
+Each iteration in step~\ref{step:1} of the for loops can be run independently
+in parallel.  The correctness of the algorithm is proved in
+Theorem~\ref{thm:main}.
 %
 \begin{theorem}~\label{thm:main}
 Let us consider the candidate flowpipe $\trfn{X}$ computed in
@@ -330,4 +461,68 @@ which is constructed by dividing $X_0$ by different optimized division
 vectors and intersecting the unions and results in a sound
 overapproximation of $X_0$.  Therefore, the theorem is true.
 \end{proof}
+%
+To illustrate the difference in accuracy between intersection of
+unions and only union method, we ran both techniques on the
+Example~\ref{eg:ill}.  We took $K=20$ and $\epsilon = 10^{-12}$.  The
+plot of interval bounds in Figure~\ref{fig:ill} clearly shows the the
+IoU method is far more accurate on this example.  In the next section,
+we evaluate our method on real world examples. with higher dimensions
+and compare them with state-of-the-art methods, besides the union
+method.
+%
+\begin{algorithm}\caption{IoU interval zonotope
+flowpipe computation}\label{alg:main}
+\KwData{$n$-dimensional system with $m$ inputs $H = \rb{f,U,\reals^n}$,
+$T\in\reals_{\geq 0}$, $X_0\in\intervals^n$.}
+
+\KwResult{Flowpipe $\trfn{X}:[0,T]\rightarrow \set{\text{Set of IoU interval
+zonotopes and intervals}}|~\tr{X}{0}\supseteq X_0$.}
+
+Choose $\eta,K\in\integers$, $\epsilon,\delta\in\double_{>0}$.
+
+% assigning initial IoU
+$j\gets 1$,~$k\gets 1$\;~\label{algstep:assign1}
+\For{$q\in\dopt{q}$~~\% In parallel}{
+\For{$b\in D_q$}{~~\% In parallel
+$\rb{\iouopt{\eta}{X_0}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
+$k\gets k+1$\; } $j\gets j+1$\; }
+% done
+
+$\tr{X}{0}\gets \iouopt{\eta}{X_0}$.~\label{algstep:assign2}
+
+$i\gets 0.$
+
+\While{$i\delta\leq N$}{
+\For{ $j\in \rows{\iouopt{\eta}{X_0}}$ ~~(\% In parallel)}{
+
+\For{$k\in\cols{\iouopt{\eta}{X_0}}$~~(\% In parallel)}{
+
+$\rb{\tr{X}{(i+1)\delta}}_{jk} \gets {\flow{H}{\delta}{K}{\epsilon}{\rb{\tr{X}{i\delta}}_{jk}}}$.~\label{step:1}
+
+}
+}
+$\tr{X}{(i+1)\delta} \gets \refine\rb{\tr{X}{(i+1)\delta}}$
+
+$\forall t\in(i\delta,(i+1)\delta)~ {\tr{X}{t}}
+= \ivflow{H}{\delta}{K}{\epsilon}{\rb{\tr{X}{i\delta}}}$.~\label{step:2}
+
+$i \gets i+1$.
+}
+$\forall t\in[0,T]$, $\forall a\in\double^n$, $\flowproj{t}\rb{\tr{X}{t}}
+= \sup\rb{a^T\overline{\tr{X}{t}}}$.
+\end{algorithm}
+%
+\begin{figure}
+{\center
+  \includegraphics[scale = 0.5]{illImages/Ub.png}
+  
+  \includegraphics[scale = 0.41]{illImages/leg1.png}~
+  \includegraphics[scale = 0.41]{illImages/leg2.png}~
+  \includegraphics[scale = 0.41]{illImages/leg3.png}
+  }
+  \caption{Flowpipe bounds at different time points for
+    Example~\ref{eg:ill}}
+  \label{fig:ill}
+\end{figure}
 %

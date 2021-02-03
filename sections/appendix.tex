@@ -18,4 +18,96 @@
    \dot{r} & = 0/Jz + p q (Jx - Jy)/Jz\\
 \end{align*}
 %
+\begin{proof}[Lemma~\ref{lem:inclin}]
+Let us consider a trajectory $\trfn{x}:[0,T)\rightarrow\Omega$ of the
+nonlinear system $H$.  Then there exists an input trajectory
+$\trfn{u}:[0,T)\rightarrow U$ of $H$ such that~(\ref{eqn:dynamics}) is
+true.  Let us define $\forall t\in[0,T)~\tr{v}{t} =
+f\rb{\mymatrix{\tr{x}{t}^T & \tr{u}{t}^T}}^T - A\tr{x}{t} -
+B\tr{u}{t}$.  Since $L$ is an overapproximation of $H$, we have
+$\forall t\in[0,T)$, $\tr{v}{t}\in V$.  Then by using
+~(\ref{eqn:dynamics}, we have the input trajectory
+$\mymatrix{\trfn{u} \\ \trfn{v}}:[0,T)\rightarrow U\times V$ where
+$\forall t\in[0,T), \epsilon\in\reals_{>0}$, there exists
+$\delta\in\reals_{>0}$ such that $\forall
+h\in[-\delta,\delta]\bigcap\, [0,T)$,
+%
+\begin{align*}
+& \norm{ \frac{ \tr{x}{t+h} - \tr{x}{t} }{h} -
+f_i\rb{ \mymatrix{ \tr{x}{t}^T & \tr{u}{t}^T }^T }}\\
+& = \norm{ \frac{ \tr{x}{t+h} - \tr{x}{t} }{h} -
+\rb{A\tr{x}{t} + B\tr{u}{t} + \tr{v}{t}} } < \epsilon.
+\end{align*}
+%
+Therefore, $\tr{x}:[0,T)\rightarrow \reals^n$ is also a state
+trajectory of the linear system $L$.  So, it follows that
+$\reach{H}{t}{\init}\subseteq \reach{L}{t}{\init}$ for all
+$\init\subseteq \Omega$.
+\end{proof}
+%
+\begin{proof}[Lemma~\ref{lem:linreach}]
+  It is known~(see Section 3.1 of~\cite{girard2005reachability}) that
+the reachable set of the linear system at time $t$ is given by
+%
+\begin{equation*}
+\begin{split}
+& \left\{\exp\rb{At}x + \int_{\tau=0}^t\exp\rb{A\rb{t-\tau}}B\tr{u}{\tau}
+d\tau\right.\\ &\left.
++ \int_{\tau=0}^t\exp\rb{A\rb{t-\tau}}\tr{v}{\tau}
+d\tau\st{\forall \tau\in[0,t], \tr{u}{\tau}\in U,\tr{v}{\tau}\in
+v}\right\}.
+\end{split}
+\end{equation*}
+%
+By using Taylor remainder theorem and interval arithmetic, we get for all
+$t\in[t_1,t_2]~\exp\rb{At}\in
+\dismat{A}{L}{[t_1,t_2]}$, $\forall \tau\in[0,t]~\exp\rb{A\rb{t-\tau}}B\in\ivmat{B}+\ivmat{B}\ivmat{A}[0,t],$
+$\exp\rb{A\rb{t-\tau}}\in\ivmat{\identity{n}}+\ivmat{A}[0,t]$.  By
+substituting these bounds in the above integrals, we get the result.
+\end{proof}
+%
+\begin{proof}[Lemma~\ref{lem:bloat}]
+We prove this by contradiction.  Let us denote $\Omega
+= \ivflow{H}{t}{K}{\epsilon}{\bounds^0}$.  Let us assume that
+$\Omega\nsupseteq \reach{H}{[0,t]}{\init}$.  So, $\Omega\neq\reals^n$
+and $\Omega = \bounds^K$.  Then there exists a state trajectory
+$\trfn{x}:[0,T)\rightarrow\reals^n$ and $\tau\in[0,t]$ such that $T>t$
+and $\tr{x}{\tau}\notin \bounds^K$.  So, there exists $\tau_{min}$ in
+$[0,T)$ such that $\tau_{min}
+= \inf\set{t\in[0,T)\st{\tr{x}{\tau}\notin \bounds^K}}$.  By
+using~(\ref{eqn:dynamics}), we can show there exists
+$\delta\in[0,\infty)$ such that $\forall h\in[-\delta,\delta]$
+$\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$
+($\epsilon$ is the positive real considered in the lemma statement).
+Similarly, we can show there exists $r\in[0,\tau_{min})$ such that
+$\tr{x}{r}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$.  Combining both
+inequalities above, we get $\forall
+h\in[-\delta,\delta],~\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{r}}{\epsilon}$.
+As $r\in[0,\tau_{min})$, we get $\tr{x}{r}\in\bounds^K$.  So, for all
+$h\in[-\delta,\delta)$, we have $\tr{x}{\tau_{\min}+h}\in \bounds^K +
+[-\epsilon,\epsilon]^n$.  Also, by the definition of $\tau_{min}$, for
+all $\tau\in[0,\tau_{min}-\delta/2)$, $\tr{x}{\tau}\in \bounds^K +
+[-\epsilon,\epsilon]^n$. Combining last two inequalities, we get for
+all $\tau\in[0,\tau_{min}+\delta)$ $\tr{x}{\tau}\in\bounds +
+[-\epsilon,\epsilon]^n$.  Therefore,
+$\trfn{x}|_{[0,\tau_{min}+\delta)}$ is a trajectory of
+$\rb{f,U,\bounds^K+[-\epsilon,\epsilon]^n}$
+
+By Lemma~\ref{lem:linearization}, $L_k$ is an overapproximation of
+$\rb{f,U,\bounds^k+[-\epsilon,\epsilon]^n}$ .  As we showed that
+$\trfn{x}|_{[0,\tau_{min}+\delta)}$ is a trajectory of
+$\rb{f,U,\bounds^K+[-\epsilon,\epsilon]^n}$, using
+Lemmas~\ref{lem:inclin} and~\ref{lem:linreach} and
+Equation~\ref{eqn:iter}, we get that $\forall h\in [0,\delta)$,
+$\tr{x}{\tau_{min}+h}\in \dismat{A}{L_K}{[0,t]}\bounds^0
++ \dismat{B}{L_K}{[0,t]}U
++ \dismat{C}{L_K}{[0,t]}V \subseteq \bounds^{k}$.  But by the
+definition of $\tau_{min}$, $\exists h\in
+[0,\delta),~\tr{x}{\tau_{min}+h}\notin \bounds^K$.  So, the assumption
+that $\Omega\nsupseteq \reach{H}{[0,t]}{\init}$ is wrong.  Hence,
+$\Omega\supseteq \reach{H}{[0,t]}{\init}$.
+\end{proof}
+%
 \end{appendix}
+
+

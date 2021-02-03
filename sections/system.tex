@@ -1,11 +1,12 @@
 An $n$-dimensional nonlinear dynamical system with $m$ inputs is
 specified by a tuple $\rb{f,\inpset,\Omega}$, where $f =
 \rb{f_1,\ldots,f_n}\in \fe{n+m}^n$ is an
-$n$-tuple of partial functions in $\fe{n+m}^n$, an interval vector
-$\inpset\in\intervals^m$ is called the \emph{input set}, and
-$\Omega\in\intervals^n$ is called the \emph{state space}.  For any
-$T\in\reals_{>0}$, a function \mbox{$\trfn{x}:[0,T)\rightarrow \reals^n$} is
-called a \emph{state trajectory} if there exists a \emph{piecewise
+$n$-tuple from the subset of partial functions $\fe{n+m}$, an
+interval vector $\inpset\in\intervals^m$ is called the \emph{input
+set}, and $\Omega\in\intervals^n$ is called the \emph{state space}.
+For any $T\in\reals_{>0}$, a
+function \mbox{$\trfn{x}:[0,T)\rightarrow \reals^n$} is called
+a \emph{state trajectory} if there exists a \emph{piecewise
 continuous} function $\trfn{u}:[0,T)\rightarrow \inpset$,
 called \emph{input trajectory}, such that all of the following is
 true.
@@ -20,14 +21,17 @@ that}\\
 }}< \epsilon~\numberthis\label{eqn:dynamics}
 \end{align*}
 %
-In the rest of the paper, $n$ denotes the dimension of a nonlinear system
-and $m$ denotes the number of inputs, unless otherwise stated.  For a
+In the rest of the paper, $n$ is the dimension of a nonlinear system
+and $m$ is the number of inputs, unless otherwise stated.  For a
 trajectory $\trfn{x}:[0,T)\rightarrow \reals^n$ and $\tau<T$, we
-denote $\trfn{x}|_{[0,\tau]}
+define $\trfn{x}|_{[0,\tau]}
 = \trfn{y}:[0,T)\rightarrow \reals^n: \forall t\in[0,\tau), \tr{y}{t}
-= \tr{x}{t}$.
-%
-Our objective is to compute an over-approximation of the set of all state trajectories of a nonlinear system.
+= \tr{x}{t}$.   The \emph{reachable set} of the nonlinear system $H
+=\rb{f,\inpset,\Omega}$ from an initial set $\init$ at a time point
+$t$, denoted $\reach{H}{t}{\init}$, is a set containing all points
+$\tr{x}{t}$ where $\trfn{x}$ is a state trajectory of $H$ and
+$\tr{x}{0}\in\init$.  Similarly, $\reach{H}{[t_1,t_2]}{\init}
+= \bigcup_{t\in[t_1,t_2]}\reach{H}{t}{\init}$.
 %
 \begin{example}\label{eg:ill}
 Let us denote the function expressions $\proj{1} = x$, $\proj{2} = y$,
@@ -53,17 +57,13 @@ t\in[0,5)$,
 which begin at $\tr{x}{0} = \mymatrix{-0.1,0.1,0.1}^T$ and $\tr{x}{0}
 = \mymatrix{-0.2,-0.3,-0.1}^T$, respectively.
 %
-There are also state trajectories without an analytic form.
-
-\is{Is it possible to provide some more insight of what exactly we would like to get as output?}
+But there are also state trajectories without an analytic form.  The
+objective of flowpipe computation is to compute bounds along different
+directions on the reachable set $\reach{H}{t}{\init}$ at each time
+point in $[0,T)$, which originate $\init$ (eg. see Fig~\ref{fig:ill}).
 \end{example}
 %
-%% The \emph{reachable set} of the nonlinear system $H
-%% =\rb{f,\inpset,\Omega}$ from an initial set $\init$ at a time point
-%% $t$, denoted $\reach{H}{t}{\init}$, is a set containing all points
-%% $\tr{x}{t}$ where $\trfn{x}$ is a state trajectory of $H$ and
-%% $\tr{x}{0}\in\init$.  Similarly, $\reach{H}{[t_1,t_2]}{\init}
-%% = \bigcup_{t\in[t_1,t_2]}\reach{H}{t}{\init}$.  Computing the exact
+%%  Computing the exact
 %% reachable set of nonlinear systems is computationally infeasible in
 %% general because nonlinear ODEs may not have analytically closed form
 %% solutions.  Instead, an overapproximation of the reachable set at each
@@ -82,19 +82,15 @@ $L = \rb{g,U\times V,\Omega}$, where $U\in\intervals^m$ and
 $V\in\intervals^n$ are both input sets and $g\in\fe{2n+m}^n$, is
 linear if we have matrices $A\in\reals^{n\times n}$ and
 $B\in\reals^{m\times n}$ such that for all $i\in\set{1,\ldots,n}$,
-$x\in\reals^n$, $u\in U$ and $v\in V$, we have
-%
-\begin{align*}
-& g_i\rb{\mymatrix{x^T & u^T & v^T}^T} = \rb{Ax + Bu + v}_i.
-\end{align*}
-%
-For convenience, we also denote the above linear system as $L
-= \rb{A,B,U,V,\Omega}$.  This linear system is said to overapproximate
-a nonlinear system $H = \rb{f,\inpset,\Omega}$, denoted $L\succeq H$,
-if for all $x\in\Omega$ and $u\in\inpset$, we have $f\rb{\mymatrix{x^T
-& u^T}}^T - Ax - Bu \in V$.  In this case, the reachable set of $H$ is
-a subset of the reachable set of $L$ at every time point as explained
-in the following lemma.
+$x\in\reals^n$, $u\in U$ and $v\in V$, we have $ g_i\rb{\mymatrix{x^T
+& u^T & v^T}^T} = \rb{Ax + Bu + v}_i$.  For convenience, we also
+denote the above linear system as $L = \rb{A,B,U,V,\Omega}$.  This
+linear system is said to overapproximate a nonlinear system $H
+= \rb{f,\inpset,\Omega}$, denoted $L\succeq H$, if for all
+$x\in\Omega$ and $u\in\inpset$, we have $f\rb{\mymatrix{x^T & u^T}}^T
+- Ax - Bu \in V$.  In this case, the reachable set of $H$ is a subset
+of the reachable set of $L$ at every time point as explained in the
+following lemma.
 %
 \begin{lemma}\label{lem:inclin}
 Let us consider that a linear system $L = \rb{A,B,U,V,\Omega}$ is an
@@ -104,30 +100,7 @@ $\reach{H}{t}{\init}\subseteq \reach{L}{t}{\init}$.
 \end{lemma}
 %
 \begin{proof}
-Let us consider a trajectory $\trfn{x}:[0,T)\rightarrow\Omega$ of the
-nonlinear system $H$.  Then there exists an input trajectory
-$\trfn{u}:[0,T)\rightarrow U$ of $H$ such that~(\ref{eqn:dynamics}) is
-true.  Let us define $\forall t\in[0,T)~\tr{v}{t} =
-f\rb{\mymatrix{\tr{x}{t}^T & \tr{u}{t}^T}}^T - A\tr{x}{t} -
-B\tr{u}{t}$.  Since $L$ is an overapproximation of $H$, we have
-$\forall t\in[0,T)$, $\tr{v}{t}\in V$.  Then by using
-~(\ref{eqn:dynamics}, we have the input trajectory
-$\mymatrix{\trfn{u} \\ \trfn{v}}:[0,T)\rightarrow U\times V$ where
-$\forall t\in[0,T), \epsilon\in\reals_{>0}$, there exists
-$\delta\in\reals_{>0}$ such that $\forall
-h\in[-\delta,\delta]\bigcap\, [0,T)$,
-%
-\begin{align*}
-& \norm{ \frac{ \tr{x}{t+h} - \tr{x}{t} }{h} -
-f_i\rb{ \mymatrix{ \tr{x}{t}^T & \tr{u}{t}^T }^T }}\\
-& = \norm{ \frac{ \tr{x}{t+h} - \tr{x}{t} }{h} -
-\rb{A\tr{x}{t} + B\tr{u}{t} + \tr{v}{t}} } < \epsilon.
-\end{align*}
-%
-Therefore, $\tr{x}:[0,T)\rightarrow \reals^n$ is also a state
-trajectory of the linear system $L$.  So, it follows that
-$\reach{H}{t}{\init}\subseteq \reach{L}{t}{\init}$ for all
-$\init\subseteq \Omega$.
+See appendix.
 \end{proof}
 %
 There are efficient algorithms to compute flowpipes of linear systems
@@ -251,120 +224,18 @@ V}.~\numberthis\label{eqn:linreach}
 \end{lemma}
 %
 \begin{proof}
-It is known~(see Section 3.1 of~\cite{girard2005reachability}) that
-the reachable set of the linear system at time $t$ is given by
-%
-\begin{equation*}
-\begin{split}
-& \left\{\exp\rb{At}x + \int_{\tau=0}^t\exp\rb{A\rb{t-\tau}}B\tr{u}{\tau}
-d\tau\right.\\ &\left.
-+ \int_{\tau=0}^t\exp\rb{A\rb{t-\tau}}\tr{v}{\tau}
-d\tau\st{\forall \tau\in[0,t], \tr{u}{\tau}\in U,\tr{v}{\tau}\in
-v}\right\}.
-\end{split}
-\end{equation*}
-%
-By using Taylor remainder theorem and interval arithmetic, we get for all
-$t\in[t_1,t_2]~\exp\rb{At}\in
-\dismat{A}{L}{[t_1,t_2]}$, $\forall \tau\in[0,t]~\exp\rb{A\rb{t-\tau}}B\in\ivmat{B}+\ivmat{B}\ivmat{A}[0,t],$
-$\exp\rb{A\rb{t-\tau}}\in\ivmat{\identity{n}}+\ivmat{A}[0,t]$.  By
-substituting these bounds in the above integrals, we get the result.
+See appendix.
 \end{proof}
 %
-In our paper, we introduce a variant of
-zonotope~\cite{girard2005reachability}, called \emph{interval
-zonotope}, and use them to represent the overapproximation of the
-resulting set in~(\ref{eqn:linreach}) on a computer.  Interval
-zonotope is a generalization of zonotope to soundly overapproximate
-floating point errors in set manipulation as well as better
-approximate intersection between sets compared to zonotopes.  It is
-defined as follows.
-%
-\begin{definition}[Interval Zonotope]
-Let us consider $l\in\integers_{>0}$, $\gen\in\intervals^{n\times
-ln},\cen\in\intervals^{n}$ and $\bounds\in\intervals^n$.  An interval
-zonotope of order $l>1$ is the tuple $\rb{\gen,\cen,\bounds}$ which
-represents the following set.
-%
-\begin{align*}
-\iz{\gen}{\cen}{\bounds}
-= \set{x\in\reals^n \st{\exists \zeta\in[-1,1]^{nl}:~x\in\bounds,~x \in \gen\ivmat{\zeta}+\cen} }
-\end{align*}
-%
-\end{definition}
-%
-Approximating the reachable set of a linear system requires
-approximating linear transformation of sets.  The matrix
-multiplication of an interval zonotope and its Minkowski
-sum~\cite{girard2005reachability} with an interval vector is
-overapproximated as follows.
-%
-\begin{lemma}[Linear transformation]\label{lem:lintrans}
-Let us consider $A\in\intervals^{n\times n}$, $w\in\intervals^n$ and an
-interval zonotope $\rb{{\gen},{\cen},{\bounds}}$ of order $l>1$.  Let us
-consider $\gen^\prime\in\reals^{n\times nl}$ where 
-%
-\begin{align*}
-& \gen^\prime_{{:,n+1:ln}} = A\gen_{\rb{:,1:(l-1)n}}\\
-& \gen^\prime_{{:,1:n}}
-= \diag{\sup\rb{\rb{A\gen_{\rb{:,(l-1)n+1:ln}} }[-1,1]^n
-+ \rad{w} }}\\
-& z = \rb{A\gen}[-1,1]^n + A\cen + w.\\
-& \text{Then},~\set{A^\prime x + y\st{x\in\iz{\gen}{\cen}{\bounds}, y\in\bounds,
-A^\prime\in A}} \\
-& \subseteq \iz{\gen^\prime}{A\cen+\mi{w}}{\meet{\rb{A\bounds + A\cen 
-+ w}}{z}}~\numberthis\label{eqn:linMin}
-\end{align*}
-%
-\end{lemma}
-%
-\begin{proof}
-Let us consider $x\in \iz{\gen}{\cen}{\bounds}$ and $y\in w$.  So,
-there exists $\zeta\in [-1,1]^n$ such that $x \in \gen\zeta + \cen$ and
-also $x\in\bounds$.  Then,
-%
-\begin{align*}
-& Ax + y \in A\gen\zeta + A\cen + y\\
-& = A\gen_{{:,1:(l-1)n}}\zeta_{{:,1:(l-1)n}} +
-A\gen_{:,{(l-1)n+1:ln}}\zeta_{{(l-1)n+1:ln}} + A\cen + y\\
-& \subseteq A\gen_{{:,1:(l-1)n}}\zeta_{{:,1:(l-1)n}} 
- + A\gen_{:,{(l-1)n+1:ln}}[-1,1]^n + A\cen + w\\
-& = \gen^\prime_{{:,n+1:ln}}\zeta_{{:,1:(l-1)n}} +
-\rb{A\gen_{:,{(l-1)n+1:ln}}[-1,1]^n + \rad{w}} + A\cen +  \mi{w} 
-\end{align*}
-%
-We have $A\gen_{:,{(l-1)n+1:ln}}[-1,1]^n + \rad{w} = \set{\gen^\prime_{:,1:n}\zeta^\prime\st{\zeta^\prime\in[-1,1]^n}}$
-So, there exists $\zeta^\prime \in[-1,1]^n$ such that
-%
-\begin{align*}
-& Ax + y =  \gen^\prime_{{:,n+1:ln}}\zeta_{{:,1:(l-1)n}}
-+ \gen^\prime_{:,1:n}\zeta^\prime + A\cen + \mi{w}\\
-& = \gen\mymatrix{\zeta_{{:,1:(l-1)n}}\\\zeta^\prime} + A\cen + \mi{w}~\numberthis~\label{eqn:pr1}
-\end{align*}
-%
-Also, we get the following two bounds.
-%
-\begin{align*}
- & Ax + y \in A\gen[-1,1]^n + A\cen + w = z~\numberthis\label{eqn:pr2}\\
- & Ax + y \in A\bounds + A\cen + w~\numberthis\label{eqn:pr3}
-\end{align*}
-%
-By~(\ref{eqn:pr1}),(\ref{eqn:pr2}) and (\ref{eqn:pr3}), we get that
-$Ax+y\in\iz{\gen^\prime}{A\cen+\mi{w}}{\meet{\rb{A\bounds + A\cen + w}}{z}}$
-\end{proof}
-%
-For convenience, if $\zt = \iz{\gen}{\cen}{\bounds}$, we denote the
-R.H.S of~(\ref{eqn:linMin}) as $\lin{\zt}{A}{w}$.  The $n$-dimensional
-interval zonotope of order $l$ which is equivalent to zero is denoted
-$\zerozon{n}{l}$.
-
-We can compute an interval overapproximation of the reachable set
-$\reach{H}{[0,t]}{\init}$ in the interval $[0,t]$ as follows.
+We can compute a crude interval overapproximation of the reachable set
+$\reach{H}{[0,t]}{\init}$ in the interval $[0,t]$, as follows.  But we
+can compute more accurate bounds by using advanced procedures which make
+use of the below result as a subprocedure.
 %
 \begin{lemma}~\label{lem:bloat}
 Let us consider a nonlinear system $H = \rb{f,U,\reals^n}$,
-$\epsilon\in[0,\infty)$, an interval zonotope $\zt
-= \rb{{\gen},{\cen},{\bounds^0}}$, and a sequence of interval vectors
+$\epsilon\in[0,\infty)$, a bounded interval vector
+$\bounds^{0}\in\intervals^n$, and a sequence of interval vectors
 $\rb{\bounds^i}_{i=0}^\infty$ where
 %
 \begin{align*}
@@ -375,106 +246,13 @@ $\rb{\bounds^i}_{i=0}^\infty$ where
 + \dismat{B}{L_i}{[0,t]}U + \dismat{C}{L_i}{[0,t]}V}}.~\numberthis\label{eqn:iter}
 \end{align*}
 %
-For $K\in\integers_{>0}$, let $\ivflow{H}{t}{K}{\epsilon}{\zt}
+For $K\in\integers_{>0}$, let $\ivflow{H}{t}{K}{\epsilon}{\bounds^0}
 = \begin{cases}\bounds^{K}
 & \text{if}~\rb{\dismat{A}{L_i}{[0,t]}\bounds^0
 + \dismat{B}{L}{[0,t]}U + \dismat{C}{L}{[0,t]}V} \subseteq
 \bounds^K\\ \reals^n & otherwise \end{cases}$.  Then,
-$\ivflow{H}{t}{K}{\epsilon}{\zt}\supseteq\reach{H}{[0,t]}{\zt}$.
+$\ivflow{H}{t}{K}{\epsilon}{\bounds^0}\supseteq\reach{H}{[0,t]}{\bounds^0}$.
 \end{lemma}
 %
-\begin{proof}
-We prove this by contradiction.  Let us denote $\Omega
-= \ivflow{H}{t}{K}{\epsilon}{\zt}$.  Let us assume that
-$\Omega\nsupseteq \reach{H}{[0,t]}{\init}$.  So, $\Omega\neq\reals^n$
-and $\Omega = \bounds^K$.  Then there exists a state trajectory
-$\trfn{x}:[0,T)\rightarrow\reals^n$ and $\tau\in[0,t]$ such that $T>t$
-and $\tr{x}{\tau}\notin \bounds^K$.  So, there exists $\tau_{min}$ in
-$[0,T)$ such that $\tau_{min}
-= \inf\set{t\in[0,T)\st{\tr{x}{\tau}\notin \bounds^K}}$.  By
-using~(\ref{eqn:dynamics}), we can show there exists
-$\delta\in[0,\infty)$ such that $\forall h\in[-\delta,\delta]$
-$\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$
-($\epsilon$ is the positive real considered in the lemma statement).
-Similarly, we can show there exists $r\in[0,\tau_{min})$ such that
-$\tr{x}{r}\in \ball{\tr{x}{\tau_{min}}}{\epsilon/2}$.  Combining both
-inequalities above, we get $\forall
-h\in[-\delta,\delta],~\tr{x}{\tau_{\min}+h}\in \ball{\tr{x}{r}}{\epsilon}$.
-As $r\in[0,\tau_{min})$, we get $\tr{x}{r}\in\bounds^K$.  So, for all
-$h\in[-\delta,\delta)$, we have $\tr{x}{\tau_{\min}+h}\in \bounds^K +
-[-\epsilon,\epsilon]^n$.  Also, by the definition of $\tau_{min}$, for
-all $\tau\in[0,\tau_{min}-\delta/2)$, $\tr{x}{\tau}\in \bounds^K +
-[-\epsilon,\epsilon]^n$. Combining last two inequalities, we get for
-all $\tau\in[0,\tau_{min}+\delta)$ $\tr{x}{\tau}\in\bounds +
-[-\epsilon,\epsilon]^n$.  Therefore,
-$\trfn{x}|_{[0,\tau_{min}+\delta)}$ is a trajectory of
-$\rb{f,U,\bounds^K+[-\epsilon,\epsilon]^n}$
+Proof of above lemma is in the appendix.
 
-By Lemma~\ref{lem:linearization}, $L_k$ is an overapproximation of
-$\rb{f,U,\bounds^k+[-\epsilon,\epsilon]^n}$ .  As we showed that
-$\trfn{x}|_{[0,\tau_{min}+\delta)}$ is a trajectory of
-$\rb{f,U,\bounds^K+[-\epsilon,\epsilon]^n}$, using
-Lemmas~\ref{lem:inclin} and~\ref{lem:linreach} and
-Equation~\ref{eqn:iter}, we get that $\forall h\in [0,\delta)$,
-$\tr{x}{\tau_{min}+h}\in \dismat{A}{L_K}{[0,t]}\bounds^0
-+ \dismat{B}{L_K}{[0,t]}U
-+ \dismat{C}{L_K}{[0,t]}V \subseteq \bounds^{k}$.  But by the
-definition of $\tau_{min}$, $\exists h\in
-[0,\delta),~\tr{x}{\tau_{min}+h}\notin \bounds^K$.  So, the assumption
-that $\Omega\nsupseteq \reach{H}{[0,t]}{\init}$ is wrong.  Hence,
-$\Omega\supseteq \reach{H}{[0,t]}{\init}$.
-\end{proof}
-%
-To compute the reachable set at time $t$ from an interval zonotope
-$\zt$, we do the following.  Let $\Omega
-= \ivflow{H}{t+\epsilon}{K}{\epsilon}{\zt}$.  From above lemma, we
-have $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\ztset{\zt}}$.  Then we
-compute a linear overapproximation of $\rb{f,U,\Omega}$ as\\ $L
-= \rb{\inf\rb{\stmat{f}{\Omega}{U}},
-\inf\rb{\inpmat{f}{\Omega}{U}},
-U,
-\err{f}{\Omega}{U}
-}$ based on Lemma~\ref{lem:linearization}.  Next we compute the linear transformation
-%
-\[
-\flow{H}{t}{K}{\epsilon}{\zt}
-= \lin{\zt}{ \dismat{A}{L}{[t,t]}}{\dismat{B}{L}{[t,t]}U
-+ \dismat{C}{L}{[t,t]}V }
-\]
-%
-The following lemma states that $\ztset{\flow{H}{t}{K}{\epsilon}{\zt}
-}$ is an overapproximation of the reachable set
-$\reach{H}{t}{\ztset{\zt}}$.
-%
-\begin{lemma}~\label{lem:reachnonlin}
-Let $H = \rb{f,U,\reals^n}$ be a nonlinear system and $\zt$ an
-interval zonotope.  Then
-$\reach{H}{t}{\ztset{\zt}} \subseteq \ztset{\flow{H}{t}{K}{\epsilon}{\zt}}$.
-\end{lemma}
-%
-\begin{proof}
-Let $\trfn{x}:[0,T)\rightarrow \reals^n$ be a trajectory of $H$ such
-that $\tr{x}{0}\in\ztset{\zt}$.  Let $\Omega
-= \ztset{\ivflow{H}{t+\epsilon}{K}{\epsilon}{\zt}}$.  By
-Lemma~\ref{lem:bloat}, we get $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\zt}$.  So,
-$\trfn{y} = \trfn{x}|_{[0,(t+\epsilon)]}$ is a trajectory of $H^\prime
-= \rb{f,U,\Omega}$.  By Lemma~\ref{lem:linearization}, we get that\\ $L
-= \rb{\inf\rb{\stmat{f}{\Omega}{U}},
-\inf\rb{\inpmat{f}{\Omega}{U}},
-U,
-\err{f}{\Omega}{U}
-}$ is an overapproximation of $H^\prime$ .  By Lemma~\ref{lem:inclin},
-we get
-$\reach{L}{t}{\ztset{\zt}}\supseteq\reach{H^\prime}{t}{\Omega}$.  By
-Lemma~\ref{lem:lintrans} and~\ref{lem:linreach}, we have
-$\ztset{\flow{H}{t}{K}{\epsilon}{\zt}} \supseteq \reach{L}{t}{\ztset{\zt}}$.
-So,
-$\flow{H}{t}{K}{\epsilon}{\zt}\supseteq\reach{H^\prime}{t}{\Omega}$.
-We showed that $\trfn{y}$ is a trajectory of $H^\prime$. Also,
-$\tr{y}{t} =\tr{x}{t}$ as $t\in[0,t+\epsilon)$.  So, by the previous
-inequality we get $\tr{y}{t}
-= \tr{x}{t}\in\ztset{\flow{H}{t}{K}{\epsilon}{\zt}}$.  As this is true
-for all trajectories $\trfn{x}$ of $H$, we have
-$\reach{H}{t}{\ztset{\zt}}\subseteq\flow{H}{t}{K}{\epsilon}{\zt}$.
-\end{proof}
-%
