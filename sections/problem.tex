@@ -9,11 +9,11 @@ flowpipes with linear projection maps.
 \begin{problem}
 Let us consider an $n$-dimensional nonlinear system with $m$-inputs $H
 = \rb{f,\Omega,U}$ where $U\in\intervals^m$ is bounded, i.e.,
-$\sup{U}\in\reals^n$.  We are given a bounded initial set
+$\sup\rb{U}\in\reals^n$.  We are given a bounded initial set
 $X_0\in\intervals^n:~\sup{X_0}\in\reals^n$ and a time bound
 $T\in\reals_{> 0}$.  For every $t\in[0,T]$, compute a set
 $\tr{X}{t}\subseteq \reals^n$ and a function
-$\flowproj:\times\double^n\rightarrow \double$ such that
+$\flowproj{t}:\double^n\rightarrow \double$ such that
 $\reach{H}{t}{X_0}\in\tr{X}{t}$ and $\forall
 a\in\double^n~\set{a^Tx\st{x\in\tr{X}{t}}}\subseteq
 \flowproj{t}\rb{a}$.
@@ -26,3 +26,7 @@ interval flowpipe where at any time $t$, we have
 $\tr{X}{t}\in\intervals^2$ and $\flowproj{t}\rb{\tr{X}{t},a} =
 \sup\rb{[a_1,a_1]\rb{\tr{X}{t}}_1 + [a_2,a_2]\rb{\tr{X}{t}}_2}$.
 
+We would like the flowpipe approximation to be as close as possible to
+the actual reachable set at any given time.  Greater accuracy of flowpipe results in
+improved feasibility of verifying reachability properties of the
+system.
