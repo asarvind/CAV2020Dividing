@@ -1,26 +1,27 @@
 We evaluate our intersection of unions method on two real world
-examples, i.e., a $7$-dimensional nonlinear model of autonomous car
-from Lavaei et. al.~\cite{lavaei2020formal} and $12$-dimensional
-nonlinear model of quadrotor from ARCH 2020
+examples, i.e., a $7$-dimensional nonlinear model of an autonomous car
+from Lavaei et. al.~\cite{lavaei2020formal} and a $12$-dimensional
+nonlinear model of a quadrotor from ARCH 2020
 workshop~\cite{geretti2020arch}.  On these examples, besides the union
 method based on the performance index~(\ref{eqn:pi}) proposed in
 Althoff et. al.~\cite{althoff2008reachability}, we compare with
 with polynomial zonotopes~\cite{althoff2013reachability} in CORA
-tool\footnote{\url{https://tumcps.github.io/CORA/}} and Taylor
+tool\footnote{\url{https://tumcps.github.io/CORA}} and Taylor
 models~\cite{chen2012taylor} in
 Flowstar\footnote{https://flowstar.org}.
 
 For computation of symbolic derivatives, we use Sympy Python
 software~\cite{10.7717/peerj-cs.103} and for interval arithmetic, we
 use Boost C++ library~\cite{bronnimann2006design}.  We use
-OpenMp\footnote{\url{https://www.openmp.org//}} to run in
+OpenMp\footnote{\url{https://www.openmp.org}} to run in
 parallel each iteration Step~\ref{step:1} of the for loops of
 Algorithm~\ref{alg:main}.
+\is{Algorithm 2 has othe (in parallel) steps. Should we remove those?}
 
 \emph{Settings:}  We
 ran our IoU method, union method and Flowstar Taylor model on an AWS
-c5a.16xlarge cluster with 64 virtual cpus.  We ran CORA in MATLAB
-2019a on a 1.4 GHz laptop with 4 GB ram, 1600 MHz DDR3.  The
+c5a.16xlarge cluster with 64 virtual CPU cores.  We ran CORA in MATLAB
+2019a on a 1.4GHz laptop with 4GB 1600MHz DDR3 RAM.  The
 simulation time step is $\delta = 0.005\si{\second}$ for car model and
 $\delta = 0.01\si{\second}$ for quadrotor model.  The simulation time
 horizon is $[0, 5\si{\second}]$.  The order of Taylor expansion of
@@ -134,7 +135,10 @@ $ g = 9.81, m = 1093.3, \mu = 1.0489, l_f = 1.156, l_r = 1.422, h_{cg}
 
 \emph{Results:}  The upper and lower bounds of flowpipe for different
   methods is plotted over uniformly space time stamps in
-  Figure~\ref{fig:flowcar}.  Flowstar could not complete the Taylor
+  Figure~\ref{fig:flowcar}.  
+  \is{We can order the subfigures better: $x_1$, $x_2$, steering angle, slip angle, yaw angle, yaw rate.
+  
+  Flowstar could not complete the Taylor
   model flowpipe simulation beyond $1.15\si{\second}$ due to large
   time discretization error.  The bottom 3 lines in the figure
   correspond to our IoU flowpipe method, which show convergence while
@@ -164,6 +168,7 @@ Quadrotor & 614 s & 318 s & 169 s & 2382 s &
 \end{tabular}
 \end{center}
 \end{table}
+\is{Should we change the older of the columns to $\eta = 3$, $\eta = 4$, $\eta = 5$ in Table 1?}
 %
 \begin{figure}
 %\vspace{-1.05em}
