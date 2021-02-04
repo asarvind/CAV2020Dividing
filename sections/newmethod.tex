@@ -1,36 +1,57 @@
-\is{Do we need a couple of introductory sentences to justify why we are concentrating on the technique proposed in [2]?}
-
-\emph{Review:}  In the
-linearization based flowpipe computation proposed by Althoff
-et. al.~\cite{althoff2008reachability}, at any time $t$ where
-$\tr{X}{t} = \init$, first a linear system overapproximation
-$\rb{\inf\rb{\stmat{f}{\Omega}{U}},
-\inf\rb{\inpmat{f}{\Omega}{U}},U,\err{f}{\Omega}{U}}$  of the
-nonlinear system $H$ is computed in a neighborhood $\Omega$ of
-$\init$.  The set $\Omega$ is computed as a crude over-approximation
-of the reachable set between $[0,t+\delta]$ for a small $\delta$, like
-the interval over-approximation in Lemma~\ref{lem:bloat}.  Then, a
-more accurate flowpipe is computed based
-on the linearized dynamics.  Therefore, the accuracy of flowpipe
-$\tr{X}{[t,t+\delta]}$ is positively correlated with the Taylor error
-in linearization $\taylor{f}{\Omega}{U}$ in the region $\Omega$.
-Since $\Omega$ is a small neighborhood of $\init$, this Taylor error
-is close to \is{closely?} correlated with the Taylor error
-$\taylor{f}{\overline{\init}}{U}$ inside an interval
-overapproximation $\overline{\init}$ of $\init$.  The Taylor error
-inside $\overline{\init}$ is positively correlated with the bounds of
-$\overline{\init}$ based an Equation in~\ref{eqn:linearize}.
-Therefore,~\cite{althoff2008reachability} proposed to reduce the
-linearization error by dividing the reachable set $\init$ into smaller
-sets based on a performance index and computing the next flowpipe as
-the union of flowpipes.  However, the union method
-in~\cite{althoff2008reachability} has an important drawback, explained
-below.  We address this drawback by using intersection of unions
-instead of just the union.
+%\is{Do we need a couple of introductory sentences to justify why we are concentrating on the technique proposed in [2]?}
+Our flowpipe computation will be based on finding a piecewise-linear
+approximation of the nonlinear dynamics at different time stamps.
+However, instead of using a single piecewise-linear approximation, we
+will be using multiple piecewise-linear approximations resulting in
+intersection of unions flowpipe.  Before discussing this in detail, we
+first introduce concepts related to linearization.
 %
-\subsection{Motivation for intersection of unions}
-\is{I think this subsection should start from the beginning of this section.}
-In Althoff. et. al~\cite{althoff2008reachability}, a reachable set
+\subsection{Linearization}
+\input{sections/system}
+%
+\subsection{Motivation for intersection of
+unions}~\label{sec:motivation} In any linearization based flowpipe
+computation, the linearization error is positively correlated with the
+bounds on the reachable set (see~Equation~\ref{eqn:linearize}).  So,
+this linearization error can be reduced by dividing the reachable set
+into smaller subsets and propagating each subset using linearization
+around the subset.  This is called piecewise linearization.  However,
+the number of pieces required to restrict the linearization error
+below a threshold increase exponentially in the state dimension.
+Alternatively, we can fix the number of pieces and find a division
+that minimizes the linearization error.  In the context of this
+optimization, a relevant set division method was proposed by
+Althoff. et. al~\cite{althoff2008reachability}.
+%
+%% In the linearization based flowpipe computation proposed by Althoff
+%% et. al.~\cite{althoff2008reachability}, at any time $t$ where
+%% $\tr{X}{t} = \init$, first a linear system overapproximation
+%% $\rb{\inf\rb{\stmat{f}{\Omega}{U}},
+%% \inf\rb{\inpmat{f}{\Omega}{U}},U,\err{f}{\Omega}{U}}$  of the
+%% nonlinear system $H$ is computed in a neighborhood $\Omega$ of
+%% $\init$.  The set $\Omega$ is computed as a crude over-approximation
+%% of the reachable set between $[0,t+\delta]$ for a small $\delta$, like
+%% the interval over-approximation in Lemma~\ref{lem:bloat}.  Then, a
+%% more accurate flowpipe is computed based
+%% on the linearized dynamics.  Therefore, the accuracy of flowpipe
+%% $\tr{X}{[t,t+\delta]}$ is positively correlated with the Taylor error
+%% in linearization $\taylor{f}{\Omega}{U}$ in the region $\Omega$.
+%% Since $\Omega$ is a small neighborhood of $\init$, this Taylor error
+%% is close to \is{closely?} correlated with the Taylor error
+%% $\taylor{f}{\overline{\init}}{U}$ inside an interval
+%% overapproximation $\overline{\init}$ of $\init$.  The Taylor error
+%% inside $\overline{\init}$ is positively correlated with the bounds of
+%% $\overline{\init}$ based an Equation ~\ref{eqn:linearize}.
+%% Therefore,~\cite{althoff2008reachability} proposed to reduce the
+%% linearization error by dividing the reachable set $\init$ into smaller
+%% sets based on a performance index and computing the next flowpipe as
+%% the union of flowpipes.  However, the union method
+%% in~\cite{althoff2008reachability} has an important drawback, explained
+%% below.  We address this drawback by using intersection of unions
+%% instead of just the union.
+%% %
+%% \is{I think this subsection should start from the beginning of this section.}
+In~\cite{althoff2008reachability}, a reachable set
 $\init$ is divided into two sets $\init_1$ and $\init_2$ which
 minimizes the following quantity for a user chosen normalization error
 $\rho\in\reals^n_{>0}$.
@@ -40,7 +61,7 @@ $\rho\in\reals^n_{>0}$.
 \end{align*}
 %
 For obtaining smaller divisions, the above pairwise division is used
-recursively.
+recursively.  However, the above division method has the following drawback.
 
 \emph{Drawback:}  Since the Taylor error
 $\taylor{f}{\overline{\init}}{U}$ is a multi-dimensional vector, minimizing its
@@ -157,7 +178,7 @@ $q\gets \omega\rb{q,ind}$
 \end{algorithm}
 %
 Subsequently, we get a set of optimized division vectors corresponding
-to different eigenvectors.  We denote this set as as $\dopt{\eta}$ \is{could we use a different symbol? $\dopt{}$ looks like asymptotic complexity.},
+to different eigenvectors.  We denote this set as as $\dopt{\eta}$,
 where $2^\eta$ is the maximum number of divisions.
 %
 \begin{example}
@@ -318,8 +339,8 @@ steps~\ref{algstep:assign1}-\ref{algstep:assign2} of Algorithm~\ref{alg:main}.
 \subsection{Computing IoU flowpipe}
 To compute the reachable set at time $t$ from an interval zonotope
 $\zt$, we do the following.  Let $\Omega
-= \ivflow{H}{t+\epsilon}{K}{\epsilon}{\zt}$.  From above lemma, we
-have $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\ztset{\zt}}$. \is{There is no lemma above this line.}
+= \ivflow{H}{t+\epsilon}{K}{\epsilon}{\zt}$.  From Lemma~\ref{lem:bloat}, we
+have $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\ztset{\zt}}$.
 Then we
 compute a linear overapproximation of $\rb{f,U,\Omega}$ as\\ $L
 = \rb{\inf\rb{\stmat{f}{\Omega}{U}},
@@ -328,15 +349,14 @@ U,
 \err{f}{\Omega}{U}
 }$ based on Lemma~\ref{lem:linearization}.  Next we compute the linear transformation
 %
-\[
+$
 \flow{H}{t}{K}{\epsilon}{\zt}
 = \lin{\zt}{ \dismat{A}{L}{[t,t]}}{\dismat{B}{L}{[t,t]}U
 + \dismat{C}{L}{[t,t]}V }
-\]
+$.
 %
 The following lemma states that $\ztset{\flow{H}{t}{K}{\epsilon}{\zt}
-}$ is an overapproximation of the reachable set
-$\reach{H}{t}{\ztset{\zt}}$.
+}$ is an overapproximation of $\reach{H}{t}{\ztset{\zt}}$.
 %
 \begin{lemma}~\label{lem:reachnonlin}
 Let $H = \rb{f,U,\reals^n}$ be a nonlinear system and $\zt$ an
@@ -421,9 +441,23 @@ given above.
 
 Now we have the results to compute an optimized IoU zonotope flowpipe.
 The flowpipe computation is described in Algorithm~\ref{alg:main}.
-Each iteration in step~\ref{step:1} of the for loops can be run independently
-in parallel.  The correctness of the algorithm is proved in
-Theorem~\ref{thm:main}.
+Each iteration in step~\ref{step:1} of the for loops can be run
+independently in parallel.  The correctness of the algorithm is proved
+in Theorem~\ref{thm:main}.  Next, we need to compute the projection
+map at any time.  For an interval zonotope $Z
+= \rb{\gen,\cen,\bounds}$ of order $l$, an upper bound on the
+projection of the set along any direction $a\in\double^n$ is
+%
+\[
+\project{Z}{a} = \sup\rb{\meet{\rb{\rb{a^T\gen}[-1,1]^l+a^Tc}}{a^T\bounds}}.
+\]
+%
+Then for an IoU interval zonotope flowpipe $\tr{X}{t}$, the projection
+bound can be computed as
+$\rb{\min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}}$.  Therefore, at any
+time $t$, we have the projection map $\flowproj{t}$ such that
+$\flowproj{t}\rb{a} = \min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}$,
+as stated in Step~\ref{step:proj} of the algorithm.
 %
 \begin{theorem}~\label{thm:main}
 Let us consider the candidate flowpipe $\trfn{X}$ computed in
@@ -465,25 +499,6 @@ $\ztset{\tr{X}{0}} = \ztset{\iouopt{\eta}{\bounds^\delta}}
 by Lemma~\ref{lem:bloat}.  Therefore, the theorem is true.
 \end{proof}
 %
-Next, we need to compute the projection map at any time.  For an
-interval zonotope $Z = \rb{\gen,\cen,\bounds}$ of order $l$, the upper
-bound on the projection of the set along any direction $a\in\double^n$
-can be computed as
-%
-\[
-\project{Z}{a} = \sup\rb{\meet{\rb{\rb{a^T\gen}[-1,1]^l+a^Tc}}{a^T\bounds}}
-\]
-%
-Then for an IoU interval zonotope flowpipe $\tr{X}{t}$, the projection
-bound can be computed as
-$\rb{\min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}}$.  Therefore, at any
-time $t$, we have the projection map $\flowproj{t}$ such that
-$\flowproj{t}\rb{a} = \min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}$,
-as stated in Step~\ref{step:proj} of the algorithm.
-
-\is{Will it be more meaningful to place Theorem 1 here?}
-
-
 \begin{example}
 To illustrate the difference in accuracy between intersection of
 unions and only union method, we ran both techniques on

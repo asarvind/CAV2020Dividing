@@ -1,3 +1,38 @@
+An $n$-dimensional nonlinear dynamical system with $m$ inputs is
+specified by a tuple $\rb{f,\inpset,\Omega}$, where $f =
+\rb{f_1,\ldots,f_n}\in \fe{n+m}^n$ is an
+$n$-tuple from the subset of partial functions $\fe{n+m}$, an
+interval vector $\inpset\in\intervals^m$ is called the \emph{input
+set}, and $\Omega\in\intervals^n$ is called the \emph{state space}.
+For any $T\in\reals_{>0}$, a
+function \mbox{$\trfn{x}:[0,T)\rightarrow \reals^n$} is called
+a \emph{state trajectory} if there exists a \emph{piecewise
+continuous} function $\trfn{u}:[0,T)\rightarrow \inpset$,
+called \emph{input trajectory}, such that all of the following is
+true.
+%
+\begin{align*}
+& \forall t\in[0,T), \tr{x}{t}\subseteq \Omega,\\
+& \forall
+t\in[0,T)\ \forall\epsilon\in\reals_{>0}, \exists\delta\in\reals_{>0}~\text{such
+that}\\
+& \ \ \ \  \forall h\in[-\delta,\delta]\bigcap[0,T]~\norm{ \frac{ \tr{x}{t+h}
+- \tr{x}{t} }{h} - f_i\rb{ \mymatrix{ \tr{x}{t}\\ \tr{u}{t} }
+}}< \epsilon~\numberthis\label{eqn:dynamics}
+\end{align*}
+%
+In the rest of the paper, $n$ is the dimension of a nonlinear system
+and $m$ is the number of inputs, unless otherwise stated.  For a
+trajectory $\trfn{x}:[0,T)\rightarrow \reals^n$ and $\tau<T$, we
+define $\trfn{x}|_{[0,\tau]}
+= \trfn{y}:[0,T)\rightarrow \reals^n: \forall t\in[0,\tau), \tr{y}{t}
+= \tr{x}{t}$.   The \emph{reachable set} of the nonlinear system $H
+=\rb{f,\inpset,\Omega}$ from an initial set $\init$ at a time point
+$t$, denoted $\reach{H}{t}{\init}$, is a set containing all points
+$\tr{x}{t}$ where $\trfn{x}$ is a state trajectory of $H$ and
+$\tr{x}{0}\in\init$.  Similarly, $\reach{H}{[t_1,t_2]}{\init}
+= \bigcup_{t\in[t_1,t_2]}\reach{H}{t}{\init}$.
+%
 The problem of flowpipe computation is to find an overapproximation of
 the reachable set at each time point in a horizon, called flowpipe,
 such that essential reachability properties of the set, like safety
@@ -21,11 +56,41 @@ a\in\double^n~\sup\set{a^Tx\st{x\in\tr{X}{t}}}\leq
 %
 The set $\tr{X}{t}$ is called a 
 \emph{flowpipe} at time $t$ and $\flowproj{t}$ is the flowpipe projection map.
-For example, in a $2$-dimensional system, a simple flowpipe is an interval flowpipe where at any time $t$, we have
-$\tr{X}{t}\in\intervals^2$ and $\flowproj{t}\rb{\tr{X}{t},a} =
-\sup\rb{[a_1,a_1]\rb{\tr{X}{t}}_1 + [a_2,a_2]\rb{\tr{X}{t}}_2}$.
-
+%% For example, in a $2$-dimensional system, a simple flowpipe is an interval flowpipe where at any time $t$, we have
+%% $\tr{X}{t}\in\intervals^2$ and $\flowproj{t}\rb{\tr{X}{t},a} =
+%% \sup\rb{[a_1,a_1]\rb{\tr{X}{t}}_1 + [a_2,a_2]\rb{\tr{X}{t}}_2}$.
+%
+\begin{example}\label{eg:ill}
+Let us denote the function expressions $\proj{1} = x$, $\proj{2} = y$,
+$\proj{3} = \theta$ and $\proj{4} = u$.  A $3$-dimensional nonlinear
+system with one input, state space $\reals^n$ and input set $U =
+[-0.3,0.3]$ can be specified as $H = \rb{f,[-0.3,0.3],\reals^3}$ where
+%
+\begin{align*}
+& f_1 = \rb{ u\rb{ x + \theta + 0.1y } - 1}x,
+& f_2 = \rb{ u\rb{ y + \theta + 0.1x } - 1}y,\\
+& f_3 = -\theta + 0.001\theta^2.
+\end{align*}
+%
+Let us consider the zero input trajectory $\tr{u}{t} = 0~\forall
+t\in[0,5)$.  In this case, two state trajectories are $\forall
+t\in[0,5)$,
+%
+\begin{align*}
+\tr{x}{t} = \mymatrix{ -0.1\exp\rb{-t}\\ 0.1\exp\rb{-t}\\ 0.1\exp\rb{-t} },~
+& \tr{x}{t} = \mymatrix{ -0.2\exp\rb{-t}\\ -0.1\exp\rb{-t}\\ -0.1\exp\rb{-t} }
+\end{align*}
+%
+which begin at $\tr{x}{0} = \mymatrix{-0.1,0.1,0.1}^T$ and $\tr{x}{0}
+= \mymatrix{-0.2,-0.3,-0.1}^T$, respectively.
+%
+But there are also state trajectories without an analytic form.  The
+objective of flowpipe computation is to compute bounds along different
+directions on the reachable set $\reach{H}{t}{\init}$ at each time
+point in $[0,T)$, which originate $\init$ (eg. see Fig~\ref{fig:ill}).
+%
 We would like the flowpipe approximation to be as close as possible to
 the actual reachable set at any given time.  Greater accuracy of flowpipe results in
 improved feasibility of verifying reachability properties of the
 system.
+\end{example}
