@@ -111,9 +111,9 @@ For $a,b\in\double$ such that $a<b$, we denote $\interval{a}{b} =
   $uv,(u+v),(u-v)\in\intervals$ such that $uv\supseteq\set{xy\st x\in
     u, y\in v}$, $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
   $\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.  Similarly, for a
-  partial function $f\in \fe{n}$ and interval $u\in\dom{f}$, we use
-  interval arithmetic to correctly bound the image of $f$ over $a$,
-  denoted $\iv{f}{u} \supseteq \set{f\rb{x}\st{x\in u} }$.
+  partial function $f\in \fe{n}$ and an interval $u\in\dom{f}$, we use
+  interval arithmetic to correctly bound the image of $f$ over $a$ \is{u?},
+  denoted by $\iv{f}{u} \supseteq \set{f\rb{x}\st{x\in u} }$.
 
 
 The set of $n\times m$ interval matrices is $\intervals^{n\times m}$,
@@ -122,7 +122,7 @@ conveniently denoted by $\intervals^{n}$.  For $A\in\reals^{n\times
 m}$ and $\bar{X}\in\intervals^{n\times m}$, we say $A\in \bar{X}$ if
 $\forall
 \rb{i,j}\in\set{1,\ldots,n}^2, A_{ij}\subseteq \bar{X}_{ij}$.  The interval
-matrix $X$ is said to be bounded if $\forall
+matrix $X$ \is{\bar{X}} is said to be bounded if $\forall
 i\in\set{1,\ldots,n}, \forall j\in\set{1,\ldots,m}, \exists
 a,b\in\double: \bar{X}_{ij} = [a,b]$.  The matrix product
 $\bar{X}\bar{Y}$ of two interval matrices
