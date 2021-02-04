@@ -14,26 +14,26 @@ For computation of symbolic derivatives, we use Sympy Python
 software~\cite{10.7717/peerj-cs.103} and for interval arithmetic, we
 use Boost C++ library~\cite{bronnimann2006design}.  We use
 OpenMp\footnote{\url{https://www.openmp.org}} to run in
-parallel each iteration Step~\ref{step:1} of the for loops of
+parallel the iteration Steps~\ref{step:3} and~\ref{step:1} of the for loops of
 Algorithm~\ref{alg:main}.
-\is{Algorithm 2 has othe (in parallel) steps. Should we remove those?}
+%\is{Algorithm 2 has othe (in parallel) steps. Should we remove those?}
 
 \emph{Settings:}  We
 ran our IoU method, union method and Flowstar Taylor model on an AWS
 c5a.16xlarge cluster with 64 virtual CPU cores.  We ran CORA in MATLAB
-2019a on a 1.4GHz laptop with 4GB 1600MHz DDR3 RAM.  The
-simulation time step is $\delta = 0.005\si{\second}$ for car model and
-$\delta = 0.01\si{\second}$ for quadrotor model.  The simulation time
-horizon is $[0, 5\si{\second}]$.  The order of Taylor expansion of
-Flowstar Taylor model is $9$ for car model and $7$ for quadrotor
-model.  For the CORA polynomial zonotope, our IoU method and the union
-method, the generator order is $l=400$ for car model and $l=200$ for
-quadrotor model.  The order of \emph{dependent generators} of
-polynomial zonotope is $2000$ for both models.  We took $K = 20$ and
-$\epsilon = 10^{-12}$.  For the union method, the normalization error
-$\rho$ for division~(Equation~\ref{eqn:pi}) is $\rho
-= \taylor{f}{X_0}{u}$, i.e., the Taylor error before division.
-
+2019a on a 1.4GHz laptop with 4GB 1600MHz DDR3 RAM.  The simulation
+time step is $\delta = 0.005\si{\second}$ for car model and $\delta =
+0.01\si{\second}$ for quadrotor model.  The simulation time horizon is
+$[0, 5\si{\second}]$.  The order of Taylor expansion of Flowstar
+Taylor model is $9$ for car model and $7$ for quadrotor model.  For
+the CORA polynomial zonotope, our IoU method and the union method, the
+generator order is $l=400$ for car model and $l=200$ for quadrotor
+model.  The order of \emph{dependent generators} of polynomial
+zonotope is $2000$ for both models.  We took $K = 20$ and $\epsilon =
+10^{-12}$.  For the union method, the normalization error $\rho$ for
+division~(Equation~\ref{eqn:pi}) is the Taylor error before division,
+i.e., $\rho = \taylor{f}{X_0}{u}$.
+%
 %% \subsection{Illustrative example: IoU  vs union of interval zonotopes}
 %% We consider the 3-dimensional nonlinear system in Example~\ref{eg:ill}
 %% \is{Does it represent some real system, for example, a bicycle? It would have been nice then.}
@@ -65,7 +65,7 @@ $\rho$ for division~(Equation~\ref{eqn:pi}) is $\rho
 %% examples that we evaluate latter.
 %% \is{The parallel computation aspect needs more details. May be in the Algorithm section, you may say how to parallelize your algorithm.}
 %% %
-
+%
 \begin{figure}
 \includegraphics[width=6.4cm,height=4.8cm]{autocarImages/ubToolx1.png}%\hspace{-2.2em}
 \includegraphics[width=6.4cm,height=4.8cm]{autocarImages/ubToolx2.png}
@@ -78,8 +78,11 @@ $\rho$ for division~(Equation~\ref{eqn:pi}) is $\rho
 \includegraphics[scale = 0.39]{autocarImages/leg1.png}~
   \includegraphics[scale = 0.41]{autocarImages/leg2.png}~
   \includegraphics[scale = 0.41]{autocarImages/leg3.png}
+\includegraphics[scale = 0.39]{autocarImages/leg4.png}~
+  \includegraphics[scale = 0.41]{autocarImages/leg5.png}~
+  \includegraphics[scale = 0.41]{autocarImages/leg6.png}
   \caption{Flowpipe bounds at different time points for
-    car model \is{The font of the text above the plot for $x_1$ is smaller than the others. Could we place the legends a bit logically? May be IOE methods in the first row and the other methods in the second row?}}\label{fig:flowcar}
+    car model }\label{fig:flowcar}
 \end{figure}
 % \begin{figure}
 % \includegraphics[scale = 0.39]{autocarImages/ubToolSteering.png}%\hspace{-2.2em}
@@ -151,39 +154,39 @@ $ g = 9.81, m = 1093.3, \mu = 1.0489, l_f = 1.156, l_r = 1.422, h_{cg}
 
 \emph{Results:}  The upper and lower bounds of flowpipe for different
   methods is plotted over uniformly space time stamps in
-  Figure~\ref{fig:flowcar}.  
-  \is{We can order the subfigures better: $x_1$, $x_2$, steering angle, slip angle, yaw angle, yaw rate (I have made this change). Also, it may be worth mentioing why we are not plotting one state: heading velocity}.
-  Flowstar could not complete the Taylor
-  model flowpipe simulation beyond $1.15\si{\second}$ due to large
-  time discretization error.  The bottom 3 lines in the figure
+  Figure~\ref{fig:flowcar}.  There is very small change in the heading
+  velocity, so it is not plotted.  Flowstar could not complete the
+  Taylor model flowpipe simulation beyond $1.15\si{\second}$ due to
+  large time discretization error.  The bottom 3 lines in the figure
   correspond to our IoU flowpipe method, which show convergence while
   all other plots are diverging.  The figure clearly shows a high
   increase in accuracy by using intersection of unions compared to
   other methods.  The simulation times are given in
   Table~\ref{tab:comptimes}.  The preprocessing time before simulation
-  for IoU method is $18\si{\second}$.
+  for IoU method is $18\si{\second}$, when the symbolic
+  derivative and double derivatives of the vector field are computed and the C++ code is
+  compiled.
   %
  %
 \begin{table}
 \begin{center}
 \caption{Computation times}\label{tab:comptimes}
-\begin{tabular}{|l|c|c|c|c|c|}
+\begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
-Example & IoU  & IoU  & IoU  &
+Example & IoU  & IoU  & IoU  & Only Union &
 Polynomial & Taylor\\
-& $\eta = 5$ & $\eta = 4$ & $\eta = 3$ & Zonotope & Model \\
+& $\eta = 3$ & $\eta = 4$ & $\eta = 5$ & $\eta = 5$ & Zonotope & Model \\
 \hline
-& & & & & {\color{red}Incomplete}\\
-Car & 252 s & 128 s & 108 s & 4068 s& {\color{red}[0,1.15s]:~216s}\\
+& & & & & & {\color{red}Incomplete}\\
+Car & 108 s & 128 s & 252 s & 122 s & 4068 s & {\color{red}[0,1.15s]:~216s}\\
 \hline
-& & & & &\\
-Quadrotor & 614 s & 318 s & 169 s & 2382 s &
-{\color{red}[0,4.13s]:~583 s} \\
+& & & & & &\\
+Quadrotor & 169 s & 318 s & 614 s & {\color{red}
+Incomplete} & 2382 s & {\color{red}[0,4.13s]:~583 s} \\
 \hline
 \end{tabular}
 \end{center}
 \end{table}
-\is{Should we change the older of the columns to $\eta = 3$, $\eta = 4$, $\eta = 5$ in Table 1? Computation time of the union method?}
 %
 \begin{figure}
 %\vspace{-1.05em}
@@ -193,6 +196,8 @@ Quadrotor & 614 s & 318 s & 169 s & 2382 s &
 \includegraphics[scale = 0.41]{quadrotorImages/leg1.png}~
   \includegraphics[scale = 0.41]{quadrotorImages/leg2.png}~
   \includegraphics[scale = 0.41]{quadrotorImages/leg3.png}
+\includegraphics[scale = 0.41]{quadrotorImages/leg4.png}~
+  \includegraphics[scale = 0.41]{quadrotorImages/leg5.png}
 \caption{Flowpipe bounds on height at different time points.
 Note: Union method resulted in infinite bounds (not plotted).}\label{fig:flowquadrotor}
 \end{figure}
@@ -229,17 +234,14 @@ stabilize the vertical height of the quadrotor at $h = 1\si{\meter}$.
 
 \emph{Results:}  Our IoU method for each of the $8$, $16$ and $32$ divisions per
   eigenvector direction showed much higher accuracy than other
-  methods.  The union method based on division using
+  methods.  We plotted the flowpipe bounds for the height in
+  Figure~\ref{fig:flowquadrotor}.  The figure clearly shows high
+  increase in accuracy by using intersection of unions compared to
+  other methods.  The union method based on division using
   Equation~\ref{eqn:pi} resulted in very high linearization error and
-  consequently infinite bounds $[-1,1]^{12}$ \is{How is it an infinite bound?} after $0.5\si{\second}$ simulation
-  time, where the normalization error is taken to be $\rho
-  = \taylor{f}{X_0}{u}$ \is{This has been mentioned before.}.  We plotted the flowpipe bounds for the
-  height in Figure~\ref{fig:flowquadrotor}.  The figure clearly shows
-  high increase in accuracy by using intersection of unions compared
-  to other methods. 
-  \is{The lines describing the failure of the union method can be placed her.}
-  The computation times are given in
-  Table~\ref{tab:comptimes}.  The preprocessing time before simulation
-  for our IoU method is $44\si{\second}$.
-  \is{Should we mention what is done in the preprocessing step?}
+  consequently infinite bounds after $0.5\si{\second}$ simulation
+  time.  The computation times are given in Table~\ref{tab:comptimes}.
+  The preprocessing time before simulation for our IoU method is
+  $44\si{\second}$, when the symbolic derivative and double
+  derivatives of the vector field are computed and the C++ code is compiled.
 %
