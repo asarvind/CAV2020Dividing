@@ -112,32 +112,32 @@ For $a,b\in\double$ such that $a<b$, we denote $\interval{a}{b} =
     u, y\in v}$, $\rb{u+v}\supseteq\set{x+y\st x\in u, y\in v}$ and
   $\rb{u-v}\supseteq\set{x-y\st x\in u, y\in v}$.  Similarly, for a
   partial function $f\in \fe{n}$ and an interval $u\in\dom{f}$, we use
-  interval arithmetic to correctly bound the image of $f$ over $a$ \is{u?},
+  interval arithmetic to correctly bound the image of $f$ over $u$,
   denoted by $\iv{f}{u} \supseteq \set{f\rb{x}\st{x\in u} }$.
 
 
 The set of $n\times m$ interval matrices is $\intervals^{n\times m}$,
 and $n$-dimensional interval vectors is $\intervals^{n\times 1}$,
 conveniently denoted by $\intervals^{n}$.  For $A\in\reals^{n\times
-m}$ and $\bar{X}\in\intervals^{n\times m}$, we say $A\in \bar{X}$ if
-$\forall
-\rb{i,j}\in\set{1,\ldots,n}^2, A_{ij}\subseteq \bar{X}_{ij}$.  The interval
-matrix $X$ \is{\bar{X}} is said to be bounded if $\forall
+  m}$ and $\bar{X}\in\intervals^{n\times m}$, we say $A\in \bar{X}$ if
+$\forall \rb{i,j}\in\set{1,\ldots,n}^2, A_{ij}\subseteq \bar{X}_{ij}$.
+The interval matrix $\bar{X}$ is said to be bounded if $\forall
 i\in\set{1,\ldots,n}, \forall j\in\set{1,\ldots,m}, \exists
 a,b\in\double: \bar{X}_{ij} = [a,b]$.  The matrix product
 $\bar{X}\bar{Y}$ of two interval matrices
 $\bar{X}\in\intervals^{n\times p}$ and $\bar{Y}\in\intervals^{p\times
-m}$ is $\bar{X}\bar{Y} = \sum_{k=1}^p\bar{X}_{ik}\bar{Y}_{kj}$. The
-sum of interval matrices $\bar{X}$ and $\bar{Y}$ is $\bar{X}
-+ \bar{Y}$, where $\rb{\bar{X}+\bar{Y}}_{ij} = \bar{X}_{ij}
-+ \bar{Y}_{ij}$.  It follows that if $A\in \bar{X}$ and
-$B\in \bar{Y}$, then $AB\in \bar{X}\bar{Y}$ and
-$A+B\in \bar{X}+\bar{Y}$.  If $X\in\double^{n\times m}$, then
-$\ivmat{X}\in\intervals$ is an interval matrix such that $\forall
+  m}$ is $\bar{X}\bar{Y} = \sum_{k=1}^p\bar{X}_{ik}\bar{Y}_{kj}$. The
+sum of interval matrices $\bar{X}$ and $\bar{Y}$ is $\bar{X} +
+\bar{Y}$, where $\rb{\bar{X}+\bar{Y}}_{ij} = \bar{X}_{ij} +
+\bar{Y}_{ij}$.  It follows that if $A\in \bar{X}$ and $B\in \bar{Y}$,
+then $AB\in \bar{X}\bar{Y}$ and $A+B\in \bar{X}+\bar{Y}$.  If
+$X\in\double^{n\times m}$, then $\ivmat{X}\in\intervals$ is an
+interval matrix such that $\forall
 (i,j)\in\set{1,\ldots,n}\times\set{1,\ldots,m}, \ivmat{X}_{ij} =
-[X_{ij},X_{ij}]$.  For an interval matrix $\bar{X}$, we denote $\mi{\bar{X}} =
-\frac{\ivmat{\sup\rb{\bar{X}}} + \ivmat{\inf\rb{\bar{X}}}}{[2,2]}$ and $\rad{X} =
-\bar{X} - \mi{\bar{X}}$.  The diagonal interval matrix containing elements of an
+[X_{ij},X_{ij}]$.  For an interval matrix $\bar{X}$, we denote
+$\mi{\bar{X}} = \frac{\ivmat{\sup\rb{\bar{X}}} +
+  \ivmat{\inf\rb{\bar{X}}}}{[2,2]}$ and $\rad{X} = \bar{X} -
+\mi{\bar{X}}$.  The diagonal interval matrix containing elements of an
 interval vector $u$ along its diagonal is denoted $\diag{u}$.  If
 $f\in\fe{n}^{m\times p}$ is a matrix of function expressions, then
 $\iv{f}{u}\in \intervals^{m\times p}$ is an interval matrix where
@@ -146,9 +146,11 @@ denote $\meet{u}{v} =
 [\sup\rb{\inf\rb{u},\inf\rb{v}},\inf\rb{\sup\rb{u},\sup\rb{v}}]$ and
 $\join{u}{v} = [\inf\rb{u\bigcup v}, \sup\rb{u\bigcup v}]$.  If
 $\bar{X},\bar{Y}\in\intervals^{n\times m}$, then
-$\meet{\bar{X}}{\bar{Y}},\join{\bar{X}}{\bar{Y}}\in\intervals^{n\times m}$ such that
-$\rb{\meet{\bar{X}}{\bar{Y}}}_{ij} = \meet{\bar{X}_{ij}}{\bar{Y}_{ij}}$ and
-$\rb{\join{\bar{X}}{\bar{Y}}}_{ij} = \join{\bar{X}_{ij}}{\bar{Y}_{ij}}$.
+$\meet{\bar{X}}{\bar{Y}},\join{\bar{X}}{\bar{Y}}\in\intervals^{n\times
+  m}$ such that $\rb{\meet{\bar{X}}{\bar{Y}}}_{ij} =
+\meet{\bar{X}_{ij}}{\bar{Y}_{ij}}$ and
+$\rb{\join{\bar{X}}{\bar{Y}}}_{ij} =
+\join{\bar{X}_{ij}}{\bar{Y}_{ij}}$.
 %
 In addition to the above intervals, we denote
 %

@@ -529,7 +529,7 @@ $\bounds^\delta \gets \ivflow{H}{\delta}{K}{\epsilon}{X_0}$\;
 $j\gets 1$,~$k\gets 1$\;~\label{algstep:assign1}
 \For{$q\in\dopt{q}$~(in parallel)}{
     \For{$b\in D_q$~(in parallel)}{
-        $\rb{\iouopt{\eta}{\bounds^\delta}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
+        $\rb{\iouopt{\eta}{\bounds^\delta}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;~\label{step:3}
         $k\gets k+1$\; 
     } 
     $j\gets j+1$\; 
@@ -556,6 +556,10 @@ $\forall t\in[0,T]$, $\forall a\in\double^n$, $\flowproj{t}\rb{a}
   \includegraphics[scale = 0.41]{illImages/leg1.png}~
   \includegraphics[scale = 0.41]{illImages/leg2.png}~
   \includegraphics[scale = 0.41]{illImages/leg3.png}
+    \includegraphics[scale = 0.41]{illImages/leg4.png}~
+  \includegraphics[scale = 0.41]{illImages/leg5.png}~
+  \includegraphics[scale = 0.41]{illImages/leg6.png}
+
   }
   \caption{Flowpipe bounds at different time points for
     Example~\ref{eg:ill}}
