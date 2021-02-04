@@ -89,7 +89,6 @@ $[0,\delta]$ because of two reasons.
 \item Dividing a reach set increases the representation complexity due to
 increase in the number of elements in the union.  So, iterative
 division of reach set at various time stamps will blow up the
-<<<<<<< HEAD
 representation complexity.  Therefore, we only divide the reach set
 once at the beginning.
 \item  A non-interval flowpipe at some time stamp can not
@@ -97,13 +96,6 @@ be divided accurately and reduces the accuracy of future flowpipe.
 However, since we divide the interval overapproximation of reachable
 set at the beginning, i.e., $\ivflow{H}{\delta}{K}{\epsilon}{X_0}$,
 this set can be divided accurately.
-=======
-representation complexity.
-\item  A non-interval flowpipe at some time stamp cannot
-be divided accurately and reduces the accuracy of future flowpipe.
-Flowpipes at future time points are better approximated as
-non-intervals.  However, since we consider the initial set as an interval, the initial set can be divided accurately.
->>>>>>> 149f2e3066ad528caf942a9f112625ac521177a1
 \end{enumerate}
 %
 %% Henceforth, we only divide the interval initial set to
@@ -169,7 +161,6 @@ to different eigenvectors.  We denote this set as as $\dopt{\eta}$ \is{could we 
 where $2^\eta$ is the maximum number of divisions.
 %
 \begin{example}
-<<<<<<< HEAD
 Let us consider the nonlinear system $H$ in Example~\ref{eg:ill}.  Let
 us consider that $\bounds^\delta = [0,1]^3$ for some small $\delta$
 and the maximum number of divisions is $4$, i.e., $\eta = 2$.  The
@@ -185,22 +176,6 @@ vector is $\mymatrix{1 & 1 & 4}^T$.  So, $\dopt{4} = \set{\mymatrix{2
 three different division vectors results three different kinds of
 divisions of $[0,1]^3$ whose intersection is represented as an IoU of
 interval zonotopes.
-=======
-Let us consider the nonlinear system $H$ in Example~\ref{eg:ill}, an
-interval vector $h = [0,1]^3$ and maximum number of divisions $\eta =
-4$.  The eigenvectors at the origin are the coordinate vectors
-$\mymatrix{1 & 0 & 0}^T$, $\mymatrix{0 & 1 & 0}^T$ and $\mymatrix{0 &
-0 & 1}^T$.  To reduce the linearization error along $\mymatrix{1 & 0 &
-0}^T$, the best possible division vector is $\mymatrix{2 & 1 & 2}^T$,
-i.e., divide $x$ and $\theta$ coordinates.  For the direction
-$\mymatrix{0 & 1 &0}^T$, the optimum division vector is $\mymatrix{1 &
-2 & 2}^T$, and for the direction $\mymatrix{0 & 0 & 1}^T$, the optimum
-division vector is $\mymatrix{1 & 1 & 4}^T$.  So, $\dopt{4}
-= \set{\mymatrix{2 & 1 & 2}^T, \mymatrix{1 & 2 & 2}^T, \mymatrix{1 & 1
-& 4}^T}$.  The three different division vectors results three
-different kinds of divisions of $[0,1]^3$ whose intersection is
-represented as an IoU of interval zonotopes.
->>>>>>> 149f2e3066ad528caf942a9f112625ac521177a1
 \end{example}
 %
 \subsection{Casting initial reach set as IoU of
