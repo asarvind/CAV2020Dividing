@@ -66,12 +66,12 @@ $\rho$ for division~(Equation~\ref{eqn:pi}) is $\rho
 %% \is{The parallel computation aspect needs more details. May be in the Algorithm section, you may say how to parallelize your algorithm.}
 %% %
 \begin{figure}
-\includegraphics[scale = 0.41]{autocarImages/ubToolSteering.png}\hspace{-2.2em}
-\includegraphics[scale = 0.41]{autocarImages/ubToolSlip.png}
-\includegraphics[scale = 0.41]{autocarImages/ubToolYaw.png}\hspace{-2.2em}
-\includegraphics[scale = 0.41]{autocarImages/ubToolYawRate.png}
+\includegraphics[scale = 0.39]{autocarImages/ubToolSteering.png}\hspace{-2.2em}
+\includegraphics[scale = 0.39]{autocarImages/ubToolSlip.png}
+\includegraphics[scale = 0.39]{autocarImages/ubToolYaw.png}\hspace{-2.2em}
+\includegraphics[scale = 0.39]{autocarImages/ubToolYawRate.png}
 \includegraphics[scale = 0.41]{autocarImages/ubToolx2.png}\hspace{-2.2em}
-\includegraphics[scale = 0.41]{autocarImages/ubToolx1.png}
+\includegraphics[scale = 0.39]{autocarImages/ubToolx1.png}
 
 \includegraphics[scale = 0.41]{autocarImages/leg1.png}~
   \includegraphics[scale = 0.41]{autocarImages/leg2.png}~
@@ -136,8 +136,7 @@ $ g = 9.81, m = 1093.3, \mu = 1.0489, l_f = 1.156, l_r = 1.422, h_{cg}
 \emph{Results:}  The upper and lower bounds of flowpipe for different
   methods is plotted over uniformly space time stamps in
   Figure~\ref{fig:flowcar}.  
-  \is{We can order the subfigures better: $x_1$, $x_2$, steering angle, slip angle, yaw angle, yaw rate}.
-  
+  \is{We can order the subfigures better: $x_1$, $x_2$, steering angle, slip angle, yaw angle, yaw rate. Also, it may be worth mentioing why we are not plotting one state: heading velocity}.
   Flowstar could not complete the Taylor
   model flowpipe simulation beyond $1.15\si{\second}$ due to large
   time discretization error.  The bottom 3 lines in the figure
@@ -172,8 +171,8 @@ Quadrotor & 614 s & 318 s & 169 s & 2382 s &
 %
 \begin{figure}
 %\vspace{-1.05em}
-\includegraphics[scale = 0.41]{quadrotorImages/ubToolHeight.png}\hspace{-2.2em}
-\includegraphics[scale = 0.41]{quadrotorImages/lbToolHeight.png}
+\includegraphics[scale = 0.39]{quadrotorImages/ubToolHeight.png}%\hspace{-2.2em}
+\includegraphics[scale = 0.39]{quadrotorImages/lbToolHeight.png}
 
 \includegraphics[scale = 0.41]{quadrotorImages/leg1.png}~
   \includegraphics[scale = 0.41]{quadrotorImages/leg2.png}~
@@ -191,11 +190,11 @@ appendix.  It has a $12$-dimensional state vector $x
 height of the quadrotor and a $3$-dimensional input vector $u
 = \rb{u_1,u_2,u_2}$.  We take a larger initial set than the one given
 in the competition~\cite{geretti2020arch} so that there is significant
-linearization error in the flowpipe.  Our initial set is in S.I. units
+linearization error in the flowpipe.  Our initial set in S.I. units
 is $X_0 = [-0.8,0.8]^6\times[-0.5,0.5]^2\times[0,0]\times
 [-1,1]^2\times[0,0]$.  The input set is $\rb{u_1,u_2,u_3}\in
 [-0.99,1.01]\times[-0.01,0.01]^2$.  The goal of controller is to
-stabilize the veritical height of the quadrotor at $h = 1m$.
+stabilize the vertical height of the quadrotor at $h = 1\si{\meter}$.
 
 %% \emph{Settings:}  The simulation time step is $\delta = 0.01\si{\second}$.  
 %% For Flowstar Taylor model, the order of Taylor expansion is $7$.  For
