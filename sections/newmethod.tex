@@ -78,53 +78,59 @@ along each direction in the given set of directions.
 
 As a heuristic, we choose the directions as the eigenvectors of the
 nonlinear system at the center of the initial set.  Furthermore, we
-only divide the initial set because of two reasons.
+only divide an interval overapproximation of the reachable set
+$\ivflow{H}{\delta}{K}{\epsilon}{X_0}$ in a small time interval
+$[0,\delta]$ because of two reasons.
 %
 \begin{enumerate}
 \item Dividing a reach set increases the representation complexity due to
 increase in the number of elements in the union.  So, iterative
 division of reach set at various time stamps will blow up the
-representation complexity.
+representation complexity.  Therefore, we only divide the reach set
+once at the beginning.
 \item  A non-interval flowpipe at some time stamp can not
 be divided accurately and reduces the accuracy of future flowpipe.
-Flowpipes at future time points are better approximated as
-non-intervals.  However, since we consider the initial set as an
-interval, the initial set can be divided accurately.
+However, since we divide the interval overapproximation of reachable
+set at the beginning, i.e., $\ivflow{H}{\delta}{K}{\epsilon}{X_0}$,
+this set can be divided accurately.
 \end{enumerate}
 %
 %% Henceforth, we only divide the interval initial set to
 %% compute an intersection of unions representation.
 %
 \subsection{Computing set of optimized division vectors}
-Recall that our initial set is the interval denoted $X_0$.  Let us
-denote the matrix of eigenvectors of $\inf\rb{\stmat{f}{X_0}{U}}$ as
-$\eig$.  Our objective is to minimize the projection of the Taylor
-error along each column vector of $\eig$.  For each direction, we have
-a optimized way of dividing the set $X_0$ denoted by an integer vector
-$q$ that represents the number of divisions along each dimension.  So,
-for the set of eigenvector, we get a set of optimized division
-vectors.  Subsequently, we cast the initial set as intersection of
-union of the divisions corresponding to different optimized division
-vectors.  For convenience, let us denote $\bounds=X_0$.  Given a
-vector of positive integer values $q\in\integers_{>0}^n$,
-called \emph{division vector}, we define a set of interval vectors
-whose union is a close overapproximation of $\bounds$ with only
-floating point approximation error, as follows.
+Recall that our initial set is the interval denoted $X_0$.  As a part
+of an inductive procedure, we first bloat the initial set to compute
+an interval overapproximation $\bounds^{\delta}
+= \ivflow{H}{\delta}{K}{\epsilon}{X_0}$ of the reachable set in the
+interval $[0,\delta]$.  Let us denote the matrix of eigenvectors of
+$\inf\rb{\stmat{f}{X_0}{U}}$ as $\eig$.  Our objective is to minimize
+the projection of the Taylor error in a small neighborhood of $\bounds^{\delta}$
+along each column vector of $\eig$.  For each direction, we have a
+optimized way of dividing the interval $\bounds^{\delta}$, denoted by an
+integer vector $q$ that represents the number of divisions along each
+dimension.  So, for the set of eigenvector, we get a set of optimized
+division vectors.  Subsequently, we cast the initial set as
+intersection of union of the divisions corresponding to different
+optimized division vectors.  Given a vector of positive integer values
+$q\in\integers_{>0}^n$, called \emph{division vector}, we define a set
+of interval vectors whose union is a close overapproximation of
+$\bounds^{\delta}$ with only floating point approximation error, as follows.
 %
 \begin{align*}
 D_q
 = & \left\{r_1\times...\times r_n\right.\\
 & \left.\st{\forall i\in\set{1,\ldots,n}~\exists k_i\in\set{1,\ldots,q_i}}:~r_i
-= \ivmat{\inf\rb{\bounds_i}}+k_i\frac{\rad{\bounds}_i}{q_i}\right\}.
+= \ivmat{\inf\rb{\bounds^\delta_i}}+k_i\frac{\rad{\bounds^\delta}_i}{q_i}\right\}.
 \end{align*}
 %
 For all intervals in $D_q$, an vector upper bound
-$\utaylor{f}{U}{\bounds}{q}$ on the magnitude of Taylor error is given below.
+$\utaylor{f}{U}{\bounds}{q}$ on the magnitude of Taylor error is
+$\forall i\in\set{1,\ldots,n}~\rb{\utaylor{f}{U}{\bounds}{q}}_i$
 %
 \begin{align*}
-\rb{\utaylor{f}{U}{\bounds}{q}}_i
-= \sup\rb{\mymatrix{\rad{d}\rb{\diag{q}}^{-1}\\ \rad{U}}^T{\nabla^2
-f_i}\rb{\mymatrix{d\\ U}}\mymatrix{\rad{d}\rb{\diag{q}}^{-1}\\ \rad{U}}}
+\sup\rb{\mymatrix{\rad{\bounds^{\delta}}\rb{\diag{q}}^{-1}\\ \rad{U}}^T{\nabla^2
+f_i}\rb{\mymatrix{\bounds^{\delta}\\ U}}\mymatrix{\rad{\bounds^{\delta}}\rb{\diag{q}}^{-1}\\ \rad{U}}}.
 \end{align*}
 %
 For any $k\in\set{1,\ldots,n}$, the projection of the  bound
@@ -141,8 +147,8 @@ $i\in\set{1,\ldots,n}$, $\omega\rb{q,i}\in\integers^n$ where $\omega\rb{q,i}_j
 \caption{Optimizing division vector for $k^{th}$
 eigenvector} $q\gets \mymatrix{1,\ldots,1}^T\in\integers^n$\;
 \While{$\prod_{j=1}^nq_j<2^\eta$}{
-$ind \gets \argmin_{i=1}^n\begin{cases}\rb{\sup\rb{\real{\utaylor{f}{U}{\bounds}{\omega\rb{q,i}}\eig_{:,k}}}}^2\\
- + \rb{\sup\rb{\imag{\utaylor{f}{U}{\bounds}{\omega\rb{q,i}}\eig_{:,k}}}}^2\end{cases}$\;
+$ind \gets \argmin_{i=1}^n\begin{cases}\rb{\sup\rb{\real{\utaylor{f}{U}{\bounds^\delta}{\omega\rb{q,i}}\eig_{:,k}}}}^2\\
+ + \rb{\sup\rb{\imag{\utaylor{f}{U}{\bounds^\delta}{\omega\rb{q,i}}\eig_{:,k}}}}^2\end{cases}$\;
 $q\gets \omega\rb{q,ind}$
 }
 \end{algorithm}
@@ -152,37 +158,38 @@ to different eigenvectors.  We denote this set as as $\dopt{\eta}$,
 where $2^\eta$ is the maximum number of divisions.
 %
 \begin{example}
-Let us consider the nonlinear system $H$ in Example~\ref{eg:ill}, an
-interval vector $h = [0,1]^3$ and maximum number of divisions $\eta =
-4$.  The eigenvectors at the origin are the coordinate vectors
-$\mymatrix{1 & 0 & 0}^T$, $\mymatrix{0 & 1 & 0}^T$ and $\mymatrix{0 &
-0 & 1}^T$.  To reduce the linearization error along $\mymatrix{1 & 0 &
-0}^T$, the best possible division vector is $\mymatrix{2 & 1 & 2}^T$,
-i.e., divide $x$ and $\theta$ coordinates.  For the direction
-$\mymatrix{0 & 1 &0}^T$, the optimum division vector is $\mymatrix{1 &
-2 & 2}^T$ and for the direction $\mymatrix{0 & 0 & 1}^T$, the optimum
-division vector is $\mymatrix{1 & 1 & 4}^T$.  So, $\dopt{4}
-= \set{\mymatrix{2 & 1 & 2}^T, \mymatrix{1 & 2 & 2}^T, \mymatrix{1 & 1
-& 4}^T}$.  The three different division vectors results three
-different kinds of divisions of $[0,1]^3$ whose intersection is
-represented as an IoU of interval zonotopes.
+Let us consider the nonlinear system $H$ in Example~\ref{eg:ill}.  Let
+us consider that $\bounds^\delta = [0,1]^3$ for some small $\delta$
+and the maximum number of divisions is $4$, i.e., $\eta = 2$.  The
+eigenvectors at the origin are the coordinate vectors $\mymatrix{1 & 0
+& 0}^T$, $\mymatrix{0 & 1 & 0}^T$ and $\mymatrix{0 & 0 & 1}^T$.  To
+reduce the linearization error along $\mymatrix{1 & 0 & 0}^T$, the
+best possible division vector is $\mymatrix{2 & 1 & 2}^T$, i.e.,
+divide $x$ and $\theta$ coordinates.  For the direction $\mymatrix{0 &
+1 &0}^T$, the optimum division vector is $\mymatrix{1 & 2 & 2}^T$ and
+for the direction $\mymatrix{0 & 0 & 1}^T$, the optimum division
+vector is $\mymatrix{1 & 1 & 4}^T$.  So, $\dopt{4} = \set{\mymatrix{2
+& 1 & 2}^T, \mymatrix{1 & 2 & 2}^T, \mymatrix{1 & 1 & 4}^T}$.  The
+three different division vectors results three different kinds of
+divisions of $[0,1]^3$ whose intersection is represented as an IoU of
+interval zonotopes.
 \end{example}
 %
-\subsection{Casting initial set as intersection of unions of interval zonotopes}
-For different division vectors, we get different types of unions which
-overapproximate the initial set.  So, we can represent the initial set
-as intersection of unions (IoU) of intervals.  However, intervals do
-not provide good approximation of reachable sets at future time
-stamps.  Alternatively, \emph{zonotopes} are known to provide good
-approximation of reachable sets when linearization is
-used~\cite{todo}.  Then, since our initial set is an intersection of
-unions, for using zonotopes we need to recast it as intersection of
-union of zonotopes. However, it is known that zonotopes do not provide
-good approximation of intersection between them~\cite{todo}, which is
-required in our IoU representation.  Therefore, we generalize
-zonotopes to interval zonotopes to compute better approximation of
-intersection between zonotopes and also soundly approximate floating
-point computations.  It is defined as follows.
+\subsection{Casting initial reach set as IoU of
+interval zonotopes} For different division vectors, we get different
+types of unions which overapproximate the interval $\bounds^\delta$.
+So, we can represent $\bounds^\delta$ as intersection of unions (IoU)
+of intervals.  \emph{However, other set representations, like
+zonotopes~\cite{girard2005reachability}, provide much better
+approximation of reachable sets at future time stamps when
+linearization is used}.  But if we use zonotopes, we need to recast
+$\bounds^\delta$ as intersection of union of zonotopes. However, it is
+known that zonotopes do not provide good approximation of intersection
+between them~\cite{ghorbal2010logical}, which is required in our IoU
+representation.  Therefore, we generalize zonotopes to interval
+zonotopes to compute better approximation of intersection between
+zonotopes and also soundly approximate floating point computations.
+It is defined as follows.
 %
 \begin{definition}[Interval Zonotope]
 Let us consider $l\in\integers_{>0}$, $\gen\in\intervals^{n\times
@@ -199,9 +206,10 @@ If $\zt = \iz{\gen}{\cen}{\bounds}$, then we represent $\overline{\zt}
 = \bounds$.
 \end{definition}
 %
-Before computing the IoU interval zonotope representation of the
-initial set, we will discuss a transformation operation on the interval zonotope
-that will be used in the IoU recasting and flowpipe computation.
+Before computing the IoU interval zonotope representation of
+$\bounds^\delta$, we will discuss a transformation operation on the
+interval zonotope that will be used in the IoU recasting and flowpipe
+computation.
 %
 \begin{lemma}[Linear transformation and sum]\label{lem:lintrans}
 Let us consider $A\in\intervals^{n\times n}$, $w\in\intervals^n$ and an
@@ -263,7 +271,7 @@ interval zonotope of order $l$ which is equivalent to zero is denoted
 $\zerozon{n}{l}$.
 %
 Based on the above lemma, for a division vector $q\in\dopt{\eta}$, we
-can closely overapproximate $X_0$ as a union of interval zonotopes of
+can closely overapproximate $\bounds^\delta$ as a union of interval zonotopes of
 order $l>0$ as $\bigcup_{b\in
 D_q}\lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$ with only floating
 point overapproximation error.  To reduce the Taylor error along each
@@ -286,14 +294,14 @@ represents the set
 \ztset{\zt} = \bigcap_{i=1}^{\rows{\zt}}\bigcup_{i=1}^{\cols{\zt}}\ztset{\zt_{ij}}.
 \]
 %
-The overall interval bounds on the IoU interval zonotope is
-$\overline{\zt}
-= \bigvee_{i=1}^{\rows{\zt}}\bigwedge_{i=1}^{\cols{\zt}}\overline{\zt_{ij}}$.
+%% The overall interval bounds on the IoU interval zonotope is
+%% $\overline{\zt}
+%% = \bigvee_{i=1}^{\rows{\zt}}\bigwedge_{i=1}^{\cols{\zt}}\overline{\zt_{ij}}$.
 \end{definition}
 %
 So, we represent the optimized intersection of unions in
 Equation~\ref{eqn:iouopt} by an IoU interval zonotope
-$\iouopt{\eta}{X_0}$ that is assigned by the
+$\iouopt{\eta}{\bounds^\delta}$ that is assigned by the
 steps~\ref{algstep:assign1}-\ref{algstep:assign2} of Algorithm~\ref{alg:main}.
 %% %
 %% \begin{algorithm}\caption{Initial IoU zonotope assignment}\label{alg:assign}
@@ -362,31 +370,25 @@ Then for an IoU interval zonotope, we can compute the reachable
 set at time $t$ according to the following lemma.
 %
 \begin{lemma}~\label{lem:ioureach}
-Let us consider an IoU of interval zonotopes $\zt$,
-$K\in\integers_{\geq 0}$, $\epsilon\in\reals_{>0}$.  Let us consider
-an IoU interval zonotope $\flow{H}{t}{K}{\epsilon}{\zt}$ and an
-interval $\ivflow{H}{t}{K}{\epsilon}{\zt}$ defined as
+Let us consider an IoU interval zonotopes $\zt$, positive integer
+$K\in\integers_{> 0}$ and $\epsilon\in\reals_{>0}$.  Let us define an
+IoU interval zonotope $\flow{H}{t}{K}{\epsilon}{\zt}$ as\\
 %
-\begin{align*}
+$
 \rb{\flow{H}{t}{K}{\epsilon}{\zt}}_{ij}
-= \flow{H}{t}{K}{\epsilon}{\zt_{ij}},~~~
-\rb{\ivflow{H}{t}{K}{\epsilon}{\zt}}
-= \bigvee_{i=1}^{\rows{\iouopt{\eta}{X_0}}}\bigwedge_{i=1}^{\cols{\iouopt{\eta}{X_0}}}\ivflow{H}{t}{K}{\epsilon}{\overline{\zt_{ij}}}.
-\end{align*}
+= \flow{H}{t}{K}{\epsilon}{\zt_{ij}}
+$.
 %
 Then
-$\reach{H}{t}{\zt}\subseteq \ztset{\flow{H}{t}{K}{\epsilon}{\zt}}$ and
-$\reach{H}{[0,t]}{\zt}\subseteq \ivflow{H}{t}{K}{\epsilon}{\zt}$.
+$\reach{H}{t}{\zt}\subseteq \ztset{\flow{H}{t}{K}{\epsilon}{\zt}}$.
 \end{lemma}
 %
 \begin{proof}
-Let us consider a trajectory $\trfn{x}$ such that $\tr{x}{0}\in\ztset{\zt}$.
-This means $\forall i\in\set{1,\ldots,N} \exists
-j_i:\tr{x}{0}\in\ztset{\zt_{ij_i}}$.  By Lemma~\ref{lem:reachnonlin}, we get
-that $\forall
-i\in\set{1,\ldots,N}~\tr{x}{t}\in\ztset{\flow{H}{t}{K}{\epsilon}{\ztset{\zt_{ij_i}}}}$
-and by Lemma~\ref{lem:bloat} we get that $\forall t\in[0,t]\forall
-i\in\set{1,\ldots,N}~\tr{x}{t}\in\ivflow{H}{t}{K}{\epsilon}{\ztset{\zt_{ij_i}}}$.
+Let us consider a trajectory $\trfn{x}$ such that
+$\tr{x}{0}\in\ztset{\zt}$.  This means $\forall
+i\in\set{1,\ldots,N} \exists j_i:\tr{x}{0}\in\ztset{\zt_{ij_i}}$.  By
+Lemma~\ref{lem:reachnonlin}, we get that $\forall
+i\in\set{1,\ldots,N}~\tr{x}{t}\in\ztset{\flow{H}{t}{K}{\epsilon}{\ztset{\zt_{ij_i}}}}$.
 This proves the lemma.
 \end{proof}
 %
@@ -399,11 +401,11 @@ Let $\zt$ be an IoU interval zonotope where $\zt_{ij}
 = \bigwedge_{i=1}^{\rows{\zt}}\bigvee_{j=1}^{\cols{\zt}}\bounds^{ij}$.  We
 define a refined IoU interval zonotope $\refine\rb{\zt}$ as
 %
-\[
+$
 \rb{\refine\rb{\zt}}_{ij}
 = \rb{\gen^{ij},{\cen^{ij}},{\meet{\bounds^{ij}}
-{\widehat{\bounds}}}}.
-\]
+{\widehat{\bounds}}}}
+$.
 %
 Then $\ztset{\zt} = \ztset{\refine\rb{\zt}}$.
 \end{lemma}
@@ -429,41 +431,54 @@ $\reach{H}{t}{X_0}\subseteq \ztset{\tr{X}{t}}$.
 We prove the theorem inductively.
 
 \paragraph{Claim:}  Let us consider that for some
-$i\in\integers_{\geq 0}:i\delta<T$, we have
-$\reach{H}{i\delta}{X_0}\subseteq\tr{X}{i\delta}$.  Then $\forall
-t\in[i\delta,(i+1)\delta]~\reach{H}{t}{X_0}\subseteq \ztset{\tr{X}{t}}$.
+$i\in\integers_{\geq 1}:i\delta<T$, we have
+$\reach{H}{[(i-1)\delta,i\delta)}{X_0}\subseteq\ztset{\tr{X}{(i-1)\delta}}$.
+Then $\forall
+t\in[i\delta,(i+1)\delta)~\reach{H}{t}{X_0}\subseteq {\ztset{\tr{X}{t}}}$.
 
 \paragraph{Proof of claim:}
-By Lemmas~\ref{lem:ioureach} and~\ref{lem:refine}, we get
-$\reach{H}{\delta}{\tr{X}{i\delta}}\subseteq \ztset{\flow{H}{\delta}{K}{\epsilon}{\tr{X}{i\delta}}}$
-and\\
-$\reach{H}{[0,\delta]}{\tr{X}{i\delta}}\subseteq \ivflow{H}{\delta}{K}{\epsilon}{\tr{X}{i\delta}}$.
-But we assumed $\reach{H}{i\delta}{X_0}\subseteq \tr{X}{i\delta}$.
-Therefore,
+By Lemma~\ref{lem:ioureach}, we get
+$\reach{H}{\delta}{\tr{X}{i\delta}}\subseteq \ztset{\flow{H}{\delta}{K}{\epsilon}{\tr{X}{i\delta}}}$.
+But we assumed
+$\reach{H}{[(i-1)\delta,i\delta)}{X_0}\subseteq\ztset{\tr{X}{(i-1)\delta}}$
+in the claim.  Therefore,
 %
 \begin{align*}
-& \reach{H}{(i+1)\delta}{X_0}
-= \reach{H}{\delta}{\reach{H}{i\delta}{X_0}} \subseteq \reach{H}{\delta}{\tr{X}{i\delta}}
-\subseteq \ztset{\flow{H}{\delta}{K}{\epsilon}{\tr{X}{i\delta}}}\\
-& = \ztset{\tr{X}{i\delta}}.\%~\text{by Step~\ref{step:1} in Algorithm~\ref{alg:main}}\\
-%
-& \forall t\in(i\delta,(i+1)\delta)~\reach{H}{t}{X_0}
-= \reach{H}{t-i\delta}{\reach{H}{i\delta}{X_0}} \subseteq \reach{H}{[0,\delta]}{\tr{X}{i\delta}}
-\subseteq \ztset{\ivflow{H}{\delta}{K}{\epsilon}{\tr{X}{i\delta}}}\\
-& = \ztset{\tr{X}{t}}. \%~\text{by Step~\ref{step:2} Algorithm~\ref{alg:main}}
+& \reach{H}{[i\delta,(i+1)\delta)}{X_0}
+= \reach{H}{\delta}{\reach{H}{[(i-1)\delta,i\delta)}{X_0}} \subseteq \reach{H}{\delta}{\tr{X}{(i-1)\delta}}\\
+&\subseteq \ztset{\flow{H}{\delta}{K}{\epsilon}{\tr{X}{(i-1)\delta}}}
+= \ztset{\tr{X}{t}}~\forall t\in[i\delta,(i+1)\delta).\%~\text{by
+Steps~\ref{step:1}-\ref{step:2}.}
 \end{align*}
 %
 This proves the claim made above.
-
+%
 Then it follows by induction that the theorem is true if
-$X_0\subseteq \tr{X}{0}$.  We have $\tr{X}{0} = \iouopt{\eta}{X_0}$,
-which is constructed by dividing $X_0$ by different optimized division
-vectors and intersecting the unions and results in a sound
-overapproximation of $X_0$.  Therefore, the theorem is true.
+$\reach{H}{[0,\delta)}{X_0}\subseteq \ztset{\tr{X}{0}}$.  We have
+$\ztset{\tr{X}{0}} = \ztset{\iouopt{\eta}{\bounds^\delta}}
+= \bounds^\delta
+= \ivflow{H}{\delta}{K}{\epsilon}{X_0}\supseteq \reach{H}{[0,\delta)}{X_0}$
+by Lemma~\ref{lem:bloat}.  Therefore, the theorem is true.
 \end{proof}
 %
+Next, we need to compute the projection map at any time.  For an
+interval zonotope $Z = \rb{\gen,\cen,\bounds}$ of order $l$, the upper
+bound on the projection of the set along any direction $a\in\double^n$
+can be computed as
+%
+\[
+\project{Z}{a} = \sup\rb{\meet{\rb{\rb{a^T\gen}[-1,1]^l+a^Tc}}{a^T\bounds}}
+\]
+%
+Then for an IoU interval zonotope flowpipe $\tr{X}{t}$, the projection
+bound can be computed as
+$\rb{\min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}}$.  Therefore, at any
+time $t$, we have the projection map $\flowproj{t}$ such that
+$\flowproj{t}\rb{a} = \min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}$,
+as stated in Step~\ref{step:proj} of the algorithm.
+
 To illustrate the difference in accuracy between intersection of
-unions and only union method, we ran both techniques on the
+unions and only union method, we ran both techniques on
 Example~\ref{eg:ill}.  We took $K=20$ and $\epsilon = 10^{-12}$.  The
 plot of interval bounds in Figure~\ref{fig:ill} clearly shows the the
 IoU method is far more accurate on this example.  In the next section,
@@ -477,40 +492,38 @@ flowpipe computation}\label{alg:main}
 $T\in\reals_{\geq 0}$, $X_0\in\intervals^n$.}
 
 \KwResult{Flowpipe $\trfn{X}:[0,T]\rightarrow \set{\text{Set of IoU interval
-zonotopes and intervals}}|~\tr{X}{0}\supseteq X_0$.}
+zonotopes and projection maps}}|~\tr{X}{0}\supseteq X_0$.}
 
 Choose $\eta,K\in\integers$, $\epsilon,\delta\in\double_{>0}$.
+
+$\bounds^\delta \gets \ivflow{H}{\delta}{K}{\epsilon}{X_0}$.
 
 % assigning initial IoU
 $j\gets 1$,~$k\gets 1$\;~\label{algstep:assign1}
 \For{$q\in\dopt{q}$~~\% In parallel}{
-\For{$b\in D_q$}{~~\% In parallel
-$\rb{\iouopt{\eta}{X_0}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
+\For{$b\in D_q$~~\% In parallel}{
+$\rb{\iouopt{\eta}{\bounds^\delta}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
 $k\gets k+1$\; } $j\gets j+1$\; }
 % done
 
-$\tr{X}{0}\gets \iouopt{\eta}{X_0}$.~\label{algstep:assign2}
+$\forall t\in[0,\delta)~\tr{X}{t}\gets \iouopt{\eta}{\bounds^\delta}$.~\label{algstep:assign2}
 
-$i\gets 0.$
+$i\gets 1.$
 
 \While{$i\delta\leq N$}{
-\For{ $j\in \rows{\iouopt{\eta}{X_0}}$ ~~(\% In parallel)}{
+\For{ $j\in \rows{\iouopt{\eta}{X_0}}$ and $k\in\cols{\iouopt{\eta}{X_0}}$ ~~(\% In parallel)}{
 
-\For{$k\in\cols{\iouopt{\eta}{X_0}}$~~(\% In parallel)}{
-
-$\rb{\tr{X}{(i+1)\delta}}_{jk} \gets {\flow{H}{\delta}{K}{\epsilon}{\rb{\tr{X}{i\delta}}_{jk}}}$.~\label{step:1}
+$\rb{\tr{X}{i\delta}}_{jk} \gets {\flow{H}{\delta}{K}{\epsilon}{\rb{\tr{X}{(i-1)\delta}}_{jk}}}$.~\label{step:1}
 
 }
-}
-$\tr{X}{(i+1)\delta} \gets \refine\rb{\tr{X}{(i+1)\delta}}$
+$\tr{X}{i\delta} \gets \refine\rb{\tr{X}{(i)\delta}}$
 
-$\forall t\in(i\delta,(i+1)\delta)~ {\tr{X}{t}}
-= \ivflow{H}{\delta}{K}{\epsilon}{\rb{\tr{X}{i\delta}}}$.~\label{step:2}
+$\forall t\in[0,t)~\tr{X}{t} \gets \tr{X}{(i)\delta}$~\label{step:2}
 
 $i \gets i+1$.
 }
 $\forall t\in[0,T]$, $\forall a\in\double^n$, $\flowproj{t}\rb{a}
-= \sup\rb{a^T\overline{\tr{X}{t}}}$.
+= \min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}$.~\label{step:proj}
 \end{algorithm}
 %
 \begin{figure}
