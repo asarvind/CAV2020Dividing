@@ -319,7 +319,8 @@ steps~\ref{algstep:assign1}-\ref{algstep:assign2} of Algorithm~\ref{alg:main}.
 To compute the reachable set at time $t$ from an interval zonotope
 $\zt$, we do the following.  Let $\Omega
 = \ivflow{H}{t+\epsilon}{K}{\epsilon}{\zt}$.  From above lemma, we
-have $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\ztset{\zt}}$.  Then we
+have $\Omega\supseteq\reach{H}{[0,t+\epsilon]}{\ztset{\zt}}$. \is{There is no lemma above this line.}
+Then we
 compute a linear overapproximation of $\rb{f,U,\Omega}$ as\\ $L
 = \rb{\inf\rb{\stmat{f}{\Omega}{U}},
 \inf\rb{\inpmat{f}{\Omega}{U}},
@@ -480,53 +481,55 @@ time $t$, we have the projection map $\flowproj{t}$ such that
 $\flowproj{t}\rb{a} = \min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}$,
 as stated in Step~\ref{step:proj} of the algorithm.
 
+\is{Will it be more meaningful to place Theorem 1 here?}
+
+
+\begin{example}
 To illustrate the difference in accuracy between intersection of
 unions and only union method, we ran both techniques on
 Example~\ref{eg:ill}.  We took $K=20$ and $\epsilon = 10^{-12}$.  The
 plot of interval bounds in Figure~\ref{fig:ill} clearly shows the the
-IoU method is far more accurate on this example.  In the next section,
-we evaluate our method on real world examples. with higher dimensions
+IoU method is far more accurate on this example.  
+\end{example}
+In the next section,
+we evaluate our method on real world examples with higher dimensions
 and compare them with state-of-the-art methods, besides the union
 method.
 %
-\begin{algorithm}\caption{IoU interval zonotope
+\begin{algorithm}
+\caption{IoU interval zonotope
 flowpipe computation}\label{alg:main}
+\DontPrintSemicolon
 \KwData{$n$-dimensional system with $m$ inputs $H = \rb{f,U,\reals^n}$,
 $T\in\reals_{\geq 0}$, $X_0\in\intervals^n$.}
 
 \KwResult{Flowpipe $\trfn{X}:[0,T]\rightarrow \set{\text{Set of IoU interval
 zonotopes and projection maps}}|~\tr{X}{0}\supseteq X_0$.}
 
-Choose $\eta,K\in\integers$, $\epsilon,\delta\in\double_{>0}$.
-
-$\bounds^\delta \gets \ivflow{H}{\delta}{K}{\epsilon}{X_0}$.
-
+Choose $\eta,K\in\integers$, $\epsilon,\delta\in\double_{>0}$\;
+$\bounds^\delta \gets \ivflow{H}{\delta}{K}{\epsilon}{X_0}$\;
 % assigning initial IoU
 $j\gets 1$,~$k\gets 1$\;~\label{algstep:assign1}
-\For{$q\in\dopt{q}$~~\% In parallel}{
-\For{$b\in D_q$~~\% In parallel}{
-$\rb{\iouopt{\eta}{\bounds^\delta}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
-$k\gets k+1$\; } $j\gets j+1$\; }
-% done
-
-$\forall t\in[0,\delta)~\tr{X}{t}\gets \iouopt{\eta}{\bounds^\delta}$.~\label{algstep:assign2}
-
-$i\gets 1.$
-
-\While{$i\delta\leq N$}{
-\For{ $j\in \rows{\iouopt{\eta}{X_0}}$ and $k\in\cols{\iouopt{\eta}{X_0}}$ ~~(\% In parallel)}{
-
-$\rb{\tr{X}{i\delta}}_{jk} \gets {\flow{H}{\delta}{K}{\epsilon}{\rb{\tr{X}{(i-1)\delta}}_{jk}}}$.~\label{step:1}
-
+\For{$q\in\dopt{q}$~(in parallel)}{
+    \For{$b\in D_q$~(in parallel)}{
+        $\rb{\iouopt{\eta}{\bounds^\delta}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;
+        $k\gets k+1$\; 
+    } 
+    $j\gets j+1$\; 
 }
-$\tr{X}{i\delta} \gets \refine\rb{\tr{X}{(i)\delta}}$
-
-$\forall t\in[0,t)~\tr{X}{t} \gets \tr{X}{(i)\delta}$~\label{step:2}
-
-$i \gets i+1$.
+% done
+$\forall t\in[0,\delta)~\tr{X}{t}\gets \iouopt{\eta}{\bounds^\delta}$\; ~\label{algstep:assign2}
+$i\gets 1$\;
+\While{$i\delta\leq N$}{
+\For{ $j\in \rows{\iouopt{\eta}{X_0}}$ \text{and} $k\in\cols{\iouopt{\eta}{X_0}}$~(in parallel)}{
+$\rb{\tr{X}{i\delta}}_{jk} \gets \flow{H}{\delta}{K}{\epsilon}{\rb{\tr{X}{(i-1)\delta}}_{jk}}$~\label{step:1}
+}
+$\tr{X}{i\delta} \gets \refine\rb{\tr{X}{(i)\delta}}$\;
+$\forall t\in[0,t)~\tr{X}{t} \gets \tr{X}{(i)\delta}$\; ~\label{step:2}
+$i \gets i+1$\;
 }
 $\forall t\in[0,T]$, $\forall a\in\double^n$, $\flowproj{t}\rb{a}
-= \min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}$.~\label{step:proj}
+= \min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}$~\label{step:proj}
 \end{algorithm}
 %
 \begin{figure}
