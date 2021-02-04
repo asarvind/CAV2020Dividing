@@ -1,0 +1,140 @@
+The dynamics of many real world systems is modeled by ordinary
+differential equations (ODEs).  These models typically contain
+uncertainties in the parameters, inputs and initial conditions to
+account for the unpredictable behavior of the system.  To ensure
+reliable working of the systems, especially those which are safety
+critical, these ODE models have to be verified that they satisfy the
+requirements for the working of the system.  Verifying properties of
+the ODE models (eg. safety, stability) requires approximating the set
+of trajectories (solutions) of the ODE in the presence of
+uncertainties.  But exactly computing the set of trajectories of
+nonlinear ODEs can be computationally intractable because of lack of
+analytic solutions.  Alternatively, a lot of research has been done on
+accurately overapproximating the set of trajectories by data
+structures, referred to as \emph{flowpipes}.
+
+Nevertheless, computing flowpipes with good accuracy is still a
+formidable challenge.  The computationally complexity of most flowpipe
+computation algorithms blow up beyond tractable limits when ensuring
+good accuracy in high dimensions with large uncertainties in system
+dynamics and initial conditions.  For instance, a commonly used method
+in flowpipe computation is piecewise linearization, where the
+nonlinear ODEs are approximated by piecewise linear ODEs.  The
+advantage of piecewise linearization is that reachable sets of linear
+ODEs can be computed far more efficiently than nonlinear ODEs.
+However, the number of pieces required to ensure that the
+linearization error is below a threshold increase exponentially in the
+dimension of ODEs.  To our understanding, no effective solution has
+yet been proposed to tackle the \emph{curse of dimensionality} in
+piecewise linearization based flowpipe computation.  Some techniques
+try to decompose the system in higher dimensions into subsystems with
+lower dimensions to ensure
+scalability~~\cite{chen2018decomposition,chen2016decomposed}.
+However, the decomposition based methods only work well when there
+there is loose coupling between some of the variables, but not for
+systems with good coupling between the variables.
+
+Alternatively, to avoid blowing up the number of pieces in piecewise
+linearization, we can fix the number of pieces.  Then, we need to
+optimize the way the reachable set is divided into subsets to minimize
+the linearization error.  In this regard, prior work has been done by
+Althoff. et. al.~\cite{althoff2008reachability} to optimally split
+reachable sets for minimizing linearization error.  They use a single
+dimensional measure of reduction in linearization error when a
+reachable set is split into two and optimize this measure.  However,
+the linearization error is a multi-dimensional vector for which there
+is no single best optimum way of splitting.  For different directions,
+there are different optimal ways of splitting the reachable set.
+Therefore, this splitting method based on optimizing a single
+dimensional measure may not give good accuracy along all coordinates.
+This drawback is explained in Section~\ref{sec:motivation} with an illustrative
+example.
+
+In our paper, we propose a more efficient way of minimizing the
+multi-dimensional linearization error in flowpipe computation.  We use
+different optimal divisions of a reachable set for minimizing
+linearization error along different directions, instead of a one way
+of dividing the set.  Consequently, our reachable set is represented as
+an intersection of the unions (IoU) of sets resulting from different
+optimal ways of dividing the set for different directions of
+linearization error.  Each union in this intersection corresponds to
+minimizing the linearization error along one direction in a multiple
+set of directions.  This way, we reduce the linearization error along
+multiple directions.  As a proof-of-concept, we evaluate our algorithm
+on an illustrative example and two high dimensional real-world
+examples. Our IoU flowpipe method showed a high increase in the flowpipe accuracy
+compared to the earlier method of division and other state-of-the-art
+methods.
+
+\subsection{Related work}
+There are efficient algorithms to compute reachable sets of linear
+uncertain
+ODEs~\cite{girard2005reachability,FLD+11,girard2008efficient,bak2017simulation}.
+The is because linear transformations of reachable sets can be
+efficiently overapproximated.  In contrast, computing reachable sets
+of nonlinear ODEs requires approximating nonlinear transformation of
+reachable sets resulting in non-convex sets, which is a much harder
+problem~\cite{dang2009image,monniaux2011generation}.  Taylor
+models~\cite{chen2012taylor} and polynomial
+zonotopes~\cite{althoff2013reachability,kochdumper2020sparse,kochdumper2020constrained}
+have been developed to approximate the nonlinear transformation of
+reachable sets.  But the complexity of Taylor model and polynomial
+zonotope increases when nonlinear transformations are repeatedly
+applied.  There are procedures to control this complexity, however,
+the accuracy will reduce with increase in size of reachable sets.
+
+Another approach used in numerous research works to flowpipe
+computation of nonlinear ODEs is piecewise linear approximation of
+nonlinear
+systems~\cite{althoff2008reachability,li2020reachability,dang2010accurate,ramdani2009hybrid,han2006reachability}.
+In this case, reachability analysis methods of affine hybrid systems
+are used post piecewise linear approximation.  As discussed earlier,
+this approach faces curse of dimensionality.  The number of pieces
+required to restrict the linearization error increase exponentially in
+the dimension.  Decomposition based
+techniques~\cite{chen2018decomposition,chen2016decomposed} have been
+proposed to address the curse of dimensionality, however, they they
+work well under loose coupling between the state variables.  In
+contrast, we show good accuracy of our IoU method on examples where
+there is tight coupling between all state variables of ODE.
+%
+A idea similar to ours is a
+\emph{projectahedron}~\cite{greenstreet1999reachability}, where the reachable
+set is stored in terms of projections on different hyperplanes.  But,
+storing projections of the reachable set can result in loosing the
+correlation between variables in higher dimensions and consequently
+affect flowpipe accuracy.  In contrast, our IoU method maintains a
+good approximation of the correlation between variables by using a
+variant of zonotope in its constituent sets.
+
+The use of intersection of union of sets is novel and has not been
+employed in previous research.  Each element of our IoU is a variant of
+zonotope~\cite{girard2005reachability}, called \emph{interval
+  zonotope}, introduced in this paper.  The interval zonotope is a
+generalization of zonotope to allow better approximation of
+intersection between zonotopes.  But the intersection of unions can
+also use other representations like polytopes in its constituent sets.
+We use this variant of zonotope because zonotopes are known to
+approximate linear transformations very accurately.  Our IoU of
+interval zonotopes is very different from zonotope
+bundles~\cite{althoff2011zonotope}.  The latter is an intersection of
+zonotopes but not intersection of union of zonotopes.
+
+Our IoU flowpipe employs an optimization technique to construct the
+IoU so as to minimize the linearization error along multiple
+directions.  This is an improvement of the division method used in
+Matthias et. al.~\cite{althoff2008reachability}.  The latter method
+divides sets based on a single dimensional measure, which may not
+effectively reduce linearization error along all directions.  Instead,
+our IoU method uses multiple best divisions for minimizing
+linearization along different directions, as discussed before.  This
+improvement is explained latter in this paper more clearly with an
+illustrative example.  Some methods approximate the unbounded time
+union of reachable
+sets~\cite{tiwari2008generating,prajna2006barrier,rodriguez2005generating}
+instead of the reachable set at each individual time point. Such
+approximation can verify boundedness within a safe set, but not other
+temporal properties like reachability within a time interval.  Our
+algorithm computes approximation at each time stamp in a time horizon
+which can be helpful to verify temporal
+properties.
