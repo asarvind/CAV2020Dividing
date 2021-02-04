@@ -67,18 +67,19 @@ $\rho$ for division~(Equation~\ref{eqn:pi}) is $\rho
 %% %
 
 \begin{figure}
-\includegraphics[width=6cm,height=2.5cm]{autocarImages/ubToolSteering.png}%\hspace{-2.2em}
-\includegraphics[scale = 0.39]{autocarImages/ubToolSlip.png}
-\includegraphics[scale = 0.39]{autocarImages/ubToolYaw.png}%\hspace{-2.2em}
-\includegraphics[scale = 0.39]{autocarImages/ubToolYawRate.png}
-\includegraphics[scale = 0.41]{autocarImages/ubToolx2.png}%\hspace{-2.2em}
-\includegraphics[scale = 0.39]{autocarImages/ubToolx1.png}
+\includegraphics[width=6.4cm,height=4.8cm]{autocarImages/ubToolx1.png}%\hspace{-2.2em}
+\includegraphics[width=6.4cm,height=4.8cm]{autocarImages/ubToolx2.png}
+\includegraphics[width=6.4cm,height=4.8cm]{autocarImages/ubToolSteering.png}%\hspace{-2.2em}
+\includegraphics[width=6.4cm,height=4.8cm]{autocarImages/ubToolSlip.png}
+\includegraphics[width=6.4cm,height=4.8cm]{autocarImages/ubToolYaw.png}%\hspace{-2.2em}
+\includegraphics[width=6.4cm,height=4.8cm]{autocarImages/ubToolYawRate.png}
+
 
 \includegraphics[scale = 0.39]{autocarImages/leg1.png}~
   \includegraphics[scale = 0.41]{autocarImages/leg2.png}~
   \includegraphics[scale = 0.41]{autocarImages/leg3.png}
   \caption{Flowpipe bounds at different time points for
-    car model}\label{fig:flowcar}
+    car model \is{The font of the text above the plot for $x_1$ is smaller than the others. Could we place the legends a bit logically? May be IOE methods in the first row and the other methods in the second row?}}\label{fig:flowcar}
 \end{figure}
 % \begin{figure}
 % \includegraphics[scale = 0.39]{autocarImages/ubToolSteering.png}%\hspace{-2.2em}
@@ -151,7 +152,7 @@ $ g = 9.81, m = 1093.3, \mu = 1.0489, l_f = 1.156, l_r = 1.422, h_{cg}
 \emph{Results:}  The upper and lower bounds of flowpipe for different
   methods is plotted over uniformly space time stamps in
   Figure~\ref{fig:flowcar}.  
-  \is{We can order the subfigures better: $x_1$, $x_2$, steering angle, slip angle, yaw angle, yaw rate. Also, it may be worth mentioing why we are not plotting one state: heading velocity}.
+  \is{We can order the subfigures better: $x_1$, $x_2$, steering angle, slip angle, yaw angle, yaw rate (I have made this change). Also, it may be worth mentioing why we are not plotting one state: heading velocity}.
   Flowstar could not complete the Taylor
   model flowpipe simulation beyond $1.15\si{\second}$ due to large
   time discretization error.  The bottom 3 lines in the figure
@@ -182,17 +183,17 @@ Quadrotor & 614 s & 318 s & 169 s & 2382 s &
 \end{tabular}
 \end{center}
 \end{table}
-\is{Should we change the older of the columns to $\eta = 3$, $\eta = 4$, $\eta = 5$ in Table 1?}
+\is{Should we change the older of the columns to $\eta = 3$, $\eta = 4$, $\eta = 5$ in Table 1? Computation time of the union method?}
 %
 \begin{figure}
 %\vspace{-1.05em}
-\includegraphics[scale = 0.39]{quadrotorImages/ubToolHeight.png}%\hspace{-2.2em}
-\includegraphics[scale = 0.39]{quadrotorImages/lbToolHeight.png}
+\includegraphics[width=6.4cm,height=4.8cm]{quadrotorImages/ubToolHeight.png}%\hspace{-2.2em}
+\includegraphics[width=6.4cm,height=4.8cm]{quadrotorImages/lbToolHeight.png}
 
 \includegraphics[scale = 0.41]{quadrotorImages/leg1.png}~
   \includegraphics[scale = 0.41]{quadrotorImages/leg2.png}~
   \includegraphics[scale = 0.41]{quadrotorImages/leg3.png}
-\caption{Flowpipe bounds on height at different time points.\\
+\caption{Flowpipe bounds on height at different time points.
 Note: Union method resulted in infinite bounds (not plotted).}\label{fig:flowquadrotor}
 \end{figure}
 % 
@@ -230,12 +231,15 @@ stabilize the vertical height of the quadrotor at $h = 1\si{\meter}$.
   eigenvector direction showed much higher accuracy than other
   methods.  The union method based on division using
   Equation~\ref{eqn:pi} resulted in very high linearization error and
-  consequently infinite bounds $[-1,1]^{12}$ after $0.5 s$ simulation
+  consequently infinite bounds $[-1,1]^{12}$ \is{How is it an infinite bound?} after $0.5\si{\second}$ simulation
   time, where the normalization error is taken to be $\rho
-  = \taylor{f}{X_0}{u}$.  We plotted the flowpipe bounds for the
+  = \taylor{f}{X_0}{u}$ \is{This has been mentioned before.}.  We plotted the flowpipe bounds for the
   height in Figure~\ref{fig:flowquadrotor}.  The figure clearly shows
   high increase in accuracy by using intersection of unions compared
-  to other methods.  The computation times are given in
+  to other methods. 
+  \is{The lines describing the failure of the union method can be placed her.}
+  The computation times are given in
   Table~\ref{tab:comptimes}.  The preprocessing time before simulation
   for our IoU method is $44\si{\second}$.
+  \is{Should we mention what is done in the preprocessing step?}
 %
