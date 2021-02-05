@@ -10,6 +10,7 @@ tool\footnote{\url{https://tumcps.github.io/CORA}} and Taylor
 models~\cite{chen2012taylor} in
 Flowstar\footnote{https://flowstar.org}.
 
+\is{Add a sentence on the implementation.}
 For computation of symbolic derivatives, we use Sympy Python
 software~\cite{10.7717/peerj-cs.103} and for interval arithmetic, we
 use Boost C++ library~\cite{bronnimann2006design}.  We use
@@ -100,6 +101,7 @@ i.e., $\rho = \taylor{f}{X_0}{u}$.
 % \end{figure}
 %
 \subsection{$7$-dimensional model of autonomous car}
+\is{It may be good to emphasize on the tight coupling among the variables.}
 A time discretized model of autonomous car manoeuvre with $7$-dimensional
 state space and $2$ inputs was presented in~\cite{lavaei2020formal}.
 We adapted this model into a continuous time system and provided a
@@ -180,7 +182,7 @@ Polynomial & Taylor\\
 & & & & & & {\color{red}Incomplete}\\
 Car & 108 s & 128 s & 252 s & 122 s & 4068 s & {\color{red}[0,1.15s]:~216s}\\
 \hline
-& & & & & &\\
+& & & & & & {\color{red}Incomplete}\\
 Quadrotor & 169 s & 318 s & 614 s & {\color{red}
 Incomplete} & 2382 s & {\color{red}[0,4.13s]:~583 s} \\
 \hline
@@ -245,3 +247,5 @@ stabilize the vertical height of the quadrotor at $h = 1\si{\meter}$.
   $44\si{\second}$, when the symbolic derivative and double
   derivatives of the vector field are computed and the C++ code is compiled.
 %
+
+\is{A separate subsection for computation time?}

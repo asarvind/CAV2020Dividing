@@ -8,17 +8,16 @@ solution.  We addressed this issue by using intersection of unions,
 where each intersecting union corresponds to an optimized division for
 one direction of linearization error.  Evaluation of this method on
 real world examples showed high increase in accuracy compared to
-state-of-the-art techniques and an earlier method of division that
-also uses only unions instead of intersection of unions.
+state-of-the-art techniques and an earlier method of division that uses only unions instead of intersection of unions.
 
 There is a large scope for improvement of our method.  The
 intersection between interval zonotopes is not computed very
 accurately in this algorithm.  If this is improved, we can get
-significant gain in accuracy.  Furthermore, we only divide the
+further gain in accuracy.  Furthermore, we only divide the
 reachable set in the initial time interval because iterative division
-increases the number of pieces and the complexity of representing
-reachable sets.  So, we need to find a way of controlling the
+increases the number of pieces and the complexity of representing the
+reachable sets.  Thus, we need to find a way of controlling the
 complexity of set representation while making iterative division such
 that the resulting abstraction error is small.  Furthermore, we
 believe that a GPU implementation of our parallel algorithm,
-instead of using multiple cpus, will result in better scalability.
+instead of using multiple CPUs, will result in better scalability.
