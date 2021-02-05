@@ -159,26 +159,27 @@ $\forall i\in\set{1,\ldots,n}~\rb{\utaylor{f}{U}{\bounds}{q}}_i$
 f_i}\rb{\mymatrix{\bounds^{\delta}\\ U}}\mymatrix{\rad{\bounds^{\delta}}\rb{\diag{q}}^{-1}\\ \rad{U}}}.
 \end{align*}
 %
-For any $k\in\set{1,\ldots,n}$, the projection of the  bound
-along the $k^{th}$ eigenvector is given by
-$\utaylor{f}{U}{\bounds}{q}\eig_{:,k}
-= \utaylor{f}{U}{\bounds}{q}\real{\eig_{:,k}}
-+ \iota\utaylor{f}{U}{\bounds}{q}\imag{\eig_{:,i}}$.  We select $q$ to
-minimize the maximum absolute value of this bound, by using the
-following greedy optimization.  Let us consider for any
-$i\in\set{1,\ldots,n}$, \mbox{$\omega\rb{q,i}\in\integers^n$}, where $\omega\rb{q,i}_j
-= \begin{cases}2q_j & j=i\\ q_j & i\neq j \end{cases}$.
-
+For any $k\in\set{1,\ldots,n}$, the projection of the bound along the
+$k^{th}$ eigenvector is given by $\utaylor{f}{U}{\bounds}{q}\eig_{:,k}
+= \utaylor{f}{U}{\bounds}{q}\real{\eig_{:,k}} +
+\iota\utaylor{f}{U}{\bounds}{q}\imag{\eig_{:,i}}$.  We select $q$ to
+minimize the maximum absolute value of this bound by using the greedy
+optimization in Algorithm~\ref{alg:opt}.  Below, we consider for any
+$i\in\set{1,\ldots,n}$, \mbox{$\omega\rb{q,i}\in\integers^n$}, where
+$\omega\rb{q,i}_j = \begin{cases}2q_j ~\text{if}~
+  j=i~~|~~q_j~\text{if}~i\neq j \end{cases}$.
+\vspace{-2em}
 \begin{algorithm}
 \caption{Optimizing division vector for $k^{th}$
-eigenvector} $q\gets \mymatrix{1,\ldots,1}^T\in\integers^n$\;
+eigenvector}~\label{alg:opt} $q\gets \mymatrix{1,\ldots,1}^T\in\integers^n$\;
 \While{$\prod_{j=1}^nq_j<2^\eta$}{
 $ind \gets \argmin_{i=1}^n\begin{cases}\rb{\sup\rb{\real{\utaylor{f}{U}{\bounds^\delta}{\omega\rb{q,i}}\eig_{:,k}}}}^2\\
  + \rb{\sup\rb{\imag{\utaylor{f}{U}{\bounds^\delta}{\omega\rb{q,i}}\eig_{:,k}}}}^2\end{cases}$\;
 $q\gets \omega\rb{q,ind}$
 }
 \end{algorithm}
-%
+
+\vspace{-2em}
 Subsequently, we get a set of optimized division vectors corresponding
 to different eigenvectors.  We denote this set as as $\dopt{\eta}$,
 where $2^\eta$ is the maximum number of divisions.
@@ -380,11 +381,11 @@ U,
 }$ is an overapproximation of $H^\prime$ .  By Lemma~\ref{lem:inclin},
 we get
 $\reach{L}{t}{\ztset{\zt}}\supseteq\reach{H^\prime}{t}{\Omega}$.  By
-Lemma~\ref{lem:lintrans} and~\ref{lem:linreach}, we have
+Lemma~\ref{lem:lintrans} and~\ref{lem:linreach},
 $\ztset{\flow{H}{t}{K}{\epsilon}{\zt}} \supseteq \reach{L}{t}{\ztset{\zt}}$.
 So,
 $\flow{H}{t}{K}{\epsilon}{\zt}\supseteq\reach{H^\prime}{t}{\Omega}$.
-We showed that $\trfn{y}$ is a trajectory of $H^\prime$. Also,
+We showed $\trfn{y}$ is a trajectory of $H^\prime$. Also,
 $\tr{y}{t} =\tr{x}{t}$ as $t\in[0,t+\epsilon)$.  So, by the previous
 inequality we get $\tr{y}{t}
 = \tr{x}{t}\in\ztset{\flow{H}{t}{K}{\epsilon}{\zt}}$.  As this is true
@@ -508,12 +509,9 @@ To illustrate the difference in accuracy between intersection of
 unions and only union method, we ran both techniques on
 Example~\ref{eg:ill}.  We took $K=20$ and $\epsilon = 10^{-12}$.  The
 plot of interval bounds in Figure~\ref{fig:ill} clearly shows the the
-IoU method is far more accurate on this example.  
+IoU method is far more accurate on this example.
 \end{example}
-In the next section,
-we evaluate our method on real world examples with higher dimensions
-and compare them with state-of-the-art methods, besides the union
-method.
+
 %
 \begin{algorithm}
 \caption{IoU interval zonotope
@@ -531,7 +529,7 @@ $\bounds^\delta \gets \ivflow{H}{\delta}{K}{\epsilon}{X_0}$\;
 $j\gets 1$,~$k\gets 1$\;~\label{algstep:assign1}
 \For{$q\in\dopt{q}$~(in parallel)}{
     \For{$b\in D_q$~(in parallel)}{
-        $\rb{\iouopt{\eta}{\bounds^\delta}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$\;~\label{step:3}
+        $\rb{\iouopt{\eta}{\bounds^\delta}}_{jk} \gets \lin{\zerozon{n}{l}}{\sqb{0}_{n\times n}}{b}$~\label{step:3}\;
         $k\gets k+1$\; 
     } 
     $j\gets j+1$\; 

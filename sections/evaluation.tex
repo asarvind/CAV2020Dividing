@@ -2,22 +2,23 @@ We evaluate our intersection of unions method on two real world
 examples, i.e., a $7$-dimensional nonlinear model of an autonomous car
 from Lavaei et. al.~\cite{lavaei2020formal} and a $12$-dimensional
 nonlinear model of a quadrotor from ARCH 2020
-workshop~\cite{geretti2020arch}.  On these examples, besides the union
-method based on the performance index~(\ref{eqn:pi}) proposed in
-Althoff et. al.~\cite{althoff2008reachability}, we compare with
-with polynomial zonotopes~\cite{althoff2013reachability} in CORA
+workshop~\cite{geretti2020arch}.
+On these examples, besides the union method based on the performance
+index~(\ref{eqn:pi}) proposed in Althoff
+et. al.~\cite{althoff2008reachability}, we compare with with
+polynomial zonotopes~\cite{althoff2013reachability} in CORA
 tool\footnote{\url{https://tumcps.github.io/CORA}} and Taylor
 models~\cite{chen2012taylor} in
 Flowstar\footnote{https://flowstar.org}.
 
-\is{Add a sentence on the implementation.}
-For computation of symbolic derivatives, we use Sympy Python
-software~\cite{10.7717/peerj-cs.103} and for interval arithmetic, we
-use Boost C++ library~\cite{bronnimann2006design}.  We use
-OpenMP\footnote{\url{https://www.openmp.org}} to run in
-parallel the iteration Steps~\ref{step:3} and~\ref{step:1} of the for loops of
-Algorithm~\ref{alg:main}. \is{The line numbers look wrong.}
-%\is{Algorithm 2 has othe (in parallel) steps. Should we remove those?}
+We implemented our simulation algorithm in C++.  Before the
+simulation, we compute symbolic derivative and double derivatives of
+vector field in Python.  For computation of symbolic derivatives, we
+use Sympy Python software~\cite{10.7717/peerj-cs.103} and for interval
+arithmetic, we use Boost C++ library~\cite{bronnimann2006design}.  We
+use OpenMP\footnote{\url{https://www.openmp.org}} to run in parallel
+the iteration Steps~\ref{step:3} and~\ref{step:1} of the for loops of
+Algorithm~\ref{alg:main}.
 
 \emph{Settings:}  We
 ran our IoU method, union method and Flowstar Taylor model on an AWS
@@ -101,13 +102,14 @@ i.e., $\rho = \taylor{f}{X_0}{u}$.
 % \end{figure}
 %
 \subsection{$7$-dimensional model of autonomous car}
-\is{It may be good to emphasize on the tight coupling among the variables.}
-A time discretized model of autonomous car manoeuvre with $7$-dimensional
-state space and $2$ inputs was presented in~\cite{lavaei2020formal}.
-We adapted this model into a continuous time system and provided a
-stabilizing feedback with one of the inputs.  Then we have the
-following $7$-dimensional system having only one
-uncontrolled input.
+A time discretized model of autonomous car manoeuvre with
+$7$-dimensional state space and $2$ inputs was presented
+in~\cite{lavaei2020formal}.  We adapted this model into a continuous
+time system and provided a stabilizing feedback with one of the
+inputs.  Then we have the following $7$-dimensional system having only
+one uncontrolled input.  This model has tight coupling between all
+variables.  So, decomposition into any smaller dimensional space with
+good accuracy is not possible, given the initial set we specify latter.
 %
 \begin{align*}
 \dot{x_1}  = & x_4\cos\rb{x_5+x_7}\hspace{2em} \dot{x_2} =
@@ -163,35 +165,10 @@ $ g = 9.81, m = 1093.3, \mu = 1.0489, l_f = 1.156, l_r = 1.422, h_{cg}
   correspond to our IoU flowpipe method, which show convergence while
   all other plots are diverging.  The figure clearly shows a high
   increase in accuracy by using intersection of unions compared to
-  other methods.  The simulation times are given in
-  Table~\ref{tab:comptimes}.  The preprocessing time before simulation
-  for IoU method is $18\si{\second}$, when the symbolic
-  derivative and double derivatives of the vector field are computed and the C++ code is
-  compiled.
+  other methods.
   %
- %
-\begin{table}
-\begin{center}
-\caption{Computation times}\label{tab:comptimes}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-\hline
-Example & IoU  & IoU  & IoU  & Only Union &
-Polynomial & Taylor\\
-& $\eta = 3$ & $\eta = 4$ & $\eta = 5$ & $\eta = 5$ & Zonotope & Model \\
-\hline
-& & & & & & {\color{red}Incomplete}\\
-Car & 108 s & 128 s & 252 s & 122 s & 4068 s & {\color{red}[0,1.15s]:~216s}\\
-\hline
-& & & & & & {\color{red}Incomplete}\\
-Quadrotor & 169 s & 318 s & 614 s & {\color{red}
-Incomplete} & 2382 s & {\color{red}[0,4.13s]:~583 s} \\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-%
 \begin{figure}
-%\vspace{-1.05em}
+\vspace{-2em}
 \includegraphics[width=6.4cm,height=4.8cm]{quadrotorImages/ubToolHeight.png}%\hspace{-2.2em}
 \includegraphics[width=6.4cm,height=4.8cm]{quadrotorImages/lbToolHeight.png}
 
@@ -203,7 +180,8 @@ Incomplete} & 2382 s & {\color{red}[0,4.13s]:~583 s} \\
 \caption{Flowpipe bounds on height at different time points.
 Note: Union method resulted in infinite bounds (not plotted).}\label{fig:flowquadrotor}
 \end{figure}
-% 
+%
+\vspace{-3em}
 \subsection{$12$-dimensional model of quadrotor}
 We consider the $12$-dimensional model of a quadrotor with three
 inputs presented in the ARCH 2020 friendly
@@ -213,12 +191,14 @@ appendix.  It has a $12$-dimensional state vector $x
 height of the quadrotor and a $3$-dimensional input vector $u
 = \rb{u_1,u_2,u_2}$.  We take a larger initial set than the one given
 in the competition~\cite{geretti2020arch} so that there is significant
-linearization error in the flowpipe.  Our initial set in S.I. units
-is $X_0 = [-0.8,0.8]^6\times[-0.5,0.5]^2\times[0,0]\times
+linearization error in the flowpipe.  Our initial set in S.I. units is
+$X_0 = [-0.8,0.8]^6\times[-0.5,0.5]^2\times[0,0]\times
 [-1,1]^2\times[0,0]$.  The input set is $\rb{u_1,u_2,u_3}\in
 [-0.99,1.01]\times[-0.01,0.01]^2$.  The goal of controller is to
 stabilize the vertical height of the quadrotor at $h = 1\si{\meter}$.
-
+The dynamics has tight coupling between all variables.  So,
+demomposition into smaller dimensional subsystems can lead to high
+inaccuracy in flowpipe.
 %% \emph{Settings:}  The simulation time step is $\delta = 0.01\si{\second}$.  
 %% For Flowstar Taylor model, the order of Taylor expansion is $7$.  For
 %%   the CORA polynomial zonotope, generator order is $200$ and order of
@@ -242,10 +222,34 @@ stabilize the vertical height of the quadrotor at $h = 1\si{\meter}$.
   other methods.  The union method based on division using
   Equation~\ref{eqn:pi} resulted in very high linearization error and
   consequently infinite bounds after $0.5\si{\second}$ simulation
-  time.  The computation times are given in Table~\ref{tab:comptimes}.
-  The preprocessing time before simulation for our IoU method is
-  $44\si{\second}$, when the symbolic derivative and double
-  derivatives of the vector field are computed and the C++ code is compiled.
+  time.
 %
-
-\is{A separate subsection for computation time?}
+\vspace{-1em}
+\subsection{Computation times}
+The simulation time of our IoU parallel algorithm is comparable with
+other algorithms, as given in Table~\ref{tab:comptimes}.  Before
+simulation, there is a preprocessing step where we compute symbolic
+derivaties and compile C++ code.  The preprocessing time for car
+example is $18\si{\second}$ and quadrotor example is $44\si{\second}$.
+ %
+\begin{table}
+\vspace{-1em}
+\begin{center}
+\caption{Computation times}\label{tab:comptimes}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+Example & IoU  & IoU  & IoU  & Only Union &
+Polynomial & Taylor\\
+& $\eta = 3$ & $\eta = 4$ & $\eta = 5$ & $\eta = 5$ & Zonotope & Model \\
+\hline
+& & & & & & {\color{red}Incomplete}\\
+Car & 108 s & 128 s & 252 s & 122 s & 4068 s & {\color{red}[0,1.15s]:~216s}\\
+\hline
+& & & & & & {\color{red}Incomplete}\\
+Quadrotor & 169 s & 318 s & 614 s & {\color{red}
+Incomplete} & 2382 s & {\color{red}[0,4.13s]:~583 s} \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+%
