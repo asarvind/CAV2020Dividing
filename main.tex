@@ -12,16 +12,13 @@
 \begin{abstract}
 We propose a new efficient way of piecewise linearization based
 flowpipe computation for uncertain nonlinear ODEs.  Piecewise
-linearization suffers from exponential blowup in the number of pieces
+linearization suffers from an exponential blowup in the number of pieces
 in high dimensional state space.  Alternatively, if the number of
 divisions is fixed, we need to optimize the way the reach set is
-divided to minimize the linearization error. A previous method in
-literature proposed to minimize a scalar measure of linearization
-error while dividing the reachable sets, which does not necessarily
-reduce the linearization error along all coordinates.  In this paper,
-we propose a better method where we use multiple best optimal ways of
-division, instead of a single way of division, for minimizing
-linearization error along multiple directions.  Consequently, we
+divided to minimize the linearization error. 
+The state-of-the-art division based method minimizes a scalar measure of linearization error while dividing the reachable sets, which does not necessarily
+reduce the linearization error along all coordinates.  
+In this paper, we propose a method where we use multiple best optimal ways of division, instead of a single way of division, for minimizing linearization error along multiple directions. Consequently, we
 represent reachable sets as the intersection of unions
 (IoU), where each intersecting union corresponds to the optimized
 division for each direction among multiple directions.  As a proof of
@@ -29,6 +26,26 @@ concept, we evaluate our method on an illustrative example and two
 high dimensional real-world examples.  We demonstrate a high increase
 in the flowpipe accuracy compared to the earlier method of division
 and other state-of-the-art methods.
+
+% We propose a new efficient way of piecewise linearization based
+% flowpipe computation for uncertain nonlinear ODEs.  Piecewise
+% linearization suffers from an exponential blowup in the number of pieces
+% in high dimensional state space.  Alternatively, if the number of
+% divisions is fixed, we need to optimize the way the reach set is
+% divided to minimize the linearization error. A previous method in
+% literature proposed to minimize a scalar measure of linearization
+% error while dividing the reachable sets, which does not necessarily
+% reduce the linearization error along all coordinates.  In this paper,
+% we propose a better method where we use multiple best optimal ways of
+% division, instead of a single way of division, for minimizing
+% linearization error along multiple directions.  Consequently, we
+% represent reachable sets as the intersection of unions
+% (IoU), where each intersecting union corresponds to the optimized
+% division for each direction among multiple directions.  As a proof of
+% concept, we evaluate our method on an illustrative example and two
+% high dimensional real-world examples.  We demonstrate a high increase
+% in the flowpipe accuracy compared to the earlier method of division
+% and other state-of-the-art methods.
 \end{abstract}
 
 \section{Introduction}
