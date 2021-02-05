@@ -1,0 +1,72 @@
+ There are efficient algorithms to compute reachable sets of linear
+ uncertain
+ ODEs~\cite{girard2005reachability,FLD+11,girard2008efficient,bak2017simulation}.
+ This is because linear transformations of reachable sets can be
+ efficiently overapproximated.  In contrast, computing reachable sets
+ of nonlinear ODEs requires approximating nonlinear transformation of
+ reachable sets resulting in non-convex sets, which is a much harder
+ problem~\cite{dang2009image,monniaux2011generation}.  Taylor
+ models~\cite{chen2012taylor} and polynomial
+ zonotopes~\cite{althoff2013reachability,kochdumper2020sparse,kochdumper2020constrained}
+ have been developed to approximate the nonlinear transformation of
+ reachable sets.  But the complexity of Taylor model and polynomial
+ zonotope increases when nonlinear transformations are repeatedly
+ applied.  There are procedures to control this complexity. However,
+ the accuracy reduces with the increase in the size of the reachable
+ sets.
+
+Another approach used in numerous research works is piecewise linear
+approximation of nonlinear
+systems~\cite{althoff2008reachability,li2020reachability,dang2010accurate,ramdani2009hybrid,han2006reachability,bak2016scalable}.
+In this case, reachability analysis methods of affine hybrid systems
+are used post piecewise linear approximation.  As discussed earlier,
+this approach faces curse of dimensionality.  For linear systems,
+decomposition based techniques can be effectively used in high
+dimensions~\cite{bogomolov2018reach}.  For for nonlinear dynamics,
+decomposition based
+techniques~\cite{chen2018decomposition,chen2016decomposed} work well
+under loose coupling between small dimensional subsystems.  In
+contrast, our IoU method provided good accuracy examples where there
+is tight coupling between all state variables of ODE (see examples in
+Section~\ref{sec:eval}).  
+
+An idea similar to ours is a
+\emph{projectahedron}~\cite{greenstreet1999reachability}, where the reachable
+set is stored in terms of projections on different hyperplanes.  But,
+storing reachable set as projections on smaller dimensional
+hyperplanes can result in loosing the correlation between variables in
+higher dimensions and consequently affect flowpipe accuracy.  In
+contrast, our IoU method maintains a good approximation of the
+correlation between the variables by using a variant of zonotope in
+its constituent sets.
+%
+Each element of our IoU is a variant of
+zonotope~\cite{girard2005reachability}, called \emph{interval
+  zonotope}, introduced in this paper.  The interval zonotope is a
+generalization of zonotope to allow better approximation of
+intersection between zonotopes.  But the intersection of unions can
+also use other representations like polytopes in its constituent sets.
+We use this variant of zonotope because zonotopes are known to
+approximate linear transformations very accurately.  Our IoU of
+interval zonotopes is very different from zonotope
+bundles~\cite{althoff2011zonotope}.  The latter is an intersection of
+zonotopes but not intersection of union of zonotopes.
+
+Our IoU flowpipe employs an optimization technique to construct the
+IoU so as to minimize the linearization error along multiple
+directions.  This is an improvement of the division method used in
+Matthias et. al.~\cite{althoff2008reachability}.  The latter method
+divides the sets based on a single dimensional measure, which may not
+effectively reduce linearization error along all directions.  Instead,
+our IoU method uses multiple best divisions for minimizing
+linearization along different directions, as discussed before.  This
+improvement is explained latter in this paper more clearly with an
+illustrative example.  Some methods approximate the unbounded time
+union of reachable
+sets~\cite{tiwari2008generating,prajna2006barrier,rodriguez2005generating}
+instead of the reachable set at each individual time point. Such
+approximation can verify boundedness within a safe set, but not other
+temporal properties like reachability within a time interval.  Our
+algorithm computes approximation at each time stamp in a time horizon
+which can be helpful to verify temporal
+properties.
