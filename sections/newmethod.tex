@@ -54,7 +54,7 @@ Althoff. et. al~\cite{althoff2008reachability}.
 In~\cite{althoff2008reachability}, a reachable set
 $\init$ is divided into two sets $\init_1$ and $\init_2$ which
 minimizes the following quantity for a user chosen normalization error
-$\rho\in\reals^n_{>0}$.
+$\rho\in\reals^n_{>0}$:
 %
 \begin{align*}
 \sup_{i=1}^n\frac{{\sup{\taylor{f}{\overline{\init_1}}{U}}}_i}{\rho_i}\sup_{i=1}^n\frac{\sup{\taylor{f}{\overline{\Omega_2}}{U}}_i}{\rho_i}.
@@ -65,7 +65,7 @@ $\rho\in\reals^n_{>0}$.
 For obtaining smaller divisions, the above pairwise division is used
 recursively.  However, the above division method has the following drawback.
 
-\emph{Drawback:}  Since the Taylor error
+\paragraph{Drawback:}  Since the Taylor error
 $\taylor{f}{\overline{\init}}{U}$ is a multi-dimensional vector, minimizing its
 bounds $\sup{\taylor{f}{\overline{\init}}{U}}$ is a multi-objective optimization
 problem which does not have a single best solution.  But the above
@@ -444,8 +444,7 @@ given above.
 Now we have the results to compute an optimized IoU zonotope flowpipe.
 The flowpipe computation is described in Algorithm~\ref{alg:main}.
 Each iteration in step~\ref{step:1} of the for loops can be run
-independently in parallel.  The correctness of the algorithm is proved
-in Theorem~\ref{thm:main}.  Next, we need to compute the projection
+independently in parallel.   Next, we need to compute the projection
 map at any time.  For an interval zonotope $Z
 = \rb{\gen,\cen,\bounds}$ of order $l$, an upper bound on the
 projection of the set along any direction $a\in\double^n$ is
@@ -460,6 +459,9 @@ $\rb{\min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}}$.  Therefore, at any
 time $t$, we have the projection map $\flowproj{t}$ such that
 $\flowproj{t}\rb{a} = \min_i\max_j\project{\rb{\tr{X}{t}}_{ij}}{a}$,
 as stated in Step~\ref{step:proj} of the algorithm.
+
+The correctness of Algorithm~\ref{alg:main} is proved
+in Theorem~\ref{thm:main}.
 %
 \begin{theorem}~\label{thm:main}
 Let us consider the candidate flowpipe $\trfn{X}$ computed in

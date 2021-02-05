@@ -7,18 +7,18 @@ set}, and $\Omega\in\intervals^n$ is called the \emph{state space}.
 For any $T\in\reals_{>0}$, a
 function \mbox{$\trfn{x}:[0,T)\rightarrow \reals^n$} is called
 a \emph{state trajectory} if there exists a \emph{piecewise
-continuous} function $\trfn{u}:[0,T)\rightarrow \inpset$,
-called \emph{input trajectory}, such that all of the following is
-true.
+continuous} function \mbox{$\trfn{u}:[0,T)\rightarrow \inpset$},
+called \emph{input trajectory}, such that all of the following are
+true:
 %
 \begin{align*}
 & \forall t\in[0,T), \tr{x}{t}\subseteq \Omega,\\
 & \forall
 t\in[0,T)\ \forall\epsilon\in\reals_{>0}, \exists\delta\in\reals_{>0}~\text{such
 that}\\
-& \ \ \ \  \forall h\in[-\delta,\delta]\bigcap[0,T]~\norm{ \frac{ \tr{x}{t+h}
+& \ \ \ \  \forall h\in[-\delta,\delta]\bigcap[0,T],~\norm{ \frac{ \tr{x}{t+h}
 - \tr{x}{t} }{h} - f_i\rb{ \mymatrix{ \tr{x}{t}\\ \tr{u}{t} }
-}}< \epsilon~\numberthis\label{eqn:dynamics}
+}}< \epsilon.~\numberthis\label{eqn:dynamics}
 \end{align*}
 %
 In the rest of the paper, $n$ is the dimension of a nonlinear system
@@ -29,7 +29,7 @@ define $\trfn{x}|_{[0,\tau]}
 = \tr{x}{t}$.   The \emph{reachable set} of the nonlinear system $H
 =\rb{f,\inpset,\Omega}$ from an initial set $\init$ at a time point
 $t$, denoted $\reach{H}{t}{\init}$, is a set containing all points
-$\tr{x}{t}$ where $\trfn{x}$ is a state trajectory of $H$ and
+$\tr{x}{t}$, where $\trfn{x}$ is a state trajectory of $H$ and
 $\tr{x}{0}\in\init$.  Similarly, $\reach{H}{[t_1,t_2]}{\init}
 = \bigcup_{t\in[t_1,t_2]}\reach{H}{t}{\init}$.
 %
@@ -43,8 +43,8 @@ flowpipes with linear projection maps.
 %
 \begin{problem}
 Let us consider an $n$-dimensional nonlinear system with $m$-inputs $H
-= \rb{f,\Omega,U}$ where $U\in\intervals^m$ is bounded, i.e.,
-$\sup\rb{U}\in\reals^n$.  We are given a bounded initial set
+= \rb{f,U,\Omega}$, where $U\in\intervals^m$ is bounded, i.e.,
+$\sup\rb{U}\in\reals^n$ \is{$\reals^m$?}.  We are given a bounded initial set
 $X_0\in\intervals^n:~\sup(X_0)\in\reals^n$ and a time bound
 $T\in\reals_{> 0}$.  For every $t\in[0,T]$, compute a set
 $\tr{X}{t}\subseteq \reals^n$ and a function
@@ -63,8 +63,8 @@ The set $\tr{X}{t}$ is called a
 \begin{example}\label{eg:ill}
 Let us denote the function expressions $\proj{1} = x$, $\proj{2} = y$,
 $\proj{3} = \theta$ and $\proj{4} = u$.  A $3$-dimensional nonlinear
-system with one input, state space $\reals^n$ and input set $U =
-[-0.3,0.3]$ can be specified as $H = \rb{f,[-0.3,0.3],\reals^3}$ where
+system with one input, state space $\reals^3$, and input set $U =
+[-0.3,0.3]$ can be specified as $H = \rb{f,[-0.3,0.3],\reals^3}$, where
 %
 \begin{align*}
 & f_1 = \rb{ u\rb{ x + \theta + 0.1y } - 1}x,
@@ -87,7 +87,7 @@ which begin at $\tr{x}{0} = \mymatrix{-0.1,0.1,0.1}^T$ and $\tr{x}{0}
 But there are also state trajectories without an analytic form.  The
 objective of flowpipe computation is to compute bounds along different
 directions on the reachable set $\reach{H}{t}{\init}$ at each time
-point in $[0,T)$, which originate $\init$ (eg. see Fig~\ref{fig:ill}).
+point in $[0,T)$, which originate $\init$ (e.g., see Fig~\ref{fig:ill}).
 %
 We would like the flowpipe approximation to be as close as possible to
 the actual reachable set at any given time.  Greater accuracy of flowpipe results in
